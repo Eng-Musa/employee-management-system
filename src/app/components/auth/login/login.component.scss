@@ -31,4 +31,34 @@ $backgroundImage: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/s
 #right {
     background-color: lightgray;
     flex: 1; 
+    
+    #forget {
+        color: #6c757d;
+        font-size: 0.9rem;
+        text-decoration: underline;
+      }
+      #forget:hover{
+        color: black;
+      }
+
+      #login-button {
+        color: white; 
+        font-weight: 700;
+        font-size: 1.1em;
+        padding: 10px 20px;
+        background-color: black;
+        border: none;
+        border-radius: 50px;
+        width: 100%;
+        transition: background-color 0.3s, transform 0.3s;
+      }
+      
+      #login-button:hover {
+        transform: scale(1.05);
+        cursor: pointer;
+      }
+      
+      #login-button:focus {
+        outline: none;
+      }
 }

@@ -3,10 +3,10 @@
     <p>Welcome to Employee Onboarding System.</p>
   </div>
   <div id="right">
-    <div>
+    <div style="width: 70%;">
       <div>
-        <h2>EOS</h2>
-        <h4>Sign in</h4>
+        <h2 style="text-align: center; font-size: xx-large;">EOS</h2>
+        <h4 style="text-align: start; font-weight: 500; font-size: 1.1em;">Sign in</h4>
       </div>
 
       <!-- Login form -->
@@ -14,7 +14,7 @@
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
           <!-- Username Field -->
           <div>
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="fill" style="width: 100%;">
               <mat-label>Email</mat-label>
               <input matInput formControlName="email" />
               <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
@@ -25,7 +25,7 @@
 
           <!-- Password Field -->
           <div>
-            <mat-form-field appearance="fill" class="w-100">
+            <mat-form-field appearance="fill" style="width: 100%;">
               <mat-label>Password</mat-label>
               <input
                 matInput
@@ -53,15 +53,15 @@
           </div>
 
           <!-- Forgot pass -->
-          <div class="form-inline mb-4">
-            <a id="forget" class="font-weight-bold" href="/#"
+          <div style="margin-bottom: 2em;">
+            <a id="forget" href="/#"
               >Forgot Password?</a
             >
           </div>
 
           <!-- Login Button -->
           <div>
-            <button mat-button type="submit">Login</button>
+            <button mat-button type="submit" id="login-button">Sign in</button>
           </div>
         </form>
       </div>

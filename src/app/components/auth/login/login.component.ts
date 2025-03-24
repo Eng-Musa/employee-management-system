@@ -1,23 +1,35 @@
 import { CommonModule } from '@angular/common';
 import { Component, signal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, CommonModule, MatInputModule, MatIconModule],
+  imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule,
+  ],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrl: './login.component.scss',
 })
 export class LoginComponent {
   loginForm: FormGroup;
-  hide= signal(true) ;
+  hide = signal(true);
 
-  constructor(private fb: FormBuilder){
+  constructor(private fb: FormBuilder) {
     this.loginForm = this.fb.group({
       email: ['', Validators.required],
-      password: ['', Validators.required]
+      password: ['', Validators.required],
     });
   }
 
@@ -25,8 +37,8 @@ export class LoginComponent {
     this.hide.set(!this.hide());
   }
 
-  onSubmit(){
-    if(this.loginForm.valid){
+  onSubmit() {
+    if (this.loginForm.valid) {
       console.log(this.loginForm.value);
     }
   }
