@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit, signal } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, Inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -28,8 +28,13 @@ export class LoginComponent implements OnInit {
   hide = signal(true);
   message: string = '';
   isSuccess: boolean = false;
+  loading: boolean = false;
 
-  constructor(private fb: FormBuilder, private alertService: AlertService) {
+  constructor(
+    private fb: FormBuilder,
+    private alertService: AlertService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
     this.loginForm = this.fb.group({
       email: ['', Validators.required],
       password: ['', Validators.required],
@@ -43,12 +48,55 @@ export class LoginComponent implements OnInit {
     this.hide.set(!this.hide());
   }
 
-  onSubmit() {
+  onLogin() {
     if (this.loginForm.valid) {
-      this.message = 'Submitted!!!';
-      console.log(this.loginForm.value);
+      this.loading = true;
+      this.isSuccess = false;
+      this.message = '';
+      if (isPlatformBrowser(this.platformId)) {
+        console.table(this.loginForm.value);
+        // Retrieve the stored user from localStorage
+        const storedUserStr = localStorage.getItem('adminUser');
+
+        // Add setTimeout to simulate a delay of 1 second
+        setTimeout(() => {
+          if (!storedUserStr) {
+            this.loading = false;
+            this.message = 'No user found in localStorage.';
+          } else {
+            // Parse the JSON string into an object
+            const storedUser = JSON.parse(storedUserStr);
+            // Extract form values for email and password
+            const email = this.loginForm.get('email')?.value;
+            const password = this.loginForm.get('password')?.value;
+
+            // Compare the provided credentials with the stored credentials
+            if (
+              storedUser.email === email &&
+              storedUser.password === password
+            ) {
+              this.isSuccess = true;
+              this.message = 'User authentication successful.';
+            } else {
+              this.message = 'Invalid credentials provided.';
+            }
+            this.loading = false;
+          }
+        }, 1000);
+      } else {
+        setTimeout(() => {
+          this.loading = false;
+          this.message = 'localStorage is not available in this environment.';
+        }, 1000);
+      }
     } else {
-      this.alertService.showErrorToastr('Invalid form, fill required fields!');
+      // For invalid form, still show loading also
+      setTimeout(() => {
+        this.loading = false;
+        this.alertService.showErrorToastr(
+          'Invalid form, fill required fields!'
+        );
+      }, 1000);
     }
   }
 

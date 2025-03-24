@@ -32,7 +32,7 @@
 
       <!-- Login form -->
       <div>
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
           <!-- Username Field -->
           <div>
             <mat-form-field appearance="fill" style="width: 100%">
@@ -81,8 +81,8 @@
           <!-- Login Button -->
           <div>
             <button mat-button type="submit" id="login-button">
-              Sign in
-              <div class="container"><div class="dot"></div></div>
+              <span *ngIf="!loading">Sign in</span>
+              <div class="container" *ngIf="loading"><div class="dot"></div></div>
             </button>
           </div>
         </form>
