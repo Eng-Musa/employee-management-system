@@ -13,7 +13,7 @@ export class AlertService {
       extendedTimeOut: 1000, //Time to close after a user hovers over toast
       progressBar: true, // Add a progress bar
       progressAnimation: 'decreasing',
-      positionClass: 'toast-top-center', // Corrected position class
+      positionClass: 'toast-top-right', // Corrected position class
       closeButton: false, // Add a close button
       newestOnTop: true, // Makes sure the newest toast appears on top
       tapToDismiss: true, // Allows dismissing on click
@@ -26,7 +26,7 @@ export class AlertService {
       extendedTimeOut: 1000, //Time to close after a user hovers over toast
       progressBar: true, // Add a progress bar
       progressAnimation: 'decreasing',
-      positionClass: 'toast-top-center', // Corrected position class
+      positionClass: 'toast-top-right', // Corrected position class
       closeButton: false, // Add a close button
       newestOnTop: true, // Makes sure the newest toast appears on top
       tapToDismiss: true, // Allows dismissing on click
@@ -39,7 +39,7 @@ export class AlertService {
       extendedTimeOut: 1000, //Time to close after a user hovers over toast
       progressBar: true, // Add a progress bar
       progressAnimation: 'decreasing',
-      positionClass: 'toast-top-center', // Corrected position class
+      positionClass: 'toast-top-right', // Corrected position class
       closeButton: false, // Add a close button
       newestOnTop: true, // Makes sure the newest toast appears on top
       tapToDismiss: true, // Allows dismissing on click
@@ -52,7 +52,7 @@ export class AlertService {
       extendedTimeOut: 1000, //Time to close after a user hovers over toast
       progressBar: true, // Add a progress bar
       progressAnimation: 'decreasing',
-      positionClass: 'toast-top-center', // Corrected position class
+      positionClass: 'toast-top-right', // Corrected position class
       closeButton: false, // Add a close button
       newestOnTop: true, // Makes sure the newest toast appears on top
       tapToDismiss: true, // Allows dismissing on click

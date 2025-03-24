@@ -44,7 +44,8 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     if (this.loginForm.valid) {
       console.log(this.loginForm.value);
-      this.alertService.showInfoToastr("Done")
+    }else{
+      this.alertService.showErrorToastr('Invalid form, fill required fields!');
     }
   }
 
