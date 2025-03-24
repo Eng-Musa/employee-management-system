@@ -9,6 +9,7 @@ import {
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { AlertService } from '../../../services/alert.service';
 
 @Component({
   selector: 'app-login',
@@ -26,7 +27,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   hide = signal(true);
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private alertService: AlertService) {
     this.loginForm = this.fb.group({
       email: ['', Validators.required],
       password: ['', Validators.required],
@@ -43,6 +44,7 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     if (this.loginForm.valid) {
       console.log(this.loginForm.value);
+      this.alertService.showInfoToastr("Done")
     }
   }
 
