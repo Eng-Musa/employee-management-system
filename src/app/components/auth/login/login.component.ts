@@ -47,20 +47,21 @@ export class LoginComponent implements OnInit {
   }
 
   createAdmin() {
-    if(typeof window !== 'undefined' && localStorage){
+    if (typeof window !== 'undefined' && localStorage) {
       const existingUser = localStorage.getItem('adminUser');
-    if (!existingUser) {
-      const user = {
-        email: 'admin@gmail.com',
-        password: 'Admin@1234',
-        createdDate: new Date().toISOString() 
-      };
-      localStorage.setItem('adminUser', JSON.stringify(user));
-      console.log('User created with createdDate and saved to localStorage.');
-    } else {
-      console.log('User already exists in localStorage.');
-    }
+      if (!existingUser) {
+        const user = {
+          name: 'System Admin',
+          email: 'admin@gmail.com',
+          password: 'Admin@1234',
+          createdDate: new Date().toISOString(),
+          role: 'admin',
+        };
+        localStorage.setItem('adminUser', JSON.stringify(user));
+        console.log('User created with createdDate and saved to localStorage.');
+      } else {
+        console.log('User already exists in localStorage.');
+      }
     }
   }
-  
 }
