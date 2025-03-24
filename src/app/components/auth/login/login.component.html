@@ -11,7 +11,7 @@
 
       <!-- Login form -->
       <div>
-        <form [formGroup]="loginForm">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
           <!-- Username Field -->
           <div>
             <mat-form-field appearance="fill">

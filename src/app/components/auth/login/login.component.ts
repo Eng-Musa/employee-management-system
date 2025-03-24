@@ -24,4 +24,10 @@ export class LoginComponent {
   clickEvent(event: MouseEvent) {
     this.hide.set(!this.hide());
   }
+
+  onSubmit(){
+    if(this.loginForm.valid){
+      console.log(this.loginForm.value);
+    }
+  }
 }
