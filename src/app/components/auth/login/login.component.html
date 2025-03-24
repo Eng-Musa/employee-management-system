@@ -5,7 +5,7 @@
   <div id="right">
     <div style="width: 70%">
       <div>
-        <h2 style="text-align: center; font-size: xx-large">EOS</h2>
+        <h2 style="text-align: center; font-size: xx-large"><span class="circle"></span> EOS</h2>
 
         <!-- Message -->
         <div
@@ -82,7 +82,9 @@
           <div>
             <button mat-button type="submit" id="login-button">
               <span *ngIf="!loading">Sign in</span>
-              <div class="container" *ngIf="loading"><div class="dot"></div></div>
+              <div class="container" *ngIf="loading">
+                <div class="dot"></div>
+              </div>
             </button>
           </div>
         </form>
