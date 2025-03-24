@@ -3,10 +3,31 @@
     <p>Welcome to Employee Onboarding System.</p>
   </div>
   <div id="right">
-    <div style="width: 70%;">
+    <div style="width: 70%">
       <div>
-        <h2 style="text-align: center; font-size: xx-large;">EOS</h2>
-        <h4 style="text-align: start; font-weight: 500; font-size: 1.1em;">Sign in</h4>
+        <h2 style="text-align: center; font-size: xx-large">EOS</h2>
+
+        <!-- Message -->
+        <div
+          *ngIf="message"
+          [ngClass]="{
+            'success-message': isSuccess,
+            'error-message': !isSuccess
+          }"
+          style="
+            margin-top: 5px;
+            margin-bottom: 5px;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+          "
+        >
+          {{ message }}
+        </div>
+
+        <h4 style="text-align: start; font-weight: 500; font-size: 1.1em">
+          Sign in
+        </h4>
       </div>
 
       <!-- Login form -->
@@ -14,7 +35,7 @@
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
           <!-- Username Field -->
           <div>
-            <mat-form-field appearance="fill" style="width: 100%;">
+            <mat-form-field appearance="fill" style="width: 100%">
               <mat-label>Email</mat-label>
               <input matInput formControlName="email" />
               <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
@@ -25,7 +46,7 @@
 
           <!-- Password Field -->
           <div>
-            <mat-form-field appearance="fill" style="width: 100%;">
+            <mat-form-field appearance="fill" style="width: 100%">
               <mat-label>Password</mat-label>
               <input
                 matInput
@@ -53,10 +74,8 @@
           </div>
 
           <!-- Forgot pass -->
-          <div style="margin-bottom: 2em;">
-            <a id="forget" href="/#"
-              >Forgot Password?</a
-            >
+          <div style="margin-bottom: 2em">
+            <a id="forget" href="/#">Forgot Password?</a>
           </div>
 
           <!-- Login Button -->

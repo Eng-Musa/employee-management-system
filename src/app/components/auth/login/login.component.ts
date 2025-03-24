@@ -26,6 +26,8 @@ import { AlertService } from '../../../services/alert.service';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   hide = signal(true);
+  message: string = '';
+  isSuccess: boolean = false;
 
   constructor(private fb: FormBuilder, private alertService: AlertService) {
     this.loginForm = this.fb.group({
@@ -43,8 +45,9 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     if (this.loginForm.valid) {
+      this.message = 'Submitted!!!';
       console.log(this.loginForm.value);
-    }else{
+    } else {
       this.alertService.showErrorToastr('Invalid form, fill required fields!');
     }
   }
