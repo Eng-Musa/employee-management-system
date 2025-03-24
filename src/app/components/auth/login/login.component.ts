@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -22,7 +22,7 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   hide = signal(true);
 
@@ -31,6 +31,9 @@ export class LoginComponent {
       email: ['', Validators.required],
       password: ['', Validators.required],
     });
+  }
+  ngOnInit(): void {
+    this.createAdmin();
   }
 
   clickEvent(event: MouseEvent) {
@@ -42,4 +45,22 @@ export class LoginComponent {
       console.log(this.loginForm.value);
     }
   }
+
+  createAdmin() {
+    if(typeof window !== 'undefined' && localStorage){
+      const existingUser = localStorage.getItem('adminUser');
+    if (!existingUser) {
+      const user = {
+        email: 'admin@gmail.com',
+        password: 'Admin@1234',
+        createdDate: new Date().toISOString() 
+      };
+      localStorage.setItem('adminUser', JSON.stringify(user));
+      console.log('User created with createdDate and saved to localStorage.');
+    } else {
+      console.log('User already exists in localStorage.');
+    }
+    }
+  }
+  
 }
