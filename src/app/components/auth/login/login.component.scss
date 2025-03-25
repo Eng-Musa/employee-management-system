@@ -66,6 +66,12 @@ $backgroundImage: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/s
       width: 2.5rem;
       border-radius: 50%;
       background-color: black;
+      animation-name: slideInFromLeft;
+      animation-duration: 0.8s;
+      animation-timing-function: ease-out;
+      animation-fill-mode: forwards;
+      animation-delay: 0.4s;
+      opacity: 0;
     }
 
     h2 {
