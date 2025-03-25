@@ -1,5 +1,5 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, Inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { AlertService } from '../../../services/alert.service';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -19,11 +20,12 @@ import { AlertService } from '../../../services/alert.service';
     MatInputModule,
     MatIconModule,
     MatButtonModule,
+    RouterModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
   hide = signal(true);
   message: string = '';
@@ -33,7 +35,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private alertService: AlertService,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private router: Router
   ) {
     this.loginForm = this.fb.group({
       email: ['', Validators.required],
@@ -44,6 +47,11 @@ export class LoginComponent implements OnInit {
     this.createAdmin();
   }
 
+  ngOnDestroy(): void {
+    this.loading = false;
+    this.message = '';
+  }
+  
   clickEvent(event: MouseEvent) {
     this.hide.set(!this.hide());
   }
@@ -75,8 +83,7 @@ export class LoginComponent implements OnInit {
               storedUser.email === email &&
               storedUser.password === password
             ) {
-              this.isSuccess = true;
-              this.message = 'User authentication successful.';
+              this.router.navigate(['/dashboard']);
             } else {
               this.message = 'Invalid credentials provided.';
             }
