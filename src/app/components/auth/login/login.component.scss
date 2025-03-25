@@ -33,17 +33,33 @@ $backgroundImage: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/s
   background-color: lightgray;
   flex: 1;
 
-  h2 {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 2%;
-    font-size: xx-large;
-    animation-name: slideInFromLeft;
-    animation-duration: 1s;
-    animation-timing-function: ease-out;
-    animation-fill-mode: forwards;
+  // h2 {
+  //   display: flex;
+  //   align-items: center;
+  //   justify-content: center;
+  //   gap: 2%;
+  //   font-size: xx-large;
+  //   animation-name: slideInFromLeft;
+  //   animation-duration: 0.8s;
+  //   animation-timing-function: ease-out;
+  //   animation-fill-mode: forwards;
 
+  //   .circle {
+  //     display: inline-block;
+  //     height: 2.5rem;
+  //     width: 2.5rem;
+  //     border-radius: 50%;
+  //     background-color: black;
+
+  //   }
+  // }
+
+  .header-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;    
+    gap: 2%;
     .circle {
       display: inline-block;
       height: 2.5rem;
@@ -51,8 +67,15 @@ $backgroundImage: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/s
       border-radius: 50%;
       background-color: black;
     }
-  }
 
+    h2 {
+      font-size: xx-large;
+      animation-name: slideInFromLeft;
+      animation-duration: 0.8s;
+      animation-timing-function: ease-out;
+      animation-fill-mode: forwards;
+    }
+  }
 
   #forget {
     color: #6c757d;
@@ -86,18 +109,18 @@ $backgroundImage: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/s
 }
 
 // Animations
-@keyframes slideInFromLeft{
-  0%{
+@keyframes slideInFromLeft {
+  0% {
     opacity: 0;
-    transform: translateX(-10%);
+    transform: translateX(-70%);
   }
-  1%{
+  1% {
     opacity: 0.1;
   }
-  90%{
-    transform: translateX(8%);
+  90% {
+    transform: translateX(10%);
   }
-  100%{
+  100% {
     opacity: 1;
     transform: translateX(0%);
   }
