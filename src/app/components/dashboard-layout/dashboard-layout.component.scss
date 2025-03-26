@@ -1,0 +1,27 @@
+.navbar-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    background-color: aqua;
+
+    .header-container {
+        margin-left: 2em;
+        display: flex;
+        flex-direction: row;
+        align-items: center;   
+        gap: 10%;
+        .circle {
+          display: inline-block;
+          height: 2.5rem;
+          width: 2.5rem;
+          border-radius: 50%;
+          background-color: black;
+          flex-shrink: 0;
+        }
+    
+        h2 {
+          font-size: xx-large;
+        }
+      }
+}

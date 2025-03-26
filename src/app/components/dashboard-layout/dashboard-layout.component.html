@@ -1,1 +1,27 @@
-<p>dashboard-layout works!</p>
+<div class="navbar-container">
+  <div class="header-container">
+    <span class="circle"></span>
+    <h2>EOS</h2>
+  </div>
+  <div>
+    <mat-form-field appearance="outline">
+        <mat-label>Enter Search text</mat-label>
+        <input matInput placeholder="Search..." />
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+  </div>
+  <div>
+    <!-- Notifications button -->
+    <button mat-icon-button color="primary" aria-label="Notifications">
+      <mat-icon
+        matBadge="8"
+        matBadgeOverlap="false"
+        class="no-badge-background"
+        aria-hidden="false"
+      >
+        notifications
+      </mat-icon>
+    </button>
+    <p>Logout</p>
+  </div>
+</div>

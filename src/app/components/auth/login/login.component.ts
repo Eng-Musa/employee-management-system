@@ -1,5 +1,12 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID, signal } from '@angular/core';
+import {
+  Component,
+  Inject,
+  OnDestroy,
+  OnInit,
+  PLATFORM_ID,
+  signal,
+} from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -10,22 +17,22 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { AlertService } from '../../../services/alert.service';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule} from '@angular/router';
 
 @Component({
   selector: 'app-login',
   imports: [
+    RouterModule,
     ReactiveFormsModule,
     CommonModule,
     MatInputModule,
     MatIconModule,
     MatButtonModule,
-    RouterModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginComponent implements OnInit{
   loginForm: FormGroup;
   hide = signal(true);
   message: string = '';
@@ -47,11 +54,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.createAdmin();
   }
 
-  ngOnDestroy(): void {
-    this.loading = false;
-    this.message = '';
-  }
-  
   clickEvent(event: MouseEvent) {
     this.hide.set(!this.hide());
   }
