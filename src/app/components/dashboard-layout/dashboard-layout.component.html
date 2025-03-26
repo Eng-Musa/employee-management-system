@@ -32,13 +32,54 @@
       </mat-icon>
     </button>
     <!-- Logout button -->
-    <button
-    mat-button
-    color="primary"
-    class="logout-button"
-    (click)="logout()"
-  >
-    Logout
-  </button>
+    <button mat-button color="primary" class="logout-button" (click)="logout()">
+      Logout
+    </button>
   </div>
 </div>
+
+<!-- SideNav -->
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    class="sidenav"
+    [mode]="'side'"
+    [style.width]="isExpanded ? '210px' : '60px'"
+    [opened]="true"
+    (click)="toggleSidenav()"
+  >
+    <div class="sidenav-content" (click)="toggleSidenav()">
+      <button
+        mat-button
+        
+        class="sidenav-button"
+        [ngClass]="{ active: isActive('/dashboard/home') }"
+        *ngIf="isAdmin()"
+      >
+        <mat-icon color="primary">home</mat-icon>
+        <span *ngIf="isExpanded">Home</span>
+      </button>
+
+      <button
+        mat-button
+       
+        class="sidenav-button mb-1"
+       
+      >
+        <mat-icon color="primary">settings</mat-icon>
+        <span *ngIf="isExpanded">Settings</span>
+      </button>
+
+      <button mat-button (click)="logout()" class="sidenav-button mb-1">
+        <mat-icon color="primary">logout</mat-icon>
+        <span *ngIf="isExpanded">Logout</span>
+      </button>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content
+    [style.marginLeft]="isExpanded ? '200px' : '50px'"
+    class="main-content"
+  >
+    <p>HGHGHG</p>
+  </mat-sidenav-content>
+</mat-sidenav-container>

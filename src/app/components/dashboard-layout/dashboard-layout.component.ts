@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
@@ -8,6 +8,10 @@ import {
   MatLabel,
 } from '@angular/material/input';
 import { Router, RouterModule } from '@angular/router';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @Component({
   selector: 'app-dashboard-layout',
@@ -19,12 +23,97 @@ import { Router, RouterModule } from '@angular/router';
     MatLabel,
     MatInputModule,
     RouterModule,
+    MatToolbarModule,
+    CommonModule,
+    MatSidenavModule,
+    MatExpansionModule,
   ],
   templateUrl: './dashboard-layout.component.html',
   styleUrl: './dashboard-layout.component.scss',
 })
-export class DashboardLayoutComponent {
-  constructor(private router: Router) {}
+export class DashboardLayoutComponent implements OnInit {
+  userType: string | null = null;
+  isExpanded: boolean = true;
+  
+  constructor(
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
-  logout() {this.router.navigate(['/login'])}
+  ngOnInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      // Check the window width if running in the browser
+      if (window.innerWidth < 568) {
+        this.isExpanded = false;
+      }
+
+      // Use localStorage safely after ensuring we're in the browser
+      const storedUserStr = localStorage.getItem('adminUser');
+      if (storedUserStr !== null) {
+        const storedUser = JSON.parse(storedUserStr);
+        this.userType = storedUser.role;
+        console.log(this.userType);
+      }
+    }
+  }
+
+  logout() {
+    this.router.navigate(['/login']);
+  }
+
+  isActive(route: string): boolean {
+    return this.router.url === route;
+  }
+
+  isSuperAdmin(): boolean {
+    return this.userType === 'super-admin';
+  }
+
+  isAdmin(): boolean {
+    return this.userType === 'admin';
+  }
+
+  isLandlord(): boolean {
+    return this.userType === 'landlord';
+  }
+
+  isSuperAdminOrAdmin(): boolean {
+    return this.userType === 'super-admin' || this.userType === 'admin';
+  }
+
+  isTenant(): boolean {
+    return this.userType === 'tenant';
+  }
+
+  toggleSidenav() {
+    this.isExpanded = !this.isExpanded;
+  }
+
+  // HostListener to detect clicks anywhere in the document
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    if (isPlatformBrowser(this.platformId)) {
+      const sidenav = document.querySelector('.sidenav'); // Adjust the selector to your sidenav element
+      if (
+        sidenav &&
+        !sidenav.contains(event.target as Node) &&
+        window.innerWidth < 568
+      ) {
+        this.isExpanded = false; // Collapse sidenav if click is outside
+      }
+    }
+  }
+
+  // HostListener to detect window resizing
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    if (isPlatformBrowser(this.platformId)) {
+      const windowWidth = window.innerWidth;
+      if (windowWidth < 568) {
+        this.isExpanded = false;
+      } else {
+        this.isExpanded = true;
+      }
+    }
+  }
 }
