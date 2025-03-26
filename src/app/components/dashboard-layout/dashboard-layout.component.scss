@@ -28,8 +28,17 @@
     }
 
     .search-container {
-        margin-top: auto;
-       
+      margin-top: auto;
+      mat-form-field {
+        --mat-form-field-container-height: 50px;
+        --mat-form-field-container-vertical-padding: 12px;
+        --mdc-outlined-text-field-container-shape: 25px;
+        --mdc-outlined-text-field-focus-label-text-color: black;
+        --mdc-outlined-text-field-caret-color: #2d3748;
+        --mdc-outlined-text-field-outline-color: gray;
+        --mdc-outlined-text-field-outline-width: 1.5px;
+        --mdc-outlined-text-field-focus-outline-color: black;
+      }
     }
   }
 
@@ -42,40 +51,39 @@
     margin-right: 2rem;
 
     .notification-button {
-        color: black; 
-        font-weight: 700;
-        padding: 0px;
-        background-color: inherit; 
-        border-radius: 50%; 
-        transition: background-color 0.3s, transform 0.3s; 
-      }
-      
-      .notification-button:hover {
-        background-color: rgba(0, 0, 0, 0.3);  
-        transform: scale(1.05); 
-      }
-      
-      .notification-button:focus {
-        outline: none; 
-      }
+      color: black;
+      font-weight: 700;
+      padding: 0px;
+      background-color: inherit;
+      border-radius: 50%;
+      transition: background-color 0.3s, transform 0.3s;
+    }
 
-      .logout-button {
-        color: white; 
-        font-weight: 700; 
-        padding: 10px 20px; 
-        background-color: black; 
-        border-radius: 5px;  
-        transition: background-color 0.3s, transform 0.3s;
-      }
-      
-      .logout-button:hover {
-        background-color: rgba(0, 0, 0, 0.3);  
-        transform: scale(1.05);
-      }
-      
-      .logout-button:focus {
-        outline: none; 
-      }
-      
+    .notification-button:hover {
+      background-color: rgba(0, 0, 0, 0.3);
+      transform: scale(1.05);
+    }
+
+    .notification-button:focus {
+      outline: none;
+    }
+
+    .logout-button {
+      color: white;
+      font-weight: 700;
+      padding: 10px 20px;
+      background-color: black;
+      border-radius: 5px;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+
+    .logout-button:hover {
+      background-color: rgba(0, 0, 0, 0.3);
+      transform: scale(1.05);
+    }
+
+    .logout-button:focus {
+      outline: none;
+    }
   }
 }
