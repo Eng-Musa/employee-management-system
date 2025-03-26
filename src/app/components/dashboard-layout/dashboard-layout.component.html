@@ -4,15 +4,24 @@
       <span class="circle"></span>
       <h2>EOS</h2>
     </div>
-    <mat-form-field appearance="outline" class="search-field">
-      <mat-label>Enter Search text</mat-label>
-      <input matInput placeholder="Search..." />
-      <mat-icon matSuffix>search</mat-icon>
-    </mat-form-field>
+
+    <!-- Search -->
+    <div class="search-container">
+      <mat-form-field appearance="outline">
+        <mat-label>Enter Search text</mat-label>
+        <input matInput placeholder="Search..." />
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
   </div>
   <div class="right-group">
     <!-- Notifications button -->
-    <button mat-icon-button color="primary" aria-label="Notifications">
+    <button
+      mat-icon-button
+      color="primary"
+      aria-label="Notifications"
+      class="notification-button"
+    >
       <mat-icon
         matBadge="8"
         matBadgeOverlap="false"
@@ -22,6 +31,13 @@
         notifications
       </mat-icon>
     </button>
-    <p>Logout</p>
+    <!-- Logout button -->
+    <button
+    mat-button
+    color="primary"
+    class="logout-button"
+  >
+    Logout
+  </button>
   </div>
 </div>
