@@ -1,6 +1,11 @@
+#dashboad-wrapper{
+    height: 100vh;
+}
 .navbar-container {
   display: flex;
   background-color: inherit;
+  box-sizing: border-box;
+  height: 90px;
 
   .left-group {
     flex: 1;
@@ -89,7 +94,8 @@
 }
 
 .sidenav-container {
-    height: 100vh;
+    height: calc(100vh - 90px);
+    background-color: aqua;
 
     .sidenav {
         height: 100%;

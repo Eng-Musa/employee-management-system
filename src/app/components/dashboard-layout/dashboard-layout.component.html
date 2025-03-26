@@ -1,85 +1,82 @@
-<div class="navbar-container">
-  <div class="left-group">
-    <div class="header-container">
-      <span class="circle"></span>
-      <h2>EOS</h2>
+<div id="dashboad-wrapper">
+  <div class="navbar-container">
+    <div class="left-group">
+      <div class="header-container">
+        <span class="circle"></span>
+        <h2>EOS</h2>
+      </div>
+  
+      <!-- Search -->
+      <div class="search-container">
+        <mat-form-field appearance="outline">
+          <mat-label>Enter Search text</mat-label>
+          <input matInput placeholder="Search..." />
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </div>
     </div>
-
-    <!-- Search -->
-    <div class="search-container">
-      <mat-form-field appearance="outline">
-        <mat-label>Enter Search text</mat-label>
-        <input matInput placeholder="Search..." />
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-form-field>
+    <div class="right-group">
+      <!-- Notifications button -->
+      <button
+        mat-icon-button
+        color="primary"
+        aria-label="Notifications"
+        class="notification-button"
+      >
+        <mat-icon
+          matBadge="8"
+          matBadgeOverlap="false"
+          class="no-badge-background"
+          aria-hidden="false"
+        >
+          notifications
+        </mat-icon>
+      </button>
+      <!-- Logout button -->
+      <button mat-button color="primary" class="logout-button" (click)="logout()">
+        Logout
+      </button>
     </div>
   </div>
-  <div class="right-group">
-    <!-- Notifications button -->
-    <button
-      mat-icon-button
-      color="primary"
-      aria-label="Notifications"
-      class="notification-button"
+  
+  <!-- SideNav -->
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav
+      class="sidenav"
+      [mode]="'side'"
+      [style.width]="isExpanded ? '210px' : '60px'"
+      [opened]="true"
+      (click)="toggleSidenav()"
     >
-      <mat-icon
-        matBadge="8"
-        matBadgeOverlap="false"
-        class="no-badge-background"
-        aria-hidden="false"
-      >
-        notifications
-      </mat-icon>
-    </button>
-    <!-- Logout button -->
-    <button mat-button color="primary" class="logout-button" (click)="logout()">
-      Logout
-    </button>
-  </div>
+      <div class="sidenav-content" (click)="toggleSidenav()">
+        <button
+          mat-button
+          class="sidenav-button"
+          [ngClass]="{ active: isActive('/dashboard/home') }"
+          *ngIf="isAdmin()"
+        >
+          <mat-icon color="primary">home</mat-icon>
+          <span *ngIf="isExpanded">Home</span>
+        </button>
+  
+        <button mat-button class="sidenav-button">
+          <mat-icon color="primary">settings</mat-icon>
+          <span *ngIf="isExpanded">Settings</span>
+        </button>
+  
+        <button mat-button (click)="logout()" class="sidenav-button mb-1">
+          <mat-icon color="primary">logout</mat-icon>
+          <span *ngIf="isExpanded">Logout</span>
+        </button>
+      </div>
+    </mat-sidenav>
+  
+    <mat-sidenav-content
+      [style.marginLeft]="isExpanded ? '200px' : '50px'"
+      class="main-content"
+    >
+      <p>HGHGHG</p>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  
 </div>
-
-<!-- SideNav -->
-<mat-sidenav-container class="sidenav-container">
-  <mat-sidenav
-    class="sidenav"
-    [mode]="'side'"
-    [style.width]="isExpanded ? '210px' : '60px'"
-    [opened]="true"
-    (click)="toggleSidenav()"
-  >
-    <div class="sidenav-content" (click)="toggleSidenav()">
-      <button
-        mat-button
-        
-        class="sidenav-button"
-        [ngClass]="{ active: isActive('/dashboard/home') }"
-        *ngIf="isAdmin()"
-      >
-        <mat-icon color="primary">home</mat-icon>
-        <span *ngIf="isExpanded">Home</span>
-      </button>
-
-      <button
-        mat-button
-       
-        class="sidenav-button mb-1"
-       
-      >
-        <mat-icon color="primary">settings</mat-icon>
-        <span *ngIf="isExpanded">Settings</span>
-      </button>
-
-      <button mat-button (click)="logout()" class="sidenav-button mb-1">
-        <mat-icon color="primary">logout</mat-icon>
-        <span *ngIf="isExpanded">Logout</span>
-      </button>
-    </div>
-  </mat-sidenav>
-
-  <mat-sidenav-content
-    [style.marginLeft]="isExpanded ? '200px' : '50px'"
-    class="main-content"
-  >
-    <p>HGHGHG</p>
-  </mat-sidenav-content>
-</mat-sidenav-container>
