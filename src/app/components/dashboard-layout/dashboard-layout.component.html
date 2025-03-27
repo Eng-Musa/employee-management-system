@@ -65,7 +65,12 @@
           <h4 *ngIf="isExpanded">Home</h4>
         </button>
 
-        <mat-accordion class="sidenav-button">
+        <button mat-button class="sidenav-button" *ngIf="!isExpanded" (click)="isExpanded=true">
+          <i class="ri-settings-4-line icon"></i>
+          <h4 *ngIf="isExpanded">Settings</h4>
+        </button>
+
+        <mat-accordion class="sidenav-button" *ngIf="isExpanded">
           <mat-expansion-panel>
             <mat-expansion-panel-header>
               <mat-panel-title>
