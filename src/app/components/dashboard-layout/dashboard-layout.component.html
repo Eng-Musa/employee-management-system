@@ -65,11 +65,6 @@
           <h4 *ngIf="isExpanded">Home</h4>
         </button>
 
-        <button mat-button class="sidenav-button" (click)="goToSettings()">
-          <i class="ri-settings-4-line icon"></i>
-          <h4 *ngIf="isExpanded">Settings</h4>
-        </button>
-
         <mat-accordion class="sidenav-button">
           <mat-expansion-panel>
             <mat-expansion-panel-header>
@@ -78,7 +73,11 @@
                 <h4>Settings</h4>
               </mat-panel-title>
             </mat-expansion-panel-header>
-            <p>I'm</p>
+            <ul>
+              <li><i class="ri-moon-fill"></i>Dark theme</li>
+              <li><i class="ri-lock-2-fill"></i>Change Pass</li>
+              <li><i class="ri-user-2-fill"></i>View profile</li>
+            </ul>
           </mat-expansion-panel>
         </mat-accordion>
 
