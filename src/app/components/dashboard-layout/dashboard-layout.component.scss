@@ -1,15 +1,15 @@
-#dashboad-wrapper{
-    height: 100vh;
+#dashboad-wrapper {
+  height: 100vh;
 }
 .navbar-container {
-    position: fixed; 
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 90px;
-    background-color: inherit;
-    z-index: 1000; 
-    display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 90px;
+  background-color: inherit;
+  z-index: 1000;
+  display: flex;
 
   .left-group {
     flex: 1;
@@ -98,15 +98,53 @@
 }
 
 .sidenav-container {
-    height: calc(100vh - 90px);
-    background-color: aqua;
-    margin-top: 90px;
+  height: calc(100vh - 90px);
+  background-color: inherit;
+  margin-top: 90px;
 
-    .sidenav {
-        height: 100%;
-        width: 150px;
-        transition: width 0.3s ease;
-        background-color: inherit;
-        border-right: none;
-      }
+  .sidenav {
+    height: 100%;
+    width: 150px;
+    transition: width 0.3s ease;
+    background-color: inherit;
+    border-right: none;
   }
+
+  .sidenav-content {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+
+    .sidenav-button {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      width: 100%;
+      padding: 10px;
+      text-align: left;
+
+      mat-icon {
+        margin-right: 10px;
+        font-size: 25px;
+        width: 25px;
+        height: 25px;
+        color: rgb(9, 9, 114);
+      }
+    }
+
+    .sidenav-button.active {
+      background-color: #e0f7e0;
+      transform: scale(1.05);
+      
+    }
+    .sidenav-button:hover {
+      background-color: #74dc74;
+      transform: scale(1.05);
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+  }
+  .main-content {
+    padding: 0px;
+    transition: margin-left 0.3s ease;
+  }
+}
