@@ -117,34 +117,39 @@
 
     .sidenav-button {
       display: flex;
+      flex-direction: row;
+      justify-content: start;
       align-items: center;
-      justify-content: flex-start;
       width: 100%;
-      padding: 10px;
-      text-align: left;
+      margin: 0.3em;
 
-      mat-icon {
+      .icon {
         margin-right: 10px;
         font-size: 25px;
-        width: 25px;
-        height: 25px;
-        color: rgb(9, 9, 114);
+        color: black;
+      }
+
+      h4 {
+        display: inline;
+        font-weight: 600;
+        font-size: medium;
+        color: black;
+        font-family: "Open Sans", sans-serif;
       }
     }
 
     .sidenav-button.active {
-      background-color: #e0f7e0;
+      background-color: #E6E6E6;
       transform: scale(1.05);
-      
     }
     .sidenav-button:hover {
-      background-color: #74dc74;
+      background-color: #c2c2c2;
       transform: scale(1.05);
       transition: background-color 0.3s ease, transform 0.3s ease;
     }
   }
   .main-content {
-    padding: 0px;
+    padding-left: 20px;
     transition: margin-left 0.3s ease;
   }
 }

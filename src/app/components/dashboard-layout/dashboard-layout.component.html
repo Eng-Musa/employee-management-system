@@ -5,7 +5,7 @@
         <span class="circle"></span>
         <h2>EOS</h2>
       </div>
-  
+
       <!-- Search -->
       <div class="search-container">
         <mat-form-field appearance="outline">
@@ -33,12 +33,17 @@
         </mat-icon>
       </button>
       <!-- Logout button -->
-      <button mat-button color="primary" class="logout-button" (click)="logout()">
+      <button
+        mat-button
+        color="primary"
+        class="logout-button"
+        (click)="logout()"
+      >
         Logout
       </button>
     </div>
   </div>
-  
+
   <!-- SideNav -->
   <mat-sidenav-container class="sidenav-container">
     <mat-sidenav
@@ -52,25 +57,25 @@
         <button
           mat-button
           class="sidenav-button"
-          [ngClass]="{ active: isActive('/dashboard/home') }"
+          [ngClass]="{ active: isActive('/dashboard') }"
           *ngIf="isAdmin()"
         >
-        <i class="ri-home-9-line"></i>
-          <span *ngIf="isExpanded">Home</span>
+          <i class="ri-home-9-line icon"></i>
+          <h4 *ngIf="isExpanded">Home</h4>
         </button>
-  
+
         <button mat-button class="sidenav-button">
-          <i class="ri-settings-4-line"></i>
-          <span *ngIf="isExpanded">Settings</span>
+          <i class="ri-settings-4-line icon"></i>
+          <h4 *ngIf="isExpanded">Settings</h4>
         </button>
-  
-        <button mat-button (click)="logout()" class="sidenav-button mb-1">
-          <i class="ri-logout-box-r-line"></i>
-          <span *ngIf="isExpanded">Logout</span>
+
+        <button mat-button (click)="logout()" class="sidenav-button">
+          <i class="ri-logout-box-r-line icon"></i>
+          <h4 *ngIf="isExpanded">Logout</h4>
         </button>
       </div>
     </mat-sidenav>
-  
+
     <mat-sidenav-content
       [style.marginLeft]="isExpanded ? '200px' : '50px'"
       class="main-content"
@@ -78,5 +83,4 @@
       <p>HGHGHG</p>
     </mat-sidenav-content>
   </mat-sidenav-container>
-  
 </div>
