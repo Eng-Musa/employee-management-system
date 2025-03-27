@@ -153,3 +153,52 @@
     transition: margin-left 0.3s ease;
   }
 }
+
+
+/* Accordion panel styling to match side nav buttons */
+.sidenav .mat-expansion-panel {
+  background: inherit; /* Use the same background as the side nav */
+  box-shadow: none; /* Remove default Material shadow */
+  border: none;
+  margin: 0.3em 0; /* Match spacing with sidenav buttons */
+}
+
+.sidenav .mat-expansion-panel-header {
+  padding: 0.3em 1em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+// /* Hover state like other sidenav buttons */
+// .sidenav .mat-expansion-panel-header:hover {
+//   background-color: #c2c2c2;
+//   transform: scale(1.05);
+// }
+
+// /* Active/expanded state */
+// .sidenav .mat-expansion-panel-header.mat-expanded {
+//   background-color: #E0E0E0;
+//   transform: scale(1.05);
+// }
+
+// /* Style the expansion indicator to match icon styling */
+// .sidenav .mat-expansion-panel-header .mat-expansion-indicator {
+//   margin-left: auto;
+//   transition: transform 0.3s ease;
+// }
+
+// /* Rotate the indicator when expanded */
+// .sidenav .mat-expansion-panel-header.mat-expanded
+//   .mat-expansion-indicator {
+//   transform: rotate(180deg);
+// }
+
+// /* Panel body styling to match padding and background (optional) */
+// .sidenav .mat-expansion-panel-body {
+//   padding: 10px;
+//   background-color: #f5f5f5; /* Slightly different for contrast */
+//   border-top: 1px solid #ddd; /* Optional divider */
+// }
