@@ -1,4 +1,10 @@
-import { Component, HostListener, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  Inject,
+  OnInit,
+  PLATFORM_ID,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
@@ -34,7 +40,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 export class DashboardLayoutComponent implements OnInit {
   userType: string | null = null;
   isExpanded: boolean = true;
-  
+
   constructor(
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object
@@ -115,5 +121,21 @@ export class DashboardLayoutComponent implements OnInit {
         this.isExpanded = true;
       }
     }
+  }
+
+  goHome() {
+    if (this.isSuperAdmin()) {
+      this.router.navigate(['dashboard/home']);
+    } else if (this.isAdmin()) {
+      this.router.navigate(['dashboard']);
+    } else if (this.isLandlord()) {
+      this.router.navigate(['dashboard/landlord-home']);
+    } else if (this.isTenant()) {
+      this.router.navigate(['dashboard/tenant-home']);
+    }
+  }
+
+  goToSettings(): void {
+    this.router.navigate(['dashboard/settings']);
   }
 }
