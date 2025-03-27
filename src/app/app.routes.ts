@@ -1,7 +1,8 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './components/auth/login/login.component';
 import { DashboardLayoutComponent } from './components/dashboard-layout/dashboard-layout.component';
-import { SettingsComponent } from './components/settings/settings.component';
+import { ViewProfileComponent } from './components/view-profile/view-profile.component';
+
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -9,6 +10,6 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardLayoutComponent,
-    children: [{ path: 'settings', component: SettingsComponent }],
+    children: [{ path: 'view-profile', component: ViewProfileComponent }],
   },
 ];
