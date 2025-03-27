@@ -55,17 +55,17 @@
           [ngClass]="{ active: isActive('/dashboard/home') }"
           *ngIf="isAdmin()"
         >
-          <mat-icon color="primary">home</mat-icon>
+        <i class="ri-home-9-line"></i>
           <span *ngIf="isExpanded">Home</span>
         </button>
   
         <button mat-button class="sidenav-button">
-          <mat-icon color="primary">settings</mat-icon>
+          <i class="ri-settings-4-line"></i>
           <span *ngIf="isExpanded">Settings</span>
         </button>
   
         <button mat-button (click)="logout()" class="sidenav-button mb-1">
-          <mat-icon color="primary">logout</mat-icon>
+          <i class="ri-logout-box-r-line"></i>
           <span *ngIf="isExpanded">Logout</span>
         </button>
       </div>
