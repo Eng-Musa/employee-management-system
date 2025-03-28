@@ -135,7 +135,7 @@ export class DashboardLayoutComponent implements OnInit {
     }
   }
 
-  goToSettings(): void {
-    this.router.navigate(['dashboard/settings']);
+  goToViewProfile(): void {
+    this.router.navigate(['dashboard/view-profile']);
   }
 }
