@@ -17,7 +17,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { AlertService } from '../../../services/alert.service';
-import { Router, RouterModule} from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -32,7 +32,7 @@ import { Router, RouterModule} from '@angular/router';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
-export class LoginComponent implements OnInit{
+export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   hide = signal(true);
   message: string = '';
@@ -86,6 +86,7 @@ export class LoginComponent implements OnInit{
               storedUser.password === password
             ) {
               this.router.navigate(['/dashboard']);
+              this.updateLastLogin();
             } else {
               this.message = 'Invalid credentials provided.';
             }
@@ -117,9 +118,11 @@ export class LoginComponent implements OnInit{
           name: 'System Admin',
           email: 'admin@gmail.com',
           password: 'Admin@1234',
-          createdDate: new Date().toISOString(),
+          createdDate: new Date().toISOString().slice(0, 16),
           role: 'admin',
-          phoneNumber: '254 763 000 000'
+          phoneNumber: '254 763 000 000',
+          lastLogin: null,
+          lastPasswordChange: null,
         };
         localStorage.setItem('adminUser', JSON.stringify(user));
         console.log('User created with createdDate and saved to localStorage.');
@@ -128,4 +131,30 @@ export class LoginComponent implements OnInit{
       }
     }
   }
+
+  updateLastLogin() {
+    const storedUserStr = localStorage.getItem('adminUser');
+    if (storedUserStr) {
+      const user = JSON.parse(storedUserStr);
+      user.lastLogin = new Date().toISOString().slice(0, 16); 
+      localStorage.setItem('adminUser', JSON.stringify(user));
+      console.log('Last login updated:', user.lastLogin);
+    } else {
+      console.error('No user found in localStorage.');
+    }
+  }
+
+   updateLastPasswordChange() {
+    const storedUserStr = localStorage.getItem('adminUser');
+    if (storedUserStr) {
+      const user = JSON.parse(storedUserStr);
+      user.lastPasswordChange = new Date().toISOString().slice(0, 16); 
+      localStorage.setItem('adminUser', JSON.stringify(user));
+      console.log('Last password change updated:', user.lastPasswordChange);
+    } else {
+      console.error('No user found in localStorage.');
+    }
+  }
+  
+  
 }

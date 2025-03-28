@@ -59,11 +59,16 @@
       </div>
       <div>
         <h5 style="font-weight: 600; font-size: 1.25rem; color: #111827">
-          {{loggedInPerson.name}}
+          {{ loggedInPerson.name }}
         </h5>
-        <p style="font-size: 0.875rem; color: #6b7280">
-          Member since {{loggedInPerson.createdDate}}
-        </p>
+        <div style="display: flex; flex-direction: row; gap: 1rem; margin: 0;">
+            <p style="font-size: 0.875rem; color: #6b7280">
+                Last loggin {{ loggedInPerson.lastLogin }}
+              </p>
+              <p style="font-size: 0.875rem; color: #6b7280">
+                Member since {{ loggedInPerson.createdDate }}
+              </p>
+        </div>
       </div>
     </div>
     <div
@@ -89,7 +94,7 @@
           class="ri-mail-line"
           style="width: 1.25rem; height: 1.25rem; color: #3b82f6"
         ></i>
-        <span style="color: #374151">{{loggedInPerson.email}}</span>
+        <span style="color: #374151">{{ loggedInPerson.email }}</span>
       </div>
       <div
         style="
@@ -105,7 +110,7 @@
           class="ri-phone-line"
           style="width: 1.25rem; height: 1.25rem; color: #3b82f6"
         ></i>
-        <span style="color: #374151">+{{loggedInPerson.phoneNumber}}</span>
+        <span style="color: #374151">+{{ loggedInPerson.phoneNumber }}</span>
       </div>
     </div>
   </div>

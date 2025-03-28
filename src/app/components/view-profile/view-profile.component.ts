@@ -9,6 +9,7 @@ interface LoggedInPerson {
   createdDate: string;
   role: string;
   phoneNumber: string;
+  lastLogin: string;
 }
 
 @Component({
@@ -24,7 +25,8 @@ export class ViewProfileComponent implements OnInit {
     password: 'Unknown',
     createdDate: 'Unknown',
     role: 'Unknown',
-    phoneNumber: 'Unknown'
+    phoneNumber: 'Unknown',
+    lastLogin: 'Unknown'
   };
 
   constructor(
