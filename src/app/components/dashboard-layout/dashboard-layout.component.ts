@@ -18,6 +18,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { ChangePassComponent } from '../auth/change-pass/change-pass.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-dashboard-layout',
@@ -43,7 +45,8 @@ export class DashboardLayoutComponent implements OnInit {
 
   constructor(
     private router: Router,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -137,5 +140,18 @@ export class DashboardLayoutComponent implements OnInit {
 
   goToViewProfile(): void {
     this.router.navigate(['dashboard/view-profile']);
+  }
+  
+  openAddChangePassDialog(): void {
+    const dialogRef = this.dialog.open(ChangePassComponent, {
+      width: '350px',
+      height: 'auto',
+      maxHeight: '90vh',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+      }
+    });
   }
 }

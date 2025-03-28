@@ -85,7 +85,12 @@
             </mat-expansion-panel-header>
             <ul>
               <li><i class="ri-moon-fill"></i>Dark theme</li>
-              <li><i class="ri-lock-2-fill"></i>Change Pass</li>
+              <li
+                
+                (click)="openAddChangePassDialog()"
+              >
+                <i class="ri-lock-2-fill"></i>Change Pass
+              </li>
               <li
                 [ngClass]="{ active: isActive('/dashboard/view-profile') }"
                 (click)="goToViewProfile()"

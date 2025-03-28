@@ -10,6 +10,6 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardLayoutComponent,
-    children: [{ path: 'view-profile', component: ViewProfileComponent }],
+    children: [{ path: 'view-profile', component: ViewProfileComponent },],
   },
 ];

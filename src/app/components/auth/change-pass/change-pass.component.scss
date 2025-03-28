@@ -1,0 +1,82 @@
+.success-message {
+    color: #4caf50; /* Green for success */
+    background-color: #e8f5e9; /* Light green background */
+    border: 1px solid #4caf50; /* Border matching the text color */
+  }
+  
+  .error-message {
+    color: #f44336; /* Red for error */
+    background-color: #ffebee; /* Light red background */
+    border: 1px solid #f44336; /* Border matching the text color */
+  }
+  
+  .submit-btn {
+    color: green;
+    font-weight: 700;
+    padding: 10px 20px;
+    background-color: #e0f7e0;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  
+  .submit-btn:hover {
+    background-color: #74dc74;
+    transform: scale(1.05);
+  }
+  
+  .submit-btn:focus {
+    outline: none;
+  }
+
+  /* loader */
+.container {
+  --uib-size: 43px;
+  --uib-color: black;
+  --uib-speed: 1.3s;
+  --uib-dot-size: calc(var(--uib-size) * 0.24);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--uib-dot-size);
+  width: var(--uib-size);
+}
+
+.dot,
+.container::before,
+.container::after {
+  content: "";
+  display: block;
+  height: var(--uib-dot-size);
+  width: var(--uib-dot-size);
+  border-radius: 50%;
+  background-color: var(--uib-color);
+  transform: scale(0);
+  transition: background-color 0.3s ease;
+}
+
+.container::before {
+  animation: pulse var(--uib-speed) ease-in-out calc(var(--uib-speed) * -0.375)
+    infinite;
+}
+
+.dot {
+  animation: pulse var(--uib-speed) ease-in-out calc(var(--uib-speed) * -0.25)
+    infinite both;
+}
+
+.container::after {
+  animation: pulse var(--uib-speed) ease-in-out calc(var(--uib-speed) * -0.125)
+    infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(0);
+  }
+
+  50% {
+    transform: scale(1);
+  }
+}

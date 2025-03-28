@@ -1,0 +1,116 @@
+<div
+  class="text-center p-3 bg-light border rounded shadow-sm position-relative"
+>
+  <mat-dialog-content
+    style="
+      text-align: center;
+      width: 100%;
+      max-width: 400px;
+      height: auto;
+      overflow: hidden;
+    "
+  >
+    <h3 class="mb-3 mt-2">Change Password</h3>
+
+    <mat-progress-bar
+      *ngIf="loading"
+      mode="indeterminate"
+      color="primary"
+      class="mb-3"
+    ></mat-progress-bar>
+
+    <form
+      [formGroup]="passwordForm"
+      (ngSubmit)="onSubmit()"
+      style="height: calc(100% - 50px)"
+    >
+      <!-- Old Password -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Old Password</mat-label>
+        <input
+          matInput
+          type="password"
+          formControlName="oldPassword"
+          required
+          [type]="hide ? 'password' : 'text'"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="hide = !hide"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide"
+          type="button"
+        >
+          <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+        </button>
+        <mat-error
+          *ngIf="passwordForm.get('oldPassword')?.hasError('required')"
+        >
+          Old Password is required
+        </mat-error>
+      </mat-form-field>
+
+      <!-- New Password -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>New Password</mat-label>
+        <input
+          matInput
+          type="password"
+          formControlName="password"
+          required
+          [type]="hide ? 'password' : 'text'"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="hide = !hide"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide"
+          type="button"
+        >
+          <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+        </button>
+
+        <mat-error *ngIf="passwordForm.get('password')?.hasError('required')">
+          New Password is required
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Message -->
+      <div
+        *ngIf="message"
+        [ngClass]="{
+          'success-message': isSuccess,
+          'error-message': !isSuccess
+        }"
+        style="
+          margin-top: 5px;
+          margin-bottom: 15px;
+          padding: 10px;
+          border-radius: 5px;
+          font-size: 14px;
+        "
+      >
+        {{ message }}
+      </div>
+
+      <!-- Actions -->
+      <div class="mt-3 d-flex justify-content-center gap-3">
+        <button mat-button mat-dialog-close (click)="onCancel()" color="warn">
+          Cancel
+        </button>
+        <button
+          class="submit-btn"
+          mat-button
+          color="primary"
+          type="submit"
+          [disabled]="loading"
+        >
+          <span *ngIf="!loading">Submit</span>
+          <div class="container" *ngIf="loading"><div class="dot"></div></div>
+        </button>
+      </div>
+    </form>
+  </mat-dialog-content>
+</div>
