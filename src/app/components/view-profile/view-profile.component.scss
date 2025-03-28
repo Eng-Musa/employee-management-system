@@ -1,0 +1,30 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-left: auto;
+  width: 100%;
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 1rem;
+    width: 100%;
+
+    h4 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #111827;
+      span {
+        display: inline-block;
+        margin-left: 0.5rem;
+        color: #05204c i {
+          width: 1.5rem;
+          height: 1.5rem;
+        }
+      }
+    }
+  }
+}

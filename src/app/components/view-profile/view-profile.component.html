@@ -1,1 +1,216 @@
-<p>view-profile works!</p>
+<div class="container">
+  <!-- Header -->
+  <div class="header">
+    <h4>
+      Profile
+      <span>
+        <i class="ri-user-fill"></i>
+      </span>
+    </h4>
+  </div>
+
+  <!-- Profile Info Card -->
+  <div
+    style="background-color: #eff6ff; padding: 1.5rem; border-radius: 0.5rem"
+  >
+    <div style="display: flex; align-items: center; gap: 0.75rem">
+      <div
+        style="
+          background-color: #05204c;
+          border-radius: 9999px;
+          padding: 0.75rem;
+        "
+      >
+        <i
+          class="ri-user-fill"
+          style="width: 1.5rem; height: 1.5rem; color: white"
+        ></i>
+      </div>
+      <div>
+        <h5 style="font-weight: 600; font-size: 1.25rem; color: #111827">
+          profileInfo.name
+        </h5>
+        <p style="font-size: 0.875rem; color: #6b7280">
+          Member since createdAt
+        </p>
+      </div>
+    </div>
+    <div
+      style="
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin-top: 1rem;
+        width: 100%;
+      "
+    >
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.75rem;
+          background-color: white;
+          border-radius: 0.5rem;
+        "
+      >
+        <i
+          class="ri-mail-line"
+          style="width: 1.25rem; height: 1.25rem; color: #3b82f6"
+        ></i>
+        <span style="color: #374151">email</span>
+      </div>
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.75rem;
+          background-color: white;
+          border-radius: 0.5rem;
+        "
+      >
+        <i
+          class="ri-phone-line"
+          style="width: 1.25rem; height: 1.25rem; color: #3b82f6"
+        ></i>
+        <span style="color: #374151">+phone</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Language Section -->
+  <div
+    style="
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      background-color: #f9fafb;
+      border-radius: 0.5rem;
+    "
+  >
+    <i
+      class="ri-global-line"
+      style="width: 1.5rem; height: 1.5rem; color: #3b82f6"
+    ></i>
+    <div>
+      <h5 style="font-weight: 600; color: #1f2937">Language</h5>
+      <p style="color: #4b5563">English</p>
+    </div>
+  </div>
+
+  <!-- Get in Touch Section -->
+  <div style="display: flex; flex-direction: column; gap: 1rem">
+    <h5 style="font-weight: 600; font-size: 1.125rem; color: #1f2937">
+      Get in Touch
+    </h5>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem">
+      <button
+        style="
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.75rem;
+          background-color: #eff6ff;
+          border-radius: 0.5rem;
+          border: none;
+          cursor: pointer;
+          transition: background-color 0.2s;
+        "
+      >
+        <i
+          class="ri-mail-line"
+          style="width: 1.25rem; height: 1.25rem; color: #3b82f6"
+        ></i>
+        <span style="color: #374151">Email Us</span>
+      </button>
+      <button
+        style="
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.75rem;
+          background-color: #ecfdf5;
+          border-radius: 0.5rem;
+          border: none;
+          cursor: pointer;
+          transition: background-color 0.2s;
+        "
+      >
+        <i
+          class="ri-phone-line"
+          style="width: 1.25rem; height: 1.25rem; color: #10b981"
+        ></i>
+        <span style="color: #374151">Call Us</span>
+      </button>
+    </div>
+    <p style="font-size: 0.875rem; color: #6b7280; text-align: center">
+      Find us on social media platforms
+    </p>
+  </div>
+
+  <!-- Guides and Tours Section -->
+  <div style="display: flex; flex-direction: column; gap: 1rem">
+    <h5 style="font-weight: 600; font-size: 1.125rem; color: #1f2937">
+      Guides and Tours
+    </h5>
+    <div
+      style="
+        background-color: #f9fafb;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      "
+    >
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        "
+      >
+        <div style="display: flex; align-items: center; gap: 0.5rem">
+          <i
+            class="ri-book-line"
+            style="width: 1.25rem; height: 1.25rem; color: #8b5cf6"
+          ></i>
+          <span style="color: #374151">What do you want to learn today?</span>
+        </div>
+        <i
+          class="ri-arrow-right-line"
+          style="width: 1.25rem; height: 1.25rem; color: #9ca3af"
+        ></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recommend Section -->
+  <div style="display: flex; flex-direction: column; gap: 1rem">
+    <h5 style="font-weight: 600; font-size: 1.125rem; color: #1f2937">
+      Recommend
+    </h5>
+    <button
+      style="
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 1rem;
+        background-color: #fef2f2;
+        border-radius: 0.5rem;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      "
+    >
+      <i
+        class="ri-heart-line"
+        style="width: 1.25rem; height: 1.25rem; color: #ef4444"
+      ></i>
+      <span style="color: #374151">Recommend EMS to a friend</span>
+    </button>
+  </div>
+</div>
