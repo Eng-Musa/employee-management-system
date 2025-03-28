@@ -10,6 +10,7 @@
   background-color: inherit;
   z-index: 1000;
   display: flex;
+  overflow: hidden;
 
   .left-group {
     flex: 1;
@@ -98,16 +99,18 @@
 }
 
 .sidenav-container {
-  height: calc(100vh - 90px);
   background-color: inherit;
   margin-top: 90px;
 
   .sidenav {
-    height: 100%;
-    width: 150px;
-    transition: width 0.3s ease;
+    position: fixed; 
+    top: 90px; 
+    left: 0;
+    bottom: 0; 
+    width: 150px; 
     background-color: inherit;
-    border-right: none;
+    overflow-y: auto; 
+    transition: width 0.3s ease; 
   }
 
   .sidenav-content {
@@ -195,5 +198,7 @@
   .main-content {
     padding-left: 20px;
     transition: margin-left 0.3s ease;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }
