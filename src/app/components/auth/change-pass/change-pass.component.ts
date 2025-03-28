@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -33,17 +33,19 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './change-pass.component.html',
   styleUrl: './change-pass.component.scss',
 })
-export class ChangePassComponent {
+export class ChangePassComponent implements OnInit {
   passwordForm: FormGroup;
   loading = false;
   message: string = '';
   isSuccess: boolean = false;
   hide = true;
+  lastPasswordChange: string='';
 
   constructor(
     public dialogRef: MatDialogRef<ChangePassComponent>,
     private fb: FormBuilder,
-    private alertService: AlertService
+    private alertService: AlertService,
+    @Inject(PLATFORM_ID) private platformId: Object,
   ) {
     this.passwordForm = this.fb.group({
       oldPassword: ['', Validators.required],
@@ -61,6 +63,10 @@ export class ChangePassComponent {
     });
   }
 
+  ngOnInit(): void {
+    this.getLoggedInPerson();
+  }
+
   onSubmit() {
     if (this.passwordForm.valid) {
       console.log(this.passwordForm.value);
@@ -69,5 +75,17 @@ export class ChangePassComponent {
 
   onCancel() {
     this.dialogRef.close();
+  }
+
+  getLoggedInPerson() {
+    if (isPlatformBrowser(this.platformId)) {
+      const storedUserStr = localStorage.getItem('adminUser');
+      if (storedUserStr) {
+        const loggedInPerson = JSON.parse(storedUserStr);
+        this.lastPasswordChange = loggedInPerson.lastPasswordChange;
+      } else {
+        this.alertService.showErrorToastr('No user found in localStorage.');
+      }
+    }
   }
 }

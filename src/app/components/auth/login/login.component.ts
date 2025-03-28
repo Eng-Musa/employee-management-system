@@ -122,7 +122,7 @@ export class LoginComponent implements OnInit {
           role: 'admin',
           phoneNumber: '254 763 000 000',
           lastLogin: null,
-          lastPasswordChange: null,
+          lastPasswordChange: new Date().toISOString().slice(0, 16),
         };
         localStorage.setItem('adminUser', JSON.stringify(user));
         console.log('User created with createdDate and saved to localStorage.');

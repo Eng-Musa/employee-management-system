@@ -1,6 +1,4 @@
-<div
-  class="text-center p-3 bg-light border rounded shadow-sm position-relative"
->
+<div>
   <mat-dialog-content
     style="
       text-align: center;
@@ -10,13 +8,14 @@
       overflow: hidden;
     "
   >
+  <h5>Last changed on: {{lastPasswordChange}}</h5>
     <h3 class="mb-3 mt-2">Change Password</h3>
 
     <mat-progress-bar
       *ngIf="loading"
       mode="indeterminate"
       color="primary"
-      class="mb-3"
+      style="margin-bottom: 10px;"
     ></mat-progress-bar>
 
     <form
@@ -96,8 +95,8 @@
       </div>
 
       <!-- Actions -->
-      <div class="mt-3 d-flex justify-content-center gap-3">
-        <button mat-button mat-dialog-close (click)="onCancel()" color="warn">
+      <div style="display: flex; justify-content: center; gap: 10px;">
+        <button mat-button mat-dialog-close (click)="onCancel()">
           Cancel
         </button>
         <button
