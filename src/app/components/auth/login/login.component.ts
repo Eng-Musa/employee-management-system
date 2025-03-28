@@ -119,6 +119,7 @@ export class LoginComponent implements OnInit{
           password: 'Admin@1234',
           createdDate: new Date().toISOString(),
           role: 'admin',
+          phoneNumber: '254 763 000 000'
         };
         localStorage.setItem('adminUser', JSON.stringify(user));
         console.log('User created with createdDate and saved to localStorage.');

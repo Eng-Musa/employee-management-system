@@ -59,10 +59,10 @@
       </div>
       <div>
         <h5 style="font-weight: 600; font-size: 1.25rem; color: #111827">
-          profileInfo.name
+          {{loggedInPerson.name}}
         </h5>
         <p style="font-size: 0.875rem; color: #6b7280">
-          Member since profileInfo.createdAt
+          Member since {{loggedInPerson.createdDate}}
         </p>
       </div>
     </div>
@@ -89,7 +89,7 @@
           class="ri-mail-line"
           style="width: 1.25rem; height: 1.25rem; color: #3b82f6"
         ></i>
-        <span style="color: #374151">profileInfo.email</span>
+        <span style="color: #374151">{{loggedInPerson.email}}</span>
       </div>
       <div
         style="
@@ -105,7 +105,7 @@
           class="ri-phone-line"
           style="width: 1.25rem; height: 1.25rem; color: #3b82f6"
         ></i>
-        <span style="color: #374151">+profileInfo.phone</span>
+        <span style="color: #374151">+{{loggedInPerson.phoneNumber}}</span>
       </div>
     </div>
   </div>
@@ -241,7 +241,7 @@
         class="ri-heart-line"
         style="width: 1.25rem; height: 1.25rem; color: #ef4444"
       ></i>
-      <span style="color: #374151">Recommend EMS to a friend</span>
+      <span style="color: #374151">Recommend AOS to a friend</span>
     </button>
   </div>
 </div>
