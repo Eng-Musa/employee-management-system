@@ -136,25 +136,22 @@ export class LoginComponent implements OnInit {
     const storedUserStr = localStorage.getItem('adminUser');
     if (storedUserStr) {
       const user = JSON.parse(storedUserStr);
-      user.lastLogin = new Date().toISOString().slice(0, 16); 
+      user.lastLogin = new Date().toISOString().slice(0, 16);
       localStorage.setItem('adminUser', JSON.stringify(user));
-      console.log('Last login updated:', user.lastLogin);
     } else {
       console.error('No user found in localStorage.');
     }
   }
 
-   updateLastPasswordChange() {
+  updateLastPasswordChange() {
     const storedUserStr = localStorage.getItem('adminUser');
     if (storedUserStr) {
       const user = JSON.parse(storedUserStr);
-      user.lastPasswordChange = new Date().toISOString().slice(0, 16); 
+      user.lastPasswordChange = new Date().toISOString().slice(0, 16);
       localStorage.setItem('adminUser', JSON.stringify(user));
       console.log('Last password change updated:', user.lastPasswordChange);
     } else {
       console.error('No user found in localStorage.');
     }
   }
-  
-  
 }

@@ -43,7 +43,7 @@ export class ChangePassComponent implements OnInit {
     role: 'Unknown',
     phoneNumber: 'Unknown',
     lastLogin: 'Unknown',
-    lastPasswordChange: 'Unknown'
+    lastPasswordChange: 'Unknown',
   };
 
   passwordForm: FormGroup;
@@ -80,9 +80,34 @@ export class ChangePassComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.passwordForm.valid) {
-      console.log(this.passwordForm.value);
-    }
+    this.loading = true;
+    this.isSuccess = false;
+    this.message = '';
+    setTimeout(() => {
+      this.loading = false;
+      if (this.passwordForm.valid && this.loggedInPerson) {
+        const oldPassword = this.passwordForm.get('oldPassword')?.value;
+        const password = this.passwordForm.get('password')?.value;
+        console.log(this.passwordForm.value);
+        console.table(this.loggedInPerson);
+        if (this.loggedInPerson.password === password) {
+          this.message = 'Old password cannot be same as new password';
+        } else if (this.loggedInPerson.password !== oldPassword) {
+          this.message = 'Wrong old password';
+        } else {
+          this.loggedInPerson.password = password;
+          this.loggedInPerson.lastPasswordChange = new Date()
+            .toISOString()
+            .slice(0, 16);
+          localStorage.setItem(
+            'adminUser',
+            JSON.stringify(this.loggedInPerson)
+          );
+          this.isSuccess = true;
+          this.message = 'Password change successfull';
+        }
+      }
+    }, 1000);
   }
 
   onCancel() {
@@ -93,9 +118,9 @@ export class ChangePassComponent implements OnInit {
     if (isPlatformBrowser(this.platformId)) {
       const storedUserStr = localStorage.getItem('adminUser');
       if (storedUserStr) {
-        const loggedInPerson = JSON.parse(storedUserStr);
+        this.loggedInPerson = JSON.parse(storedUserStr) as LoggedInPerson;
         this.lastPasswordChange = this.getTimeDifference(
-          loggedInPerson.lastPasswordChange
+          this.loggedInPerson.lastPasswordChange
         );
       } else {
         this.alertService.showErrorToastr('No user found in localStorage.');
