@@ -2,7 +2,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { AlertService } from '../../services/alert.service';
 
-interface LoggedInPerson {
+export interface LoggedInPerson {
   name: string;
   email: string;
   password: string;
@@ -10,6 +10,7 @@ interface LoggedInPerson {
   role: string;
   phoneNumber: string;
   lastLogin: string;
+  lastPasswordChange: string;
 }
 
 @Component({
@@ -26,7 +27,8 @@ export class ViewProfileComponent implements OnInit {
     createdDate: 'Unknown',
     role: 'Unknown',
     phoneNumber: 'Unknown',
-    lastLogin: 'Unknown'
+    lastLogin: 'Unknown',
+    lastPasswordChange: 'Unknown'
   };
 
   constructor(
