@@ -68,6 +68,17 @@
         <button
           mat-button
           class="sidenav-button"
+          [ngClass]="{ active: isActive('/dashboard/checklists') }"
+          *ngIf="isAdmin()"
+          (click)="goToChecklists()"
+        >
+          <i class="ri-check-double-line icon"></i>
+          <h4 *ngIf="isExpanded">Checklists</h4>
+        </button>
+
+        <button
+          mat-button
+          class="sidenav-button"
           *ngIf="!isExpanded"
           (click)="isExpanded = true"
         >
@@ -85,10 +96,7 @@
             </mat-expansion-panel-header>
             <ul>
               <li><i class="ri-moon-fill"></i>Dark theme</li>
-              <li
-                
-                (click)="openAddChangePassDialog()"
-              >
+              <li (click)="openAddChangePassDialog()">
                 <i class="ri-lock-2-fill"></i>Change Pass
               </li>
               <li

@@ -74,24 +74,8 @@ export class DashboardLayoutComponent implements OnInit {
     return this.router.url === route;
   }
 
-  isSuperAdmin(): boolean {
-    return this.userType === 'super-admin';
-  }
-
   isAdmin(): boolean {
     return this.userType === 'admin';
-  }
-
-  isLandlord(): boolean {
-    return this.userType === 'landlord';
-  }
-
-  isSuperAdminOrAdmin(): boolean {
-    return this.userType === 'super-admin' || this.userType === 'admin';
-  }
-
-  isTenant(): boolean {
-    return this.userType === 'tenant';
   }
 
   toggleSidenav() {
@@ -127,21 +111,24 @@ export class DashboardLayoutComponent implements OnInit {
   }
 
   goHome() {
-    if (this.isSuperAdmin()) {
-      this.router.navigate(['dashboard/home']);
-    } else if (this.isAdmin()) {
+    if (this.isAdmin()) {
       this.router.navigate(['dashboard']);
-    } else if (this.isLandlord()) {
-      this.router.navigate(['dashboard/landlord-home']);
-    } else if (this.isTenant()) {
-      this.router.navigate(['dashboard/tenant-home']);
+    }
+    // } else if (this.isAdmin()) {
+    //   this.router.navigate(['dashboard/landlord-home']);
+    // }
+  }
+
+  goToChecklists(){
+    if (this.isAdmin()) {
+      this.router.navigate(['dashboard/checklists']);
     }
   }
 
   goToViewProfile(): void {
     this.router.navigate(['dashboard/view-profile']);
   }
-  
+
   openAddChangePassDialog(): void {
     const dialogRef = this.dialog.open(ChangePassComponent, {
       width: '350px',
