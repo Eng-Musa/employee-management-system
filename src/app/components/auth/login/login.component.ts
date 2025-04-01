@@ -1,12 +1,5 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import {
-  Component,
-  Inject,
-  OnDestroy,
-  OnInit,
-  PLATFORM_ID,
-  signal,
-} from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -118,11 +111,21 @@ export class LoginComponent implements OnInit {
           name: 'System Admin',
           email: 'admin@gmail.com',
           password: 'Admin@1234',
-          createdDate: new Date().toISOString().slice(0, 16),
+          createdDate: new Date()
+            .toLocaleString('en-US', {
+              timeZone: 'Africa/Nairobi',
+            })
+            .slice(0, 16)
+            .replace(',', ''),
           role: 'admin',
           phoneNumber: '254 763 000 000',
           lastLogin: null,
-          lastPasswordChange: new Date().toISOString().slice(0, 16),
+          lastPasswordChange: new Date()
+            .toLocaleString('en-US', {
+              timeZone: 'Africa/Nairobi',
+            })
+            .slice(0, 16)
+            .replace(',', ''),
         };
         localStorage.setItem('adminUser', JSON.stringify(user));
         console.log('User created with createdDate and saved to localStorage.');
@@ -136,7 +139,12 @@ export class LoginComponent implements OnInit {
     const storedUserStr = localStorage.getItem('adminUser');
     if (storedUserStr) {
       const user = JSON.parse(storedUserStr);
-      user.lastLogin = new Date().toISOString().slice(0, 16);
+      user.lastLogin = new Date()
+        .toLocaleString('en-US', {
+          timeZone: 'Africa/Nairobi',
+        })
+        .slice(0, 16)
+        .replace(',', '');
       localStorage.setItem('adminUser', JSON.stringify(user));
     } else {
       console.error('No user found in localStorage.');
