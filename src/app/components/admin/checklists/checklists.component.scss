@@ -1,3 +1,4 @@
+@use 'sass:color';
 // Colors
 $primary: #2c3e50;
 $background: #f9f9f9;
@@ -28,7 +29,6 @@ $background: #f9f9f9;
   overflow: hidden;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border: 1px solid #eee;
-  position: relative; // For absolute positioning of edit span
   padding-bottom: 2.5rem;
 
   header {
@@ -43,29 +43,25 @@ $background: #f9f9f9;
     }
   }
 
-  > span {
-    position: absolute;
-    bottom: 1rem;
-    left: 1rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: $primary;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: color 0.2s ease;
+  button {
+    display: inline-block;
+    border: none;
+    background-color: rgb(184, 184, 184);
+    color: black;
     padding: 0.5rem 1rem;
-    border-radius: 4px;
-    background-color: rgba($primary, 0.05);
-
+    font-size: 1rem;
+    border-radius: 3px;
+    margin: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  
     &:hover {
-      color: #1a242f;
-      background-color: rgba($primary, 0.1);
+      background-color: color.adjust(rgb(184, 184, 184), $lightness: -20%);
     }
-
-    i {
-      font-size: 1.1rem;
-      margin-right: 0.3rem;
+  
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(44, 62, 80, 0.5);
     }
   }
 }
@@ -94,8 +90,10 @@ $background: #f9f9f9;
   }
 }
 
+
 @media (max-width: 768px) {
   .checklists {
     grid-template-columns: 1fr;
   }
 }
+

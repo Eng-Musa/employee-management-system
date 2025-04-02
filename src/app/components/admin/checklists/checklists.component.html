@@ -67,6 +67,14 @@
         />
       </li>
     </ul>
+    <button
+      type="button"
+      *ngIf="editingState.designer"
+      (click)="addNewItem('designer')"
+      style="display: block"
+    >
+      Add new
+    </button>
     <button type="button" (click)="toggleEdit('designer')">
       {{ editingState.designer ? "Cancel" : "Edit" }}
     </button>
@@ -100,6 +108,14 @@
         />
       </li>
     </ul>
+    <button
+      type="button"
+      *ngIf="editingState.developer"
+      (click)="addNewItem('developer')"
+      style="display: block"
+    >
+      Add new
+    </button>
     <button type="button" (click)="toggleEdit('developer')">
       {{ editingState.developer ? "Cancel" : "Edit" }}
     </button>
@@ -133,6 +149,14 @@
         />
       </li>
     </ul>
+    <button
+      type="button"
+      *ngIf="editingState.hr"
+      (click)="addNewItem('hr')"
+      style="display: block"
+    >
+      Add new
+    </button>
     <button type="button" (click)="toggleEdit('hr')">
       {{ editingState.hr ? "Cancel" : "Edit" }}
     </button>

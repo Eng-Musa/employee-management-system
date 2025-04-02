@@ -96,7 +96,7 @@ export class ChecklistsComponent implements OnInit {
   toggleEdit(section: keyof Checklist): void {
     this.editingState[section] = !this.editingState[section];
 
-    // If we're exiting edit mode, remove any empty items
+    // Remove any empty items
     this.cleanEmptyItems(section);
   }
 
@@ -117,8 +117,9 @@ export class ChecklistsComponent implements OnInit {
   }
   // Save method for a single checklist section.
   saveChecklist(section: keyof Checklist): void {
-    // If we're exiting edit mode, remove any empty items
+    // Remove any empty items
     this.cleanEmptyItems(section);
+
     if (isPlatformBrowser(this.platformId)) {
       localStorage.setItem(
         this.LOCAL_STORAGE_KEY,
