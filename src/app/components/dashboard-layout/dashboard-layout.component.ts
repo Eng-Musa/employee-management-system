@@ -20,10 +20,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { ChangePassComponent } from '../auth/change-pass/change-pass.component';
 import { MatDialog } from '@angular/material/dialog';
-import {MatMenuModule} from '@angular/material/menu';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
-
 
 interface Notification {
   id: number;
@@ -49,7 +48,7 @@ interface Notification {
     MatExpansionModule,
     MatMenuModule,
     MatListModule,
-    MatDividerModule
+    MatDividerModule,
   ],
   templateUrl: './dashboard-layout.component.html',
   styleUrl: './dashboard-layout.component.scss',
@@ -127,14 +126,14 @@ export class DashboardLayoutComponent implements OnInit {
 
   goHome() {
     if (this.isAdmin()) {
-      this.router.navigate(['dashboard']);
+      this.router.navigate(['dashboard/admin-home']);
     }
     // } else if (this.isAdmin()) {
     //   this.router.navigate(['dashboard/landlord-home']);
     // }
   }
 
-  goToChecklists(){
+  goToChecklists() {
     if (this.isAdmin()) {
       this.router.navigate(['dashboard/checklists']);
     }
@@ -156,35 +155,34 @@ export class DashboardLayoutComponent implements OnInit {
       }
     });
   }
-  
+
   notifications: Notification[] = [
     {
       id: 1,
       title: 'Deadline Reminder',
       message: 'Auth deadline soon. Push commits.',
       timestamp: new Date(),
-      read: false
+      read: false,
     },
     {
       id: 2,
       title: 'System Update',
       message: 'Maintenance on Fri at 10 PM. Sync branches.',
       timestamp: new Date(),
-      read: false
+      read: false,
     },
     {
       id: 3,
       title: 'New PR',
       message: 'New PR awaits review for perf enhancements.',
       timestamp: new Date(),
-      read: false
-    }
+      read: false,
+    },
   ];
-  
 
   markAsRead(notificationId: number): void {
     this.notifications = this.notifications.filter(
-      notification => notification.id !== notificationId
+      (notification) => notification.id !== notificationId
     );
   }
 }
