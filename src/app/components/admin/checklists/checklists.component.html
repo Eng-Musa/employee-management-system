@@ -7,7 +7,13 @@
       <h3>Common Requirements</h3>
     </header>
     <ul class="checklist-items">
-      <li *ngFor="let item of checklistData.checklists.common; let i = index; trackBy: trackByIndex">
+      <li
+        *ngFor="
+          let item of checklistData.checklists.common;
+          let i = index;
+          trackBy: trackByIndex
+        "
+      >
         <!-- If editing, show an input; otherwise, display the item as text -->
         <span *ngIf="!editingState.common">{{ item }}</span>
         <input
@@ -17,12 +23,25 @@
         />
       </li>
     </ul>
+    <!-- Button to add a new input for the 'common' checklist -->
+    <button
+      type="button"
+      *ngIf="editingState.common"
+      (click)="addNewItem('common')"
+      style="display: block"
+    >
+      Add new
+    </button>
     <!-- Toggle edit mode button -->
     <button type="button" (click)="toggleEdit('common')">
-      {{ editingState.common ? 'Cancel' : 'Edit' }}
+      {{ editingState.common ? "Cancel" : "Edit" }}
     </button>
     <!-- Save changes only appears when in edit mode -->
-    <button *ngIf="editingState.common" type="button" (click)="saveChecklist('common')">
+    <button
+      *ngIf="editingState.common"
+      type="button"
+      (click)="saveChecklist('common')"
+    >
       Save
     </button>
   </article>
@@ -33,17 +52,29 @@
       <h3>Designer Checklist</h3>
     </header>
     <ul class="checklist-items">
-      <li *ngFor="let item of checklistData.checklists.designer; let i = index; trackBy: trackByIndex">
+      <li
+        *ngFor="
+          let item of checklistData.checklists.designer;
+          let i = index;
+          trackBy: trackByIndex
+        "
+      >
         <span *ngIf="!editingState.designer">{{ item }}</span>
-        <input *ngIf="editingState.designer"
+        <input
+          *ngIf="editingState.designer"
           [(ngModel)]="checklistData.checklists.designer[i]"
-          placeholder="Update item" />
+          placeholder="Update item"
+        />
       </li>
     </ul>
     <button type="button" (click)="toggleEdit('designer')">
-      {{ editingState.designer ? 'Cancel' : 'Edit' }}
+      {{ editingState.designer ? "Cancel" : "Edit" }}
     </button>
-    <button *ngIf="editingState.designer" type="button" (click)="saveChecklist('designer')">
+    <button
+      *ngIf="editingState.designer"
+      type="button"
+      (click)="saveChecklist('designer')"
+    >
       Save
     </button>
   </article>
@@ -54,17 +85,29 @@
       <h3>Developer Checklist</h3>
     </header>
     <ul class="checklist-items">
-      <li *ngFor="let item of checklistData.checklists.developer; let i = index; trackBy: trackByIndex">
+      <li
+        *ngFor="
+          let item of checklistData.checklists.developer;
+          let i = index;
+          trackBy: trackByIndex
+        "
+      >
         <span *ngIf="!editingState.developer">{{ item }}</span>
-        <input *ngIf="editingState.developer"
+        <input
+          *ngIf="editingState.developer"
           [(ngModel)]="checklistData.checklists.developer[i]"
-          placeholder="Update item" />
+          placeholder="Update item"
+        />
       </li>
     </ul>
     <button type="button" (click)="toggleEdit('developer')">
-      {{ editingState.developer ? 'Cancel' : 'Edit' }}
+      {{ editingState.developer ? "Cancel" : "Edit" }}
     </button>
-    <button *ngIf="editingState.developer" type="button" (click)="saveChecklist('developer')">
+    <button
+      *ngIf="editingState.developer"
+      type="button"
+      (click)="saveChecklist('developer')"
+    >
       Save
     </button>
   </article>
@@ -75,15 +118,23 @@
       <h3>HR Checklist</h3>
     </header>
     <ul class="checklist-items">
-      <li *ngFor="let item of checklistData.checklists.hr; let i = index; trackBy: trackByIndex">
+      <li
+        *ngFor="
+          let item of checklistData.checklists.hr;
+          let i = index;
+          trackBy: trackByIndex
+        "
+      >
         <span *ngIf="!editingState.hr">{{ item }}</span>
-        <input *ngIf="editingState.hr"
+        <input
+          *ngIf="editingState.hr"
           [(ngModel)]="checklistData.checklists.hr[i]"
-          placeholder="Update item" />
+          placeholder="Update item"
+        />
       </li>
     </ul>
     <button type="button" (click)="toggleEdit('hr')">
-      {{ editingState.hr ? 'Cancel' : 'Edit' }}
+      {{ editingState.hr ? "Cancel" : "Edit" }}
     </button>
     <button *ngIf="editingState.hr" type="button" (click)="saveChecklist('hr')">
       Save

@@ -95,13 +95,30 @@ export class ChecklistsComponent implements OnInit {
   // Toggle the editing flag for a given section
   toggleEdit(section: keyof Checklist): void {
     this.editingState[section] = !this.editingState[section];
+
+    // If we're exiting edit mode, remove any empty items
+    this.cleanEmptyItems(section);
+  }
+
+  // Remove empty items when exiting edit mode
+  cleanEmptyItems(section: keyof Checklist): void {
+    this.checklistData.checklists[section] = this.checklistData.checklists[
+      section
+    ].filter((item) => item.trim() !== '');
   }
 
   trackByIndex(index: number): number {
     return index;
   }
+
+  // Method to add a new item to a given checklist section.
+  addNewItem(section: keyof Checklist): void {
+    this.checklistData.checklists[section].push('');
+  }
   // Save method for a single checklist section.
   saveChecklist(section: keyof Checklist): void {
+    // If we're exiting edit mode, remove any empty items
+    this.cleanEmptyItems(section);
     if (isPlatformBrowser(this.platformId)) {
       localStorage.setItem(
         this.LOCAL_STORAGE_KEY,
