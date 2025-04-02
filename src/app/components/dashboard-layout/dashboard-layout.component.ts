@@ -20,6 +20,18 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { ChangePassComponent } from '../auth/change-pass/change-pass.component';
 import { MatDialog } from '@angular/material/dialog';
+import {MatMenuModule} from '@angular/material/menu';
+import { MatListModule } from '@angular/material/list';
+import { MatDividerModule } from '@angular/material/divider';
+
+
+interface Notification {
+  id: number;
+  title: string;
+  message: string;
+  timestamp: Date;
+  read: boolean;
+}
 
 @Component({
   selector: 'app-dashboard-layout',
@@ -35,6 +47,9 @@ import { MatDialog } from '@angular/material/dialog';
     CommonModule,
     MatSidenavModule,
     MatExpansionModule,
+    MatMenuModule,
+    MatListModule,
+    MatDividerModule
   ],
   templateUrl: './dashboard-layout.component.html',
   styleUrl: './dashboard-layout.component.scss',
@@ -140,5 +155,29 @@ export class DashboardLayoutComponent implements OnInit {
       if (result) {
       }
     });
+  }
+  
+  notifications: Notification[] = [
+    {
+      id: 1,
+      title: 'New Message',
+      message: 'You have received a new message from John',
+      timestamp: new Date(),
+      read: false
+    },
+    {
+      id: 2,
+      title: 'System Update',
+      message: 'Scheduled maintenance on Friday at 10 PM',
+      timestamp: new Date(),
+      read: false
+    }
+    // Add more notifications as needed
+  ];
+
+  markAsRead(notificationId: number): void {
+    this.notifications = this.notifications.filter(
+      notification => notification.id !== notificationId
+    );
   }
 }
