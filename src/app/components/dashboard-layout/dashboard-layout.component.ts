@@ -160,20 +160,27 @@ export class DashboardLayoutComponent implements OnInit {
   notifications: Notification[] = [
     {
       id: 1,
-      title: 'New Message',
-      message: 'You have received a new message from John',
+      title: 'Deadline Reminder',
+      message: 'Auth deadline soon. Push commits.',
       timestamp: new Date(),
       read: false
     },
     {
       id: 2,
       title: 'System Update',
-      message: 'Scheduled maintenance on Friday at 10 PM',
+      message: 'Maintenance on Fri at 10 PM. Sync branches.',
+      timestamp: new Date(),
+      read: false
+    },
+    {
+      id: 3,
+      title: 'New PR',
+      message: 'New PR awaits review for perf enhancements.',
       timestamp: new Date(),
       read: false
     }
-    // Add more notifications as needed
   ];
+  
 
   markAsRead(notificationId: number): void {
     this.notifications = this.notifications.filter(
