@@ -1,51 +1,53 @@
 <section class="checklists">
-    <h2 class="visually-hidden">Onboarding Checklists</h2>
-    
-    <article class="checklist-card">
-      <header>
-        <h3>Common Requirements</h3>
-      </header>
-      <ul class="checklist-items">
-        <li *ngFor="let item of checklistData.checklists.common">{{item}}</li>
-      </ul>
-      <span aria-label="Edit checklist" role="button">
-        <i class="ri-edit-2-line"></i>Edit
-      </span>
-    </article>
-  
-    <article class="checklist-card">
-      <header>
-        <h3>Designer Checklist</h3>
-      </header>
-      <ul class="checklist-items">
-        <li *ngFor="let item of checklistData.checklists.designer">{{item}}</li>
-      </ul>
-      <span aria-label="Edit checklist" role="button">
-        <i class="ri-edit-2-line"></i>Edit
-      </span>
-    </article>
-  
-    <article class="checklist-card">
-      <header>
-        <h3>Developer Checklist</h3>
-      </header>
-      <ul class="checklist-items">
-        <li *ngFor="let item of checklistData.checklists.developer">{{item}}</li>
-      </ul>
-      <span aria-label="Edit checklist" role="button">
-        <i class="ri-edit-2-line"></i>Edit
-      </span>
-    </article>
-  
-    <article class="checklist-card">
-      <header>
-        <h3>HR Checklist</h3>
-      </header>
-      <ul class="checklist-items">
-        <li *ngFor="let item of checklistData.checklists.hr">{{item}}</li>
-      </ul>
-      <span aria-label="Edit checklist" role="button">
-        <i class="ri-edit-2-line"></i>Edit
-      </span>
-    </article>
-  </section>
+  <h2 class="visually-hidden">Onboarding Checklists</h2>
+
+  <article class="checklist-card">
+    <header>
+      <h3>Common Requirements</h3>
+    </header>
+    <ul class="checklist-items">
+      <li *ngFor="let item of checklistData.checklists.common">{{ item }}</li>
+    </ul>
+    <span aria-label="Edit checklist" role="button">
+      <i class="ri-edit-2-line"></i>Edit
+    </span>
+  </article>
+
+  <article class="checklist-card">
+    <header>
+      <h3>Designer Checklist</h3>
+    </header>
+    <ul class="checklist-items">
+      <li *ngFor="let item of checklistData.checklists.designer">{{ item }}</li>
+    </ul>
+    <span aria-label="Edit checklist" role="button">
+      <i class="ri-edit-2-line"></i>Edit
+    </span>
+  </article>
+
+  <article class="checklist-card">
+    <header>
+      <h3>Developer Checklist</h3>
+    </header>
+    <ul class="checklist-items">
+      <li *ngFor="let item of checklistData.checklists.developer">
+        {{ item }}
+      </li>
+    </ul>
+    <span aria-label="Edit checklist" role="button">
+      <i class="ri-edit-2-line"></i>Edit
+    </span>
+  </article>
+
+  <article class="checklist-card">
+    <header>
+      <h3>HR Checklist</h3>
+    </header>
+    <ul class="checklist-items">
+      <li *ngFor="let item of checklistData.checklists.hr">{{ item }}</li>
+    </ul>
+    <span aria-label="Edit checklist" role="button">
+      <i class="ri-edit-2-line"></i>Edit
+    </span>
+  </article>
+</section>

@@ -42,7 +42,7 @@ $background: #f9f9f9;
       font-size: 1.2rem;
     }
   }
-  
+
   > span {
     position: absolute;
     bottom: 1rem;
@@ -59,7 +59,7 @@ $background: #f9f9f9;
     background-color: rgba($primary, 0.05);
 
     &:hover {
-      color: darken($primary, 10%);
+      color: #1a242f;
       background-color: rgba($primary, 0.1);
     }
 
