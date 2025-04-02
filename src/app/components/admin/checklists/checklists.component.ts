@@ -124,13 +124,12 @@ export class ChecklistsComponent implements OnInit {
     this.cleanEmptyItems(section);
 
     if (isPlatformBrowser(this.platformId)) {
+      this.alertService.showSuccessToastr('Changes saved successfully');
+      this.editingState[section] = false;
       localStorage.setItem(
         this.LOCAL_STORAGE_KEY,
         JSON.stringify(this.checklistData)
       );
-
-      this.alertService.showSuccessToastr('Changes saved successfully');
-      this.editingState[section] = false;
     }
   }
 }

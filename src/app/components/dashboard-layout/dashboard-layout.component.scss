@@ -202,3 +202,9 @@
     scrollbar-width: none;
   }
 }
+
+@media screen and (max-width: 991px) {
+  .search-container{
+    display: none;
+  }
+}
