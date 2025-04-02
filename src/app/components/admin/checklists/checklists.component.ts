@@ -1,6 +1,7 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { AlertService } from '../../../services/alert.service';
 
 // Define an interface for each checklist
 interface Checklist {
@@ -62,7 +63,10 @@ export class ChecklistsComponent implements OnInit {
   //   },
   // };
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private alertService: AlertService
+  ) {}
 
   ngOnInit(): void {
     this.loadChecklistData();
@@ -75,9 +79,8 @@ export class ChecklistsComponent implements OnInit {
         try {
           this.checklistData = JSON.parse(savedData) as ChecklistData;
         } catch (error) {
-          console.error(
-            'Failed to parse checklist data from local storage.',
-            error
+          this.alertService.showErrorToastr(
+            'Failed to parse checklist data from local storage.'
           );
         }
       }
@@ -125,7 +128,8 @@ export class ChecklistsComponent implements OnInit {
         this.LOCAL_STORAGE_KEY,
         JSON.stringify(this.checklistData)
       );
-      // Turn off editing for that section.
+
+      this.alertService.showSuccessToastr('Changes saved successfully');
       this.editingState[section] = false;
     }
   }
