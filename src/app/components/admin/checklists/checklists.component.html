@@ -1,53 +1,92 @@
 <section class="checklists">
   <h2 class="visually-hidden">Onboarding Checklists</h2>
 
+  <!-- Common Requirements Card -->
   <article class="checklist-card">
     <header>
       <h3>Common Requirements</h3>
     </header>
     <ul class="checklist-items">
-      <li *ngFor="let item of checklistData.checklists.common">{{ item }}</li>
+      <li *ngFor="let item of checklistData.checklists.common; let i = index; trackBy: trackByIndex">
+        <!-- If editing, show an input; otherwise, display the item as text -->
+        <span *ngIf="!editingState.common">{{ item }}</span>
+        <input
+          *ngIf="editingState.common"
+          [(ngModel)]="checklistData.checklists.common[i]"
+          placeholder="Update item"
+        />
+      </li>
     </ul>
-    <span aria-label="Edit checklist" role="button">
-      <i class="ri-edit-2-line"></i>Edit
-    </span>
+    <!-- Toggle edit mode button -->
+    <button type="button" (click)="toggleEdit('common')">
+      {{ editingState.common ? 'Cancel' : 'Edit' }}
+    </button>
+    <!-- Save changes only appears when in edit mode -->
+    <button *ngIf="editingState.common" type="button" (click)="saveChecklist('common')">
+      Save
+    </button>
   </article>
 
+  <!-- Designer Checklist -->
   <article class="checklist-card">
     <header>
       <h3>Designer Checklist</h3>
     </header>
     <ul class="checklist-items">
-      <li *ngFor="let item of checklistData.checklists.designer">{{ item }}</li>
+      <li *ngFor="let item of checklistData.checklists.designer; let i = index; trackBy: trackByIndex">
+        <span *ngIf="!editingState.designer">{{ item }}</span>
+        <input *ngIf="editingState.designer"
+          [(ngModel)]="checklistData.checklists.designer[i]"
+          placeholder="Update item" />
+      </li>
     </ul>
-    <span aria-label="Edit checklist" role="button">
-      <i class="ri-edit-2-line"></i>Edit
-    </span>
+    <button type="button" (click)="toggleEdit('designer')">
+      {{ editingState.designer ? 'Cancel' : 'Edit' }}
+    </button>
+    <button *ngIf="editingState.designer" type="button" (click)="saveChecklist('designer')">
+      Save
+    </button>
   </article>
 
+  <!-- Developer Checklist -->
   <article class="checklist-card">
     <header>
       <h3>Developer Checklist</h3>
     </header>
     <ul class="checklist-items">
-      <li *ngFor="let item of checklistData.checklists.developer">
-        {{ item }}
+      <li *ngFor="let item of checklistData.checklists.developer; let i = index; trackBy: trackByIndex">
+        <span *ngIf="!editingState.developer">{{ item }}</span>
+        <input *ngIf="editingState.developer"
+          [(ngModel)]="checklistData.checklists.developer[i]"
+          placeholder="Update item" />
       </li>
     </ul>
-    <span aria-label="Edit checklist" role="button">
-      <i class="ri-edit-2-line"></i>Edit
-    </span>
+    <button type="button" (click)="toggleEdit('developer')">
+      {{ editingState.developer ? 'Cancel' : 'Edit' }}
+    </button>
+    <button *ngIf="editingState.developer" type="button" (click)="saveChecklist('developer')">
+      Save
+    </button>
   </article>
 
+  <!-- HR Checklist -->
   <article class="checklist-card">
     <header>
       <h3>HR Checklist</h3>
     </header>
     <ul class="checklist-items">
-      <li *ngFor="let item of checklistData.checklists.hr">{{ item }}</li>
+      <li *ngFor="let item of checklistData.checklists.hr; let i = index; trackBy: trackByIndex">
+        <span *ngIf="!editingState.hr">{{ item }}</span>
+        <input *ngIf="editingState.hr"
+          [(ngModel)]="checklistData.checklists.hr[i]"
+          placeholder="Update item" />
+      </li>
     </ul>
-    <span aria-label="Edit checklist" role="button">
-      <i class="ri-edit-2-line"></i>Edit
-    </span>
+    <button type="button" (click)="toggleEdit('hr')">
+      {{ editingState.hr ? 'Cancel' : 'Edit' }}
+    </button>
+    <button *ngIf="editingState.hr" type="button" (click)="saveChecklist('hr')">
+      Save
+    </button>
   </article>
 </section>

@@ -1,5 +1,6 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 // Define an interface for each checklist
 interface Checklist {
@@ -15,7 +16,7 @@ export interface ChecklistData {
 }
 @Component({
   selector: 'app-checklists',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './checklists.component.html',
   styleUrl: './checklists.component.scss',
 })
@@ -83,17 +84,31 @@ export class ChecklistsComponent implements OnInit {
     }
   }
 
-  /**
-   * Saves the current checklist data to local storage.
-   */
-  // saveChecklistData(): void {
-  //   try {
-  //     localStorage.setItem(
-  //       this.LOCAL_STORAGE_KEY,
-  //       JSON.stringify(this.checklistData)
-  //     );
-  //   } catch (error) {
-  //     console.error('Failed to save checklist data to local storage.', error);
-  //   }
-  // }
+  // Editing state for each checklist section.
+  editingState: { [key in keyof Checklist]: boolean } = {
+    common: false,
+    designer: false,
+    developer: false,
+    hr: false,
+  };
+
+  // Toggle the editing flag for a given section
+  toggleEdit(section: keyof Checklist): void {
+    this.editingState[section] = !this.editingState[section];
+  }
+
+  trackByIndex(index: number): number {
+    return index;
+  }
+  // Save method for a single checklist section.
+  saveChecklist(section: keyof Checklist): void {
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem(
+        this.LOCAL_STORAGE_KEY,
+        JSON.stringify(this.checklistData)
+      );
+      // Turn off editing for that section.
+      this.editingState[section] = false;
+    }
+  }
 }
