@@ -1,22 +1,26 @@
 @if (isHighcharts) {
-  <div>
+<div class="chart-container">
+  <div class="onboarding-card">
     <h6>Onboarding completion rate</h6>
-    <highcharts-chart
-      [Highcharts]="Highcharts"
-      [options]="pieChart"
-      [(update)]="updateFlag"
-    ></highcharts-chart>
-    <div>
-      <span>Paid: {{ completed }}%</span>
-      <span>Unpaid: {{ incomplete }}%</span>
+    <div class="card-content">
+      <highcharts-chart
+        [Highcharts]="Highcharts"
+        [options]="pieChart"
+        [(update)]="updateFlag"
+      ></highcharts-chart>
+      <div class="selection-div">
+        <span>Complete: {{ completed }}%</span>
+        <span>Incomplete: {{ incomplete }}%</span>
+      </div>
     </div>
   </div>
-  
+
   <div>
     <highcharts-chart
       [Highcharts]="Highcharts"
       [options]="barChart"
     ></highcharts-chart>
   </div>
-  
+</div>
+
 }

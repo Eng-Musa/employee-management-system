@@ -14,6 +14,11 @@ export class AdminHomeComponent implements OnInit {
   incomplete: number = 15;
   updateFlag: boolean = false;
 
+  ngOnInit(): void {}
+
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+    this.isHighcharts = isPlatformBrowser(this.platformId);
+  }
   isHighcharts = false;
   Highcharts: typeof Highcharts = Highcharts;
   pieChart: Highcharts.Options = {
@@ -165,12 +170,4 @@ export class AdminHomeComponent implements OnInit {
       enabled: false,
     },
   };
-
-    ngOnInit(): void {
-   
-  }
-
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
-    this.isHighcharts = isPlatformBrowser(this.platformId);
-  }
 }
