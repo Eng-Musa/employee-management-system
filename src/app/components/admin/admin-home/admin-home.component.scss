@@ -5,6 +5,9 @@
   gap: 1rem;
   margin: 1rem;
 
+  @media  screen and (max-width: 991px) {
+    flex-direction: column;
+  }
   & > div,
   .onboarding-card {
     height: 220px;
