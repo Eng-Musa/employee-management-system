@@ -1,1 +1,19 @@
-<p>admin-home works!</p>
+<div>
+  <h6>Rent Payment</h6>
+  <highcharts-chart
+    [Highcharts]="Highcharts"
+    [options]="pieChart"
+    [(update)]="updateFlag"
+  ></highcharts-chart>
+  <div>
+    <span>Paid: {{ paid }}%</span>
+    <span>Unpaid: {{ unpaid }}%</span>
+  </div>
+</div>
+
+<div>
+  <highcharts-chart
+    [Highcharts]="Highcharts"
+    [options]="barChart"
+  ></highcharts-chart>
+</div>
