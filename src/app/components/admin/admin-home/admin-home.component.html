@@ -1,19 +1,22 @@
-<div>
-  <h6>Onboarding completion rate</h6>
-  <highcharts-chart
-    [Highcharts]="Highcharts"
-    [options]="pieChart"
-    [(update)]="updateFlag"
-  ></highcharts-chart>
+@if (isHighcharts) {
   <div>
-    <span>Paid: {{ completed }}%</span>
-    <span>Unpaid: {{ incomplete }}%</span>
+    <h6>Onboarding completion rate</h6>
+    <highcharts-chart
+      [Highcharts]="Highcharts"
+      [options]="pieChart"
+      [(update)]="updateFlag"
+    ></highcharts-chart>
+    <div>
+      <span>Paid: {{ completed }}%</span>
+      <span>Unpaid: {{ incomplete }}%</span>
+    </div>
   </div>
-</div>
-
-<div>
-  <highcharts-chart
-    [Highcharts]="Highcharts"
-    [options]="barChart"
-  ></highcharts-chart>
-</div>
+  
+  <div>
+    <highcharts-chart
+      [Highcharts]="Highcharts"
+      [options]="barChart"
+    ></highcharts-chart>
+  </div>
+  
+}

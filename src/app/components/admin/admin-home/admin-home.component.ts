@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
-import { HighchartsChartModule } from 'highcharts-angular';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import * as Highcharts from 'highcharts';
+import { HighchartsChartModule } from 'highcharts-angular';
 
 @Component({
   selector: 'app-admin-home',
@@ -8,11 +9,12 @@ import * as Highcharts from 'highcharts';
   templateUrl: './admin-home.component.html',
   styleUrl: './admin-home.component.scss',
 })
-export class AdminHomeComponent {
+export class AdminHomeComponent implements OnInit {
   completed: number = 85;
   incomplete: number = 15;
   updateFlag: boolean = false;
 
+  isHighcharts = false;
   Highcharts: typeof Highcharts = Highcharts;
   pieChart: Highcharts.Options = {
     chart: {
@@ -163,4 +165,12 @@ export class AdminHomeComponent {
       enabled: false,
     },
   };
+
+    ngOnInit(): void {
+   
+  }
+
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+    this.isHighcharts = isPlatformBrowser(this.platformId);
+  }
 }
