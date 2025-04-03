@@ -1,13 +1,13 @@
 <div>
-  <h6>Rent Payment</h6>
+  <h6>Onboarding completion rate</h6>
   <highcharts-chart
     [Highcharts]="Highcharts"
     [options]="pieChart"
     [(update)]="updateFlag"
   ></highcharts-chart>
   <div>
-    <span>Paid: {{ paid }}%</span>
-    <span>Unpaid: {{ unpaid }}%</span>
+    <span>Paid: {{ completed }}%</span>
+    <span>Unpaid: {{ incomplete }}%</span>
   </div>
 </div>
 

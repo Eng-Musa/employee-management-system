@@ -9,8 +9,8 @@ import * as Highcharts from 'highcharts';
   styleUrl: './admin-home.component.scss',
 })
 export class AdminHomeComponent {
-  paid: number = 85;
-  unpaid: number = 15;
+  completed: number = 85;
+  incomplete: number = 15;
   updateFlag: boolean = false;
 
   Highcharts: typeof Highcharts = Highcharts;
@@ -42,7 +42,7 @@ export class AdminHomeComponent {
       text: `
         <div style="text-align: center; font-family: Arial, sans-serif;">
           <span style="font-size: 12px; color: #6c757d;">Total</span><br>
-          <span style="font-size: 14px; font-weight: bold; color: #000;">ksh 1,020,000</span>
+          <span style="font-size: 14px; font-weight: bold; color: #000;">608</span>
         </div>
       `,
     },
@@ -57,8 +57,8 @@ export class AdminHomeComponent {
       {
         type: 'pie',
         data: [
-          { name: 'Paid', y: this.paid, color: '#28a745' },
-          { name: 'Unpaid', y: this.unpaid, color: '#dc3545' },
+          { name: 'Paid', y: this.completed, color: '#28a745' },
+          { name: 'Unpaid', y: this.incomplete, color: '#dc3545' },
         ],
       },
     ],
@@ -78,7 +78,7 @@ export class AdminHomeComponent {
     },
     colors: ['#b0c4de'],
     title: {
-      text: 'Avg Complaints',
+      text: 'Employees By department',
       align: 'center',
       style: {
         fontSize: '18px',
@@ -87,9 +87,9 @@ export class AdminHomeComponent {
       },
     },
     xAxis: {
-      categories: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      categories: ['Mobile', 'iOS', 'Angular', 'IT', '.NET'],
       title: {
-        text: 'Days',
+        text: 'Departments',
         style: {
           fontSize: '14px',
           color: '#6c757d',
@@ -104,7 +104,7 @@ export class AdminHomeComponent {
     },
     yAxis: {
       title: {
-        text: 'Number of Complaints',
+        text: 'Number of Employees',
         style: {
           fontSize: '14px',
           color: '#6c757d',
@@ -140,7 +140,7 @@ export class AdminHomeComponent {
     },
     tooltip: {
       headerFormat: '<b>{point.key}</b><br>',
-      pointFormat: 'Complaints: <b>{point.y}</b>',
+      pointFormat: 'Department: <b>{point.y}</b>',
       style: {
         fontSize: '12px',
         color: '#333',
@@ -149,13 +149,13 @@ export class AdminHomeComponent {
     series: [
       {
         type: 'column',
-        name: 'Complaints',
+        name: 'Department',
         data: [
-          { name: 'Monday', y: Math.floor(Math.random() * 20) + 1 },
-          { name: 'Tuesday', y: Math.floor(Math.random() * 20) + 1 },
-          { name: 'Wednesday', y: Math.floor(Math.random() * 20) + 1 },
-          { name: 'Thursday', y: Math.floor(Math.random() * 20) + 1 },
-          { name: 'Friday', y: Math.floor(Math.random() * 20) + 1 },
+          { name: 'Mobile', y: Math.floor(Math.random() * 50) + 50 },
+          { name: 'iOS', y: Math.floor(Math.random() * 50) + 50 },
+          { name: 'Angular', y: Math.floor(Math.random() * 50) + 50 },
+          { name: 'IT', y: Math.floor(Math.random() * 50) + 50 },
+          { name: '.NET', y: Math.floor(Math.random() * 50) + 50 },
         ],
       },
     ],
