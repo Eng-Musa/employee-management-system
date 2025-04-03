@@ -1,0 +1,243 @@
+<div class="container p-4 component-animation">
+    <div class="row align-items-center">
+      <div
+        class="d-flex flex-column flex-sm-row align-items-center justify-content-between mb-2 me-0"
+      >
+        <div>
+          <h4 style="font-size: 24px; font-weight: 650; color: #000000">
+            Employees
+            <i class="ri-user-2-fill" style="color: #007bff"></i>
+          </h4>
+        </div>
+  
+        <div
+          class="d-flex flex-column flex-sm-row align-items-center mt-2 mt-sm-0"
+        >
+          <div class="me-4">
+            <mat-form-field
+              appearance="outline"
+              class="small mt-4"
+              *ngIf="searchClicked"
+            >
+              <mat-label>Search...</mat-label>
+              <input
+                matInput
+                type="text"
+                placeholder="Enter search text"
+                (input)="applyFilter($event.target)"
+              />
+            </mat-form-field>
+            @if (!searchClicked) {
+                <i
+              class="ri-search-2-line search-icon"
+              
+              (click)="searchClicked = true"
+            ></i>
+            }
+          </div>
+  
+          <div>
+            <button
+              mat-button
+              type="submit"
+              class="mb-1 me-4 add-tenan-button"
+              (click)="openAddEmployeeDialog()"
+            >
+              Add Employee
+            </button>
+          </div>
+        </div>
+      </div>
+      <mat-progress-bar
+        *ngIf="loading"
+        mode="indeterminate"
+        class="mt-2"
+      ></mat-progress-bar>
+  
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        class="table table-striped"
+        matSort
+      >
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            sortActionDescription="Sort by Name"
+          >
+            Name
+          </th>
+          <td mat-cell *matCellDef="let employee">{{ employee.name }}</td>
+        </ng-container>
+  
+        <!-- Email Column -->
+        <ng-container matColumnDef="email">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            sortActionDescription="Sort by Email"
+          >
+            Email
+          </th>
+          <td mat-cell *matCellDef="let employee">{{ employee.email }}</td>
+        </ng-container>
+  
+        <!-- Phone Number Column -->
+        <ng-container matColumnDef="phoneNumber">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            sortActionDescription="Sort by Phone Number"
+          >
+            Phone Number
+          </th>
+          <td mat-cell *matCellDef="let employee">{{ employee.phoneNumber }}</td>
+        </ng-container>
+  
+        <!-- Department Column -->
+        <ng-container matColumnDef="department">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            sortActionDescription="Sort by Department"
+          >
+            Department
+          </th>
+          <td mat-cell *matCellDef="let employee">{{ employee.department }}</td>
+        </ng-container>
+  
+        <!-- Role Balance Column -->
+        <ng-container matColumnDef="role">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            sortActionDescription="Sort Role"
+          >
+            Role
+          </th>
+          <td mat-cell *matCellDef="let employee">{{ employee.role }}</td>
+        </ng-container>
+  
+        <!-- Start Date Column -->
+        <ng-container matColumnDef="startDate">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            sortActionDescription="Sort by Start Date"
+          >
+            Start Date
+          </th>
+          <td mat-cell *matCellDef="let employee">{{ employee.startDate }}</td>
+        </ng-container>
+  
+        <!-- Status at Column -->
+        <ng-container matColumnDef="status">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            sortActionDescription="Sort by Status"
+          >
+            Status
+          </th>
+          <td mat-cell *matCellDef="let employee">{{ employee.status }}</td>
+        </ng-container>
+  
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let tenant">
+            <div style="display: flex; gap: 7px; align-items: center">
+              <!-- More Button -->
+              <button
+                mat-icon-button
+                class="table-icons"
+                [matMenuTriggerFor]="moreMenu"
+              >
+                <mat-icon>more_horiz</mat-icon>
+              </button>
+            </div>
+  
+            <!-- Popup Menu -->
+            <mat-menu #moreMenu="matMenu">
+              <!-- View Button -->
+              <button mat-menu-item style="color: rgba(30, 144, 255, 0.7)">
+                <mat-icon style="color: rgba(30, 144, 255, 0.7)"
+                  >visibility</mat-icon
+                >
+                <span style="margin-left: 8px">View</span>
+              </button>
+  
+              <!-- Delete Button -->
+              <button
+                mat-menu-item
+                style="color: rgba(220, 20, 60, 0.7)"
+                (click)="openDeleteEmployeeDialog(tenant.id)"
+              >
+                <mat-icon style="color: rgba(220, 20, 60, 0.7)">delete</mat-icon>
+                <span style="margin-left: 8px">Delete</span>
+              </button>
+  
+              <!-- Edit Button -->
+              <button
+                mat-menu-item
+                style="color: rgba(34, 139, 34, 0.7)"
+                (click)="goToEditTenant(tenant.id)"
+              >
+                <mat-icon style="color: rgba(34, 139, 34, 0.7)">edit</mat-icon>
+                <span style="margin-left: 8px">Edit</span>
+              </button>
+            </mat-menu>
+          </td>
+        </ng-container>
+  
+        <!-- Table Header -->
+        <tr
+          mat-header-row
+          *matHeaderRowDef="[
+            'name',
+            'email',
+            'phoneNumber',
+            'department',
+            'role',
+            'startDate',
+            'status',
+            'actions'
+          ]"
+        ></tr>
+        <tr
+          mat-row
+          *matRowDef="
+            let row;
+            columns: [
+            'name',
+            'email',
+            'phoneNumber',
+            'department',
+            'role',
+            'startDate',
+            'status',
+            'actions'
+            ]
+          "
+        ></tr>
+      </table>
+  
+      <!-- Paginator -->
+      <mat-paginator
+        [pageSizeOptions]="[5, 10, 20]"
+        showFirstLastButtons
+        aria-label="Select page of tenants"
+      >
+      </mat-paginator>
+    </div>
+  </div>
+  

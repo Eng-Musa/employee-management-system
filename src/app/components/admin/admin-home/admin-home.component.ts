@@ -2,10 +2,11 @@ import { isPlatformBrowser } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import { HighchartsChartModule } from 'highcharts-angular';
+import { EmployeeServiceComponent } from "../employee-service/employee-service.component";
 
 @Component({
   selector: 'app-admin-home',
-  imports: [HighchartsChartModule],
+  imports: [HighchartsChartModule, EmployeeServiceComponent],
   templateUrl: './admin-home.component.html',
   styleUrl: './admin-home.component.scss',
 })
@@ -64,8 +65,8 @@ export class AdminHomeComponent implements OnInit {
       {
         type: 'pie',
         data: [
-          { name: 'Paid', y: this.completed, color: '#28a745' },
-          { name: 'Unpaid', y: this.incomplete, color: '#dc3545' },
+          { name: 'Completed', y: this.completed, color: '#28a745' },
+          { name: 'Incomplete', y: this.incomplete, color: '#dc3545' },
         ],
       },
     ],
