@@ -4,6 +4,7 @@ import { DashboardLayoutComponent } from './components/dashboard-layout/dashboar
 import { ViewProfileComponent } from './components/view-profile/view-profile.component';
 import { ChecklistsComponent } from './components/admin/checklists/checklists.component';
 import { AdminHomeComponent } from './components/admin/admin-home/admin-home.component';
+import { ViewEmployeeComponent } from './components/admin/view-employee/view-employee.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -14,7 +15,8 @@ export const routes: Routes = [
     children: [
       { path: 'view-profile', component: ViewProfileComponent },
       { path: 'checklists', component: ChecklistsComponent },
-      { path: 'admin-home', component:AdminHomeComponent}
+      { path: 'admin-home', component:AdminHomeComponent},
+      {path: 'employee-profile/:id/:name', component: ViewEmployeeComponent}
     ],
   },
 ];

@@ -138,7 +138,7 @@
     <!-- Actions Column -->
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef>Actions</th>
-      <td mat-cell *matCellDef="let tenant">
+      <td mat-cell *matCellDef="let employee">
         <div style="display: flex; gap: 7px; align-items: center">
           <!-- More Button -->
           <button
@@ -153,7 +153,11 @@
         <!-- Popup Menu -->
         <mat-menu #moreMenu="matMenu">
           <!-- View Button -->
-          <button mat-menu-item style="color: rgba(30, 144, 255, 0.7)">
+          <button
+            mat-menu-item
+            style="color: rgba(30, 144, 255, 0.7)"
+            (click)="goToEmployeeProfile(employee.id, employee.name)"
+          >
             <mat-icon style="color: rgba(30, 144, 255, 0.7)"
               >visibility</mat-icon
             >
@@ -164,7 +168,7 @@
           <button
             mat-menu-item
             style="color: rgba(220, 20, 60, 0.7)"
-            (click)="openDeleteEmployeeDialog(tenant.id)"
+            (click)="openDeleteEmployeeDialog(employee.id)"
           >
             <mat-icon style="color: rgba(220, 20, 60, 0.7)">delete</mat-icon>
             <span style="margin-left: 8px">Delete</span>
@@ -174,7 +178,7 @@
           <button
             mat-menu-item
             style="color: rgba(34, 139, 34, 0.7)"
-            (click)="goToEditEmployee(tenant.id)"
+            (click)="goToEditEmployee(employee.id)"
           >
             <mat-icon style="color: rgba(34, 139, 34, 0.7)">edit</mat-icon>
             <span style="margin-left: 8px">Edit</span>

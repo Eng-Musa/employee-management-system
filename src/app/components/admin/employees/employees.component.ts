@@ -137,6 +137,10 @@ export class EmployeesComponent implements OnInit {
     this.router.navigate(['dashboard/edit-employee', id]);
   }
 
+  goToEmployeeProfile(id: number, name: string): void {
+    this.router.navigate(['dashboard/employee-profile', id, name]);
+  }
+
   //Array of employee objects with all the required fields
   employeesData = [
     {
