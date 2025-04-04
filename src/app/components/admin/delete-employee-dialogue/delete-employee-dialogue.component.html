@@ -1,1 +1,35 @@
-<p>delete-employee-dialogue works!</p>
+<div
+  style="
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  "
+>
+  <mat-dialog-content style="text-align: center">
+    <p>Are you sure you want to delete employee with ID: {{ data.id }} ?</p>
+
+    <div
+      class="dialog-actions"
+      style="display: flex; gap: 10px; justify-content: center"
+    >
+      <button
+        mat-button
+        mat-dialog-close
+        (click)="onCancel()"
+        class="cancel-btn"
+      >
+        Cancel
+      </button>
+      <button
+        class="submit-btn"
+        mat-button
+        color="primary"
+        type="submit"
+        (click)="onConfirm()"
+      >
+        Submit
+      </button>
+    </div>
+  </mat-dialog-content>
+</div>

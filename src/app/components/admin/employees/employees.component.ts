@@ -98,7 +98,7 @@ export class EmployeesComponent implements OnInit {
           this.dataSource.data = this.employee;
         }
       }
-    }, 3000)
+    }, 1000)
   }
 
   openAddEmployeeDialog(): void {
