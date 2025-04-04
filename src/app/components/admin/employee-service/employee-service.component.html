@@ -1,15 +1,13 @@
-<div>
-  <div>
-    <div>
-      <h4>
-        Employees
-        <i class="ri-user-2-fill"></i>
-      </h4>
-    </div>
+<div class="employee-container">
+  <div class="top-content">
+    <h4>
+      Employees
+      <i class="ri-user-2-fill"></i>
+    </h4>
 
-    <div>
-      @if (searchClicked) {
+    <div class="top-right-content">
       <div>
+        @if (searchClicked) {
         <mat-form-field appearance="outline">
           <mat-label>Search...</mat-label>
           <input
@@ -17,19 +15,15 @@
             type="text"
             placeholder="Enter search text"
             (input)="applyFilter($event.target)"
-          />
-        </mat-form-field>
-        @if (!searchClicked) {
+          /> </mat-form-field
+        >} @if (!searchClicked) {
         <i class="ri-search-2-line" (click)="searchClicked = true"></i>
         }
       </div>
-      }
 
-      <div>
-        <button mat-button type="submit" (click)="openAddEmployeeDialog()">
-          Add Employee
-        </button>
-      </div>
+      <button mat-button type="submit" (click)="openAddEmployeeDialog()">
+        Add Employee
+      </button>
     </div>
   </div>
   @if (loading) {
