@@ -3,10 +3,11 @@ import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { RouterModule } from '@angular/router';
+import { EmployeesComponent } from "../employees/employees.component";
 
 @Component({
   selector: 'app-admin-home',
-  imports: [HighchartsChartModule, RouterModule],
+  imports: [HighchartsChartModule, RouterModule, EmployeesComponent],
   templateUrl: './admin-home.component.html',
   styleUrl: './admin-home.component.scss',
 })
