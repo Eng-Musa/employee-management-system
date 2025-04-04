@@ -78,7 +78,7 @@ export class LoginComponent implements OnInit {
               storedUser.email === email &&
               storedUser.password === password
             ) {
-              this.router.navigate(['/dashboard']);
+              this.router.navigate(['/dashboard/admin-home']);
               this.updateLastLogin();
             } else {
               this.message = 'Invalid credentials provided.';
