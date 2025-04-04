@@ -26,7 +26,10 @@
       mat-form-field {
         --mat-form-field-container-height: 30px;
         --mat-form-field-container-vertical-padding: 4px;
+        --mdc-outlined-text-field-focus-outline-color: black;
+        --mdc-outlined-text-field-focus-label-text-color: black;
         margin-top: 20px;
+        
       }
 
       i {
@@ -57,3 +60,33 @@
     }
   }
 }
+
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fffbea;
+  }
+  
+  .table th {
+    background-color: #e0f7e0;
+    color: black;
+    font-weight: 550;
+    text-align: left;
+  }
+  
+  .table td {
+    vertical-align: middle;
+    text-align: left;
+  }
+  
+  .table td:first-child {
+    border-right: 1px solid #c9c9c9;
+  }
+  
+  
+  mat-paginator {
+    background-color: #e0f7e0 !important;
+    border-radius: 5px;
+  }
+  

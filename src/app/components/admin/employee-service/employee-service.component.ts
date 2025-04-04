@@ -1,9 +1,19 @@
-import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import {
+  Component,
+  Inject,
+  OnInit,
+  PLATFORM_ID,
+  ViewChild,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { MatFormField, MatInputModule, MatLabel } from '@angular/material/input';
+import {
+  MatFormField,
+  MatInputModule,
+  MatLabel,
+} from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -40,17 +50,24 @@ interface EmployeeList {
     MatButtonModule,
     MatInputModule,
     MatTableModule,
-    RouterModule
+    RouterModule,
   ],
   templateUrl: './employee-service.component.html',
   styleUrl: './employee-service.component.scss',
 })
-export class EmployeeServiceComponent {
+export class EmployeeServiceComponent implements OnInit {
   employee: EmployeeList[] = [];
   dataSource = new MatTableDataSource(this.employee);
   searchClicked: boolean = false;
 
-  constructor(private dialog: MatDialog, private router: Router){}
+  constructor(
+    private dialog: MatDialog,
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
+  ngOnInit(): void {
+    this.saveEmployees();
+  }
 
   @ViewChild(MatSort)
   sort!: MatSort;
@@ -67,11 +84,8 @@ export class EmployeeServiceComponent {
     }
   }
 
-
   loading = false;
-  fetchEmployees(): void {
-   
-  }
+  fetchEmployees(): void {}
 
   openAddEmployeeDialog(): void {
     const dialogRef = this.dialog.open(AddEmployeeDialogueComponent, {
@@ -107,5 +121,72 @@ export class EmployeeServiceComponent {
 
   goToEditTenant(id: number): void {
     this.router.navigate(['dashboard/edit-tenant', id]);
+  }
+
+  //Array of employee objects with all the required fields
+  employees = [
+    {
+      id: 1,
+      name: 'John Developer',
+      email: 'developer@gmail.com',
+      phoneNumber: '2547000000',
+      department: 'Product House',
+      role: 'Developer',
+      startDate: '2025-04-11',
+      status: 'Created',
+      createdDate: new Date()
+      .toLocaleString('en-US', {
+        timeZone: 'Africa/Nairobi',
+      })
+      .slice(0, 16)
+      .replace(',', ''),
+      lastLogin: '',
+      lastPasswordChange: '',
+      password: 'Developer@1234',
+    },
+    {
+      id: 2,
+      name: 'Jane HR',
+      email: 'hr@gmail.com',
+      phoneNumber: '254722000000',
+      department: 'Human Resources',
+      role: 'HR',
+      startDate: '2025-04-11',
+      status: 'Onboarding',
+      createdDate: new Date()
+      .toLocaleString('en-US', {
+        timeZone: 'Africa/Nairobi',
+      })
+      .slice(0, 16)
+      .replace(',', ''),
+      lastLogin: '',
+      lastPasswordChange: '',
+      password: 'Hr@1234',
+    },
+    {
+      id: 3,
+      name: 'Alice Designer',
+      email: 'designer@gmail.com',
+      phoneNumber: '2547',
+      department: 'Design',
+      role: 'Designer',
+      startDate: '2025-04-12',
+      status: 'Created',
+      createdDate: new Date()
+      .toLocaleString('en-US', {
+        timeZone: 'Africa/Nairobi',
+      })
+      .slice(0, 16)
+      .replace(',', ''),
+      lastLogin: '',
+      lastPasswordChange: '',
+      password: 'secure789',
+    },
+  ];
+
+  saveEmployees() {
+    if(isPlatformBrowser(this.platformId)){
+      localStorage.setItem('employees', JSON.stringify(this.employees));
+    }
   }
 }
