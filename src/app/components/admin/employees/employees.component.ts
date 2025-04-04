@@ -51,6 +51,7 @@ interface EmployeeList {
     MatTableModule,
     RouterModule,
     MatSortModule,
+    CommonModule,
   ],
   templateUrl: './employees.component.html',
   styleUrl: './employees.component.scss',
@@ -85,15 +86,19 @@ export class EmployeesComponent implements OnInit {
     }
   }
 
-  loading = false;
+  loading: boolean = false;
   fetchEmployees(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      const storedEmployees = localStorage.getItem('employees');
-      if (storedEmployees) {
-        this.employee = JSON.parse(storedEmployees);
-        this.dataSource.data = this.employee;
+    this.loading = true;
+    setTimeout(() => {
+      if (isPlatformBrowser(this.platformId)) {
+        this.loading = false;
+        const storedEmployees = localStorage.getItem('employees');
+        if (storedEmployees) {
+          this.employee = JSON.parse(storedEmployees);
+          this.dataSource.data = this.employee;
+        }
       }
-    }
+    }, 3000)
   }
 
   openAddEmployeeDialog(): void {
@@ -128,8 +133,8 @@ export class EmployeesComponent implements OnInit {
     });
   }
 
-  goToEditTenant(id: number): void {
-    this.router.navigate(['dashboard/edit-tenant', id]);
+  goToEditEmployee(id: number): void {
+    this.router.navigate(['dashboard/edit-employee', id]);
   }
 
   //Array of employee objects with all the required fields
@@ -138,7 +143,7 @@ export class EmployeesComponent implements OnInit {
       id: 1,
       name: 'John Developer',
       email: 'developer@gmail.com',
-      phoneNumber: '2547000000',
+      phoneNumber: '254 763 000 000',
       department: 'Product House',
       role: 'Developer',
       startDate: '2025-04-11',
@@ -157,7 +162,7 @@ export class EmployeesComponent implements OnInit {
       id: 2,
       name: 'Jane HR',
       email: 'hr@gmail.com',
-      phoneNumber: '254722000000',
+      phoneNumber: '254 722 000 000',
       department: 'Human Resources',
       role: 'HR',
       startDate: '2025-04-11',
@@ -176,7 +181,7 @@ export class EmployeesComponent implements OnInit {
       id: 3,
       name: 'Alice Designer',
       email: 'designer@gmail.com',
-      phoneNumber: '2547',
+      phoneNumber: '254 763 000 000',
       department: 'Design',
       role: 'Designer',
       startDate: '2025-04-12',
