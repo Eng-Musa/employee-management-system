@@ -6,42 +6,42 @@
         <i class="ri-user-fill"></i>
       </div>
       <div>
-        <h5>John Developer</h5>
-        <p>Developer</p>
+        <h5>{{employee?.name}}</h5>
+        <p>{{employee?.role}}</p>
       </div>
     </div>
 
     <!-- Employee Details Grid -->
     <div class="card-container">
       <div class="card">
-        <p style="margin: 0"><strong>ID:</strong> 1</p>
+        <p style="margin: 0"><strong>ID:</strong> {{employee?.id}}</p>
       </div>
       <div class="card">
-        <p style="margin: 0"><strong>Email:</strong> developergmail.com</p>
+        <p style="margin: 0"><strong>Email:</strong> {{employee?.email}}</p>
       </div>
       <div class="card">
-        <p style="margin: 0"><strong>Phone:</strong> 254 763 000 000</p>
+        <p style="margin: 0"><strong>Phone:</strong> {{employee?.phoneNumber}}</p>
       </div>
       <div class="card">
-        <p style="margin: 0"><strong>Department:</strong> Product House</p>
+        <p style="margin: 0"><strong>Department:</strong> {{employee?.department}}</p>
       </div>
       <div class="card">
-        <p style="margin: 0"><strong>Start Date:</strong> 2025-04-11</p>
+        <p style="margin: 0"><strong>Start Date:</strong> {{employee?.startDate}}</p>
       </div>
       <div class="card">
         <p style="margin: 0">
           <strong>Status:</strong>
-          <span style="color: green">Created</span>
+          <span style="color: green">{{employee?.status}}</span>
         </p>
       </div>
       <div class="card">
-        <p style="margin: 0"><strong>Joined:</strong> 4/11/2025 10:00 AM</p>
+        <p style="margin: 0"><strong>Created:</strong> {{employee?.createdDate}}</p>
       </div>
       <div class="card">
-        <p style="margin: 0"><strong>Last Login:</strong> N/A</p>
+        <p style="margin: 0"><strong>Last Login:</strong> {{employee?.lastLogin}}</p>
       </div>
       <div class="card">
-        <p style="margin: 0"><strong>Last Password Change:</strong> N/A</p>
+        <p style="margin: 0"><strong>Last Password Change:</strong> {{employee?.lastPasswordChange}}</p>
       </div>
     </div>
   </div>
