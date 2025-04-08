@@ -5,16 +5,34 @@
       <form [formGroup]="basicInfoForm">
         <ng-template matStepLabel>Basic Information</ng-template>
         <mat-form-field appearance="fill">
-          <input matInput placeholder="Full Name" formControlName="name" required>
+          <input
+            matInput
+            placeholder="Full Name"
+            formControlName="name"
+            required
+          />
         </mat-form-field>
         <mat-form-field appearance="fill">
-          <input matInput type="email" placeholder="Email" formControlName="email" required>
+          <input
+            matInput
+            type="email"
+            placeholder="Email"
+            formControlName="email"
+            required
+          />
         </mat-form-field>
         <mat-form-field appearance="fill">
-          <input matInput placeholder="Phone Number" formControlName="phoneNumber" required>
+          <input
+            matInput
+            placeholder="Phone Number"
+            formControlName="phoneNumber"
+            required
+          />
         </mat-form-field>
         <div>
-          <button mat-button matStepperNext [disabled]="basicInfoForm.invalid">Next</button>
+          <button mat-button matStepperNext [disabled]="basicInfoForm.invalid">
+            Next
+          </button>
         </div>
       </form>
     </mat-step>
@@ -24,10 +42,15 @@
       <form [formGroup]="employmentForm">
         <ng-template matStepLabel>Employment Details</ng-template>
         <mat-form-field appearance="fill">
-          <input matInput placeholder="Department" formControlName="department" required>
+          <input
+            matInput
+            placeholder="Department"
+            formControlName="department"
+            required
+          />
         </mat-form-field>
         <mat-form-field appearance="fill">
-          <input matInput placeholder="Role" formControlName="role" required>
+          <input matInput placeholder="Role" formControlName="role" required />
         </mat-form-field>
         <mat-form-field appearance="fill">
           <input
@@ -36,13 +59,18 @@
             placeholder="Start Date"
             formControlName="startDate"
             required
-          >
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
         <div>
           <button mat-button matStepperPrevious>Back</button>
-          <button mat-button matStepperNext [disabled]="employmentForm.invalid">Next</button>
+          <button mat-button matStepperNext [disabled]="employmentForm.invalid">
+            Next
+          </button>
         </div>
       </form>
     </mat-step>
@@ -50,18 +78,25 @@
     <!-- Step 3: Review & Submit -->
     <mat-step>
       <ng-template matStepLabel>Review & Submit</ng-template>
-      <h3>Review Your Information</h3>
+      <h3>Review Information</h3>
       <p><strong>Name:</strong> {{ basicInfoForm.value.name }}</p>
       <p><strong>Email:</strong> {{ basicInfoForm.value.email }}</p>
-      <p><strong>Phone Number:</strong> {{ basicInfoForm.value.phoneNumber }}</p>
+      <p>
+        <strong>Phone Number:</strong> {{ basicInfoForm.value.phoneNumber }}
+      </p>
       <p><strong>Department:</strong> {{ employmentForm.value.department }}</p>
       <p><strong>Role:</strong> {{ employmentForm.value.role }}</p>
       <p>
         <strong>Start Date:</strong>
-        {{ employmentForm.value.startDate ? (employmentForm.value.startDate | date: 'shortDate') : '' }}
+        {{
+          employmentForm.value.startDate
+            ? (employmentForm.value.startDate | date : "shortDate")
+            : ""
+        }}
       </p>
       <p><strong>Status:</strong> Onboarding</p>
-      <div>
+
+      <div class="buttons">
         <button mat-button matStepperPrevious>Back</button>
         <button mat-button (click)="onSubmit()">Submit</button>
       </div>
@@ -70,5 +105,11 @@
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <button mat-button (click)="onCancel()">Cancel</button>
+  <button
+    mat-button
+    (click)="onCancel()"
+    style="color: rgb(95, 45, 45); background-color: rgb(230, 190, 190)"
+  >
+    Cancel
+  </button>
 </mat-dialog-actions>

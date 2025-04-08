@@ -1,0 +1,56 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+
+  // Style the stepper for a smoother look
+  mat-horizontal-stepper {
+    width: 100%;
+  }
+
+  // Form field styling
+  mat-form-field {
+    width: 70%;
+    margin-bottom: opx;
+
+    .mat-form-field-flex {
+      background: #fafafa;
+      border-radius: 4px;
+    }
+  }
+
+  // Review step styling
+  h3 {
+    margin: 16px 0;
+    font-size: 1.5rem;
+    text-align: center;
+    text-align: start;
+  }
+
+  p {
+    margin: 4px 0;
+    font-size: 14px;
+    color: #424242;
+    line-height: 1.4;
+  }
+  
+  button {
+    color: black;
+    font-weight: 700;
+    padding: 10px 20px;
+    background-color: rgb(212, 212, 212);
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.3s;
+    margin-left: 1em;
+  }
+
+  button:hover {
+    background-color: rgb(212, 212, 212);
+    transform: scale(1.05);
+  }
+
+  button:focus {
+    outline: none;
+  }
+}
