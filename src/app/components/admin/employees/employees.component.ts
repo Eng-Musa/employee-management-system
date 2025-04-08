@@ -67,7 +67,7 @@ export class EmployeesComponent implements OnInit {
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
   ngOnInit(): void {
-    this.saveEmployees();
+    // this.saveEmployees();
     this.fetchEmployees();
   }
 
@@ -117,12 +117,12 @@ export class EmployeesComponent implements OnInit {
     });
   }
 
-  openDeleteEmployeeDialog(id: number): void {
+  openDeleteEmployeeDialog(id: number, name:string): void {
     const dialogRef = this.dialog.open(DeleteEmployeeDialogueComponent, {
       width: '40vw',
       maxHeight: '90vh',
       height: 'auto',
-      data: { id },
+      data: { id , name},
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -142,69 +142,69 @@ export class EmployeesComponent implements OnInit {
   }
 
   //Array of employee objects with all the required fields
-  employeesData = [
-    {
-      id: 1,
-      name: 'John Developer',
-      email: 'developer@gmail.com',
-      phoneNumber: '254 763 000 000',
-      department: 'Product House',
-      role: 'Developer',
-      startDate: '2025-04-11',
-      status: 'Created',
-      createdDate: new Date()
-        .toLocaleString('en-US', {
-          timeZone: 'Africa/Nairobi',
-        })
-        .slice(0, 16)
-        .replace(',', ''),
-      lastLogin: '',
-      lastPasswordChange: '',
-      password: 'Developer@1234',
-    },
-    {
-      id: 2,
-      name: 'Jane HR',
-      email: 'hr@gmail.com',
-      phoneNumber: '254 722 000 000',
-      department: 'Human Resources',
-      role: 'HR',
-      startDate: '2025-04-11',
-      status: 'Onboarding',
-      createdDate: new Date()
-        .toLocaleString('en-US', {
-          timeZone: 'Africa/Nairobi',
-        })
-        .slice(0, 16)
-        .replace(',', ''),
-      lastLogin: '',
-      lastPasswordChange: '',
-      password: 'Hr@1234',
-    },
-    {
-      id: 3,
-      name: 'Alice Designer',
-      email: 'designer@gmail.com',
-      phoneNumber: '254 763 000 000',
-      department: 'Design',
-      role: 'Designer',
-      startDate: '2025-04-12',
-      status: 'Created',
-      createdDate: new Date()
-        .toLocaleString('en-US', {
-          timeZone: 'Africa/Nairobi',
-        })
-        .slice(0, 16)
-        .replace(',', ''),
-      lastLogin: '',
-      lastPasswordChange: '',
-      password: 'secure789',
-    },
-  ];
+  // employeesData = [
+  //   {
+  //     id: 1,
+  //     name: 'John Developer',
+  //     email: 'developer@gmail.com',
+  //     phoneNumber: '254 763 000 000',
+  //     department: 'Product House',
+  //     role: 'Developer',
+  //     startDate: '2025-04-11',
+  //     status: 'Created',
+  //     createdDate: new Date()
+  //       .toLocaleString('en-US', {
+  //         timeZone: 'Africa/Nairobi',
+  //       })
+  //       .slice(0, 16)
+  //       .replace(',', ''),
+  //     lastLogin: '',
+  //     lastPasswordChange: '',
+  //     password: 'Developer@1234',
+  //   },
+  //   {
+  //     id: 2,
+  //     name: 'Jane HR',
+  //     email: 'hr@gmail.com',
+  //     phoneNumber: '254 722 000 000',
+  //     department: 'Human Resources',
+  //     role: 'HR',
+  //     startDate: '2025-04-11',
+  //     status: 'Onboarding',
+  //     createdDate: new Date()
+  //       .toLocaleString('en-US', {
+  //         timeZone: 'Africa/Nairobi',
+  //       })
+  //       .slice(0, 16)
+  //       .replace(',', ''),
+  //     lastLogin: '',
+  //     lastPasswordChange: '',
+  //     password: 'Hr@1234',
+  //   },
+  //   {
+  //     id: 3,
+  //     name: 'Alice Designer',
+  //     email: 'designer@gmail.com',
+  //     phoneNumber: '254 763 000 000',
+  //     department: 'Design',
+  //     role: 'Designer',
+  //     startDate: '2025-04-12',
+  //     status: 'Created',
+  //     createdDate: new Date()
+  //       .toLocaleString('en-US', {
+  //         timeZone: 'Africa/Nairobi',
+  //       })
+  //       .slice(0, 16)
+  //       .replace(',', ''),
+  //     lastLogin: '',
+  //     lastPasswordChange: '',
+  //     password: 'secure789',
+  //   },
+  // ];
 
-  saveEmployees(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem('employees', JSON.stringify(this.employeesData));
-    }
-  }
+  // saveEmployees(): void {
+  //   if (isPlatformBrowser(this.platformId)) {
+  //     localStorage.setItem('employees', JSON.stringify(this.employeesData));
+  //   }
+  // }
 }

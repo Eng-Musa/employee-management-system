@@ -7,7 +7,11 @@
   "
 >
   <mat-dialog-content style="text-align: center">
-    <p>Are you sure you want to delete employee with ID: {{ data.id }} ?</p>
+    <p>
+      Are you sure you want to delete employee with ID: {{ data.id }} ({{
+        data.name
+      }})?
+    </p>
 
     <div
       class="dialog-actions"
