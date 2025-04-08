@@ -41,17 +41,26 @@
     <mat-step [stepControl]="employmentForm">
       <form [formGroup]="employmentForm">
         <ng-template matStepLabel>Employment Details</ng-template>
+
         <mat-form-field appearance="fill">
-          <input
-            matInput
+          <mat-select
             placeholder="Department"
             formControlName="department"
             required
-          />
+          >
+            <mat-option value="Product House">Product House</mat-option>
+            <mat-option value="Human resource">Human resource</mat-option>
+          </mat-select>
         </mat-form-field>
+
         <mat-form-field appearance="fill">
-          <input matInput placeholder="Role" formControlName="role" required />
+          <mat-select placeholder="Role" formControlName="role" required>
+            <mat-option value="Designer">Designer</mat-option>
+            <mat-option value="Developer">Developer</mat-option>
+            <mat-option value="Hr">Hr</mat-option>
+          </mat-select>
         </mat-form-field>
+
         <mat-form-field appearance="fill">
           <input
             matInput
@@ -66,6 +75,7 @@
           ></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
+
         <div>
           <button mat-button matStepperPrevious>Back</button>
           <button mat-button matStepperNext [disabled]="employmentForm.invalid">

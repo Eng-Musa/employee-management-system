@@ -8,14 +8,23 @@ import {
   MatDialogRef,
   MatDialogTitle,
 } from '@angular/material/dialog';
-import { Component, inject } from '@angular/core';
+import { Component, Inject, inject, PLATFORM_ID } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatFormField, MatInputModule } from '@angular/material/input';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { BrowserModule } from '@angular/platform-browser';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { AlertService } from '../../../services/alert.service';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-add-employee-dialogue',
@@ -29,7 +38,9 @@ import { CommonModule } from '@angular/common';
     ReactiveFormsModule,
     MatInputModule,
     MatDatepickerModule,
-    CommonModule
+    CommonModule,
+    MatOptionModule,
+    MatSelectModule,
   ],
   templateUrl: './add-employee-dialogue.component.html',
   styleUrl: './add-employee-dialogue.component.scss',
@@ -38,9 +49,13 @@ export class AddEmployeeDialogueComponent {
   basicInfoForm: FormGroup;
   employmentForm: FormGroup;
 
+  employeesData: any[] = [];
+
   constructor(
     public dialogRef: MatDialogRef<AddEmployeeDialogueComponent>,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private alertService: AlertService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     // Step 1: Basic Information
     this.basicInfoForm = this.fb.group({
@@ -57,6 +72,25 @@ export class AddEmployeeDialogueComponent {
     });
   }
 
+  ngOnInit(): void {
+    this.loadEmployeesFromLocalStorage();
+  }
+
+  loadEmployeesFromLocalStorage(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      const storedEmployees = localStorage.getItem('employees');
+      if (storedEmployees) {
+        this.employeesData = JSON.parse(storedEmployees);
+      }
+    }
+  }
+
+  saveToLocalStorage(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem('employees', JSON.stringify(this.employeesData));
+    }
+  }
+
   onCancel(): void {
     this.dialogRef.close(false);
   }
@@ -64,28 +98,30 @@ export class AddEmployeeDialogueComponent {
   onSubmit(): void {
     // Build the employee object including computed fields like createdDate.
     const employee = {
-      id: Math.floor(Math.random()*1000) + 1, 
+      id: Math.floor(Math.random() * 1000) + 1,
       name: this.basicInfoForm.value.name,
       email: this.basicInfoForm.value.email,
       phoneNumber: this.basicInfoForm.value.phoneNumber,
       department: this.employmentForm.value.department,
       role: this.employmentForm.value.role,
-      startDate: this.employmentForm.value.startDate,
+      startDate: new Date(this.employmentForm.value.startDate)
+        .toISOString()
+        .split('T')[0],
       status: 'Onboarding',
       createdDate: new Date()
-      .toLocaleString('en-US', {
-        timeZone: 'Africa/Nairobi',
-      })
-      .slice(0, 16)
-      .replace(',', ''),
+        .toLocaleString('en-US', {
+          timeZone: 'Africa/Nairobi',
+        })
+        .slice(0, 16)
+        .replace(',', ''),
       lastLogin: 'Never',
       lastPasswordChange: 'Never',
       password: 'User@1234',
     };
 
-    // Log the employee info to the console.
-    console.log(employee);
-    
+    this.employeesData.push(employee);
+    this.saveToLocalStorage();
+    this.alertService.showSuccessToastr('Added employee successfully.');
     // Pass the employee data back and close the dialog.
     this.dialogRef.close(employee);
   }
