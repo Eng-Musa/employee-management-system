@@ -98,7 +98,7 @@ export class EmployeesComponent implements OnInit {
           this.dataSource.data = this.employee;
         }
       }
-    }, 1000)
+    }, 1000);
   }
 
   openAddEmployeeDialog(): void {
@@ -117,12 +117,12 @@ export class EmployeesComponent implements OnInit {
     });
   }
 
-  openDeleteEmployeeDialog(id: number, name:string): void {
+  openDeleteEmployeeDialog(id: number, name: string): void {
     const dialogRef = this.dialog.open(DeleteEmployeeDialogueComponent, {
       width: '40vw',
       maxHeight: '90vh',
       height: 'auto',
-      data: { id , name},
+      data: { id, name },
     });
 
     dialogRef.afterClosed().subscribe((result) => {

@@ -56,44 +56,61 @@ export class LoginComponent implements OnInit {
       this.loading = true;
       this.isSuccess = false;
       this.message = '';
+
       if (isPlatformBrowser(this.platformId)) {
-        console.table(this.loginForm.value);
-        // Retrieve the stored user from localStorage
-        const storedUserStr = localStorage.getItem('adminUser');
+        // Retrieve the stored admin and employees from localStorage
+        const storedAdminStr = localStorage.getItem('adminUser');
+        const storedEmployeesStr = localStorage.getItem('employees');
 
-        // Add setTimeout to simulate a delay of 1 second
+        // Simulate a delay of 1 second
         setTimeout(() => {
-          if (!storedUserStr) {
-            this.loading = false;
-            this.message = 'No user found in localStorage.';
-          } else {
-            // Parse the JSON string into an object
-            const storedUser = JSON.parse(storedUserStr);
-            // Extract form values for email and password
-            const email = this.loginForm.get('email')?.value;
-            const password = this.loginForm.get('password')?.value;
+          const email = this.loginForm.get('email')?.value;
+          const password = this.loginForm.get('password')?.value;
 
-            // Compare the provided credentials with the stored credentials
+          // Initialize a variable to hold the authenticated user
+          let authenticatedUser = null;
+
+          // First, check if there's an admin user and if the credentials match
+          if (storedAdminStr) {
+            const storedAdmin = JSON.parse(storedAdminStr);
             if (
-              storedUser.email === email &&
-              storedUser.password === password
+              storedAdmin.email === email &&
+              storedAdmin.password === password
             ) {
+              authenticatedUser = storedAdmin;
               this.router.navigate(['/dashboard/admin-home']);
               this.updateLastLogin();
-            } else {
-              this.message = 'Invalid credentials provided.';
             }
-            this.loading = false;
           }
+
+          // If no admin was authenticated, check the employees list
+          if (!authenticatedUser && storedEmployeesStr) {
+            const employees = JSON.parse(storedEmployeesStr);
+            // Find an employee with matching credentials
+            authenticatedUser = employees.find(
+              (emp: any) => emp.email === email && emp.password === password
+            );
+            if (authenticatedUser) {
+              this.router.navigate(['/dashboard']);
+              this.updateLastLogin();
+            }
+          }
+
+          // If neither admin nor employee matched, show an error message
+          if (!authenticatedUser) {
+            this.message = 'Invalid credentials provided.';
+          }
+          this.loading = false;
         }, 1000);
       } else {
+        // Handle cases where localStorage isn't available
         setTimeout(() => {
           this.loading = false;
           this.message = 'localStorage is not available in this environment.';
         }, 1000);
       }
     } else {
-      // For invalid form, still show loading also
+      // For an invalid form, still show a short delay before notifying the user
       setTimeout(() => {
         this.loading = false;
         this.alertService.showErrorToastr(
@@ -135,31 +152,63 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  updateLastLogin() {
-    const storedUserStr = localStorage.getItem('adminUser');
-    if (storedUserStr) {
-      const user = JSON.parse(storedUserStr);
-      user.lastLogin = new Date()
-        .toLocaleString('en-US', {
-          timeZone: 'Africa/Nairobi',
-        })
-        .slice(0, 16)
-        .replace(',', '');
-      localStorage.setItem('adminUser', JSON.stringify(user));
+  updateLastLogin(): void {
+    // Retrieve the email input from the login form
+    const email = this.loginForm.get('email')?.value;
+    const currentDate = new Date()
+      .toLocaleString('en-US', { timeZone: 'Africa/Nairobi' })
+      .slice(0, 16)
+      .replace(',', '');
+
+    // Attempt to update admin user login if it matches the provided email
+    const storedAdminStr = localStorage.getItem('adminUser');
+    if (storedAdminStr) {
+      const adminUser = JSON.parse(storedAdminStr);
+      if (adminUser.email === email) {
+        adminUser.lastLogin = currentDate;
+        localStorage.setItem('adminUser', JSON.stringify(adminUser));
+
+        this.saveToSessionStorage(adminUser.email, adminUser.role)
+        return;
+      }
+    }
+
+    // If admin doesn't match, look for the employee in the employees array.
+    const storedEmployeesStr = localStorage.getItem('employees');
+    if (storedEmployeesStr) {
+      const employees = JSON.parse(storedEmployeesStr);
+      const employeeIndex = employees.findIndex(
+        (emp: any) => emp.email === email
+      );
+      if (employeeIndex !== -1) {
+        employees[employeeIndex].lastLogin = currentDate;
+        localStorage.setItem('employees', JSON.stringify(employees));
+
+        this.saveToSessionStorage(employees[employeeIndex].email, employees[employeeIndex].role)
+      } else {
+        console.error('Employee not found for email: ' + email);
+      }
     } else {
-      console.error('No user found in localStorage.');
+      console.error('No employees data found in localStorage.');
     }
   }
 
-  updateLastPasswordChange() {
-    const storedUserStr = localStorage.getItem('adminUser');
-    if (storedUserStr) {
-      const user = JSON.parse(storedUserStr);
-      user.lastPasswordChange = new Date().toISOString().slice(0, 16);
-      localStorage.setItem('adminUser', JSON.stringify(user));
-      console.log('Last password change updated:', user.lastPasswordChange);
+  saveToSessionStorage(email: string, role: string): void {
+    const loginTime = new Date()
+      .toLocaleString('en-US', { timeZone: 'Africa/Nairobi' })
+      .slice(0, 16)
+      .replace(',', '');
+  
+    if (isPlatformBrowser(this.platformId)) {
+      const loggedInPersion = {
+        email: email,
+        loginTime: loginTime,
+        role: role,
+      };
+      sessionStorage.setItem('userSession', JSON.stringify(loggedInPersion));
     } else {
-      console.error('No user found in localStorage.');
+      console.error('SessionStorage is not available in this environment.');
     }
   }
+  
 }
