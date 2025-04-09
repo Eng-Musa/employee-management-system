@@ -2,6 +2,7 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AlertService } from '../../../services/alert.service';
+import { AuthService } from '../../../services/auth.service';
 
 // Define an interface for each checklist
 interface Checklist {
@@ -65,7 +66,8 @@ export class ChecklistsComponent implements OnInit {
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -131,5 +133,9 @@ export class ChecklistsComponent implements OnInit {
         JSON.stringify(this.checklistData)
       );
     }
+  }
+
+  isAdmin(): boolean {
+    return this.authService.getUserType() === 'admin';
   }
 }

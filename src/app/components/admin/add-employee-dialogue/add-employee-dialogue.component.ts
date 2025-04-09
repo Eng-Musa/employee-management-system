@@ -19,6 +19,7 @@ import { MatFormField, MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatStepperModule } from '@angular/material/stepper';
 import { AlertService } from '../../../services/alert.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-add-employee-dialogue',
@@ -49,7 +50,8 @@ export class AddEmployeeDialogueComponent {
     public dialogRef: MatDialogRef<AddEmployeeDialogueComponent>,
     private fb: FormBuilder,
     private alertService: AlertService,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private authService: AuthService
   ) {
     // Step 1: Basic Information
     this.basicInfoForm = this.fb.group({
@@ -118,5 +120,9 @@ export class AddEmployeeDialogueComponent {
     this.alertService.showSuccessToastr('Added employee successfully.');
     // Pass the employee data back and close the dialog.
     this.dialogRef.close(employee);
+  }
+
+  isAdmin(): boolean {
+    return this.authService.getUserType() === 'admin';
   }
 }

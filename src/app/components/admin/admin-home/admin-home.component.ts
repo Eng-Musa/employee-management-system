@@ -4,6 +4,7 @@ import * as Highcharts from 'highcharts';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { RouterModule } from '@angular/router';
 import { EmployeesComponent } from "../employees/employees.component";
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-admin-home',
@@ -11,14 +12,13 @@ import { EmployeesComponent } from "../employees/employees.component";
   templateUrl: './admin-home.component.html',
   styleUrl: './admin-home.component.scss',
 })
-export class AdminHomeComponent implements OnInit {
+export class AdminHomeComponent{
   completed: number = 85;
   incomplete: number = 15;
   updateFlag: boolean = false;
 
-  ngOnInit(): void {}
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+  constructor(@Inject(PLATFORM_ID) private platformId: Object, private authService: AuthService) {
     this.isHighcharts = isPlatformBrowser(this.platformId);
   }
   isHighcharts = false;
@@ -172,4 +172,8 @@ export class AdminHomeComponent implements OnInit {
       enabled: false,
     },
   };
+
+  isAdmin(): boolean {
+    return this.authService.getUserType() === 'admin';
+  }
 }

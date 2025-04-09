@@ -168,7 +168,7 @@ export class LoginComponent implements OnInit {
         adminUser.lastLogin = currentDate;
         localStorage.setItem('adminUser', JSON.stringify(adminUser));
 
-        this.saveToSessionStorage(adminUser.email, adminUser.role)
+        this.saveToSessionStorage(adminUser.email, adminUser.role);
         return;
       }
     }
@@ -184,7 +184,10 @@ export class LoginComponent implements OnInit {
         employees[employeeIndex].lastLogin = currentDate;
         localStorage.setItem('employees', JSON.stringify(employees));
 
-        this.saveToSessionStorage(employees[employeeIndex].email, employees[employeeIndex].role)
+        this.saveToSessionStorage(
+          employees[employeeIndex].email,
+          employees[employeeIndex].role
+        );
       } else {
         console.error('Employee not found for email: ' + email);
       }
@@ -198,7 +201,7 @@ export class LoginComponent implements OnInit {
       .toLocaleString('en-US', { timeZone: 'Africa/Nairobi' })
       .slice(0, 16)
       .replace(',', '');
-  
+
     if (isPlatformBrowser(this.platformId)) {
       const loggedInPersion = {
         email: email,
@@ -210,5 +213,4 @@ export class LoginComponent implements OnInit {
       console.error('SessionStorage is not available in this environment.');
     }
   }
-  
 }

@@ -23,6 +23,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
+import { AuthService } from '../../services/auth.service';
 
 interface Notification {
   id: number;
@@ -54,13 +55,13 @@ interface Notification {
   styleUrl: './dashboard-layout.component.scss',
 })
 export class DashboardLayoutComponent implements OnInit {
-  userType: string | null = null;
   isExpanded: boolean = true;
 
   constructor(
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -68,20 +69,12 @@ export class DashboardLayoutComponent implements OnInit {
       // Check the window width if running in the browser
       if (window.innerWidth < 568) {
         this.isExpanded = false;
-      }
-
-      // Use localStorage safely after ensuring we're in the browser
-      const storedUserStr = localStorage.getItem('adminUser');
-      if (storedUserStr !== null) {
-        const storedUser = JSON.parse(storedUserStr);
-        this.userType = storedUser.role;
-        console.log(this.userType);
-      }
+      }      
     }
   }
 
   logout() {
-    this.router.navigate(['/login']);
+    this.authService.logout();
   }
 
   isActive(route: string): boolean {
@@ -89,7 +82,7 @@ export class DashboardLayoutComponent implements OnInit {
   }
 
   isAdmin(): boolean {
-    return this.userType === 'admin';
+    return this.authService.getUserType() === 'admin';
   }
 
   toggleSidenav() {

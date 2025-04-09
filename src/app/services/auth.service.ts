@@ -1,12 +1,16 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Router } from '@angular/router';
 import { platform } from 'os';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private router: Router
+  ) {}
 
   isAthenticated(): boolean {
     return (
@@ -45,6 +49,34 @@ export class AuthService {
       console.error('Error parsing session data:', error);
       sessionStorage.removeItem('userSession');
       return true;
+    }
+  }
+
+  logout() {
+    sessionStorage.removeItem('userSession');
+    this.router.navigate(['login']);
+  }
+
+  getUserType(): string {
+    const sessionDataStr = sessionStorage.getItem('userSession');
+
+    // If no session data exists, return a default value.
+    if (!sessionDataStr) {
+      return '';
+    }
+
+    try {
+      const sessionData = JSON.parse(sessionDataStr);
+      if (
+        sessionData &&
+        typeof sessionData.role === 'string' &&
+        sessionData.role.trim().length > 0
+      ) {
+        return sessionData.role;
+      }
+      return 'Unknown';
+    } catch (error) {
+      return 'Unknown';
     }
   }
 }
