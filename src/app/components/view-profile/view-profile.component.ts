@@ -1,6 +1,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { AlertService } from '../../services/alert.service';
+import { AuthService } from '../../services/auth.service';
 
 export interface LoggedInPerson {
   name: string;
@@ -28,12 +29,13 @@ export class ViewProfileComponent implements OnInit {
     role: 'Unknown',
     phoneNumber: 'Unknown',
     lastLogin: 'Unknown',
-    lastPasswordChange: 'Unknown'
+    lastPasswordChange: 'Unknown',
   };
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -42,11 +44,48 @@ export class ViewProfileComponent implements OnInit {
 
   getLoggedInPerson() {
     if (isPlatformBrowser(this.platformId)) {
-      const storedUserStr = localStorage.getItem('adminUser');
-      if (storedUserStr) {
-        this.loggedInPerson = JSON.parse(storedUserStr) as LoggedInPerson;
+      if (this.authService.getUserType() === 'admin') {
+        const storedUserStr = localStorage.getItem('adminUser');
+        if (storedUserStr) {
+          this.loggedInPerson = JSON.parse(storedUserStr) as LoggedInPerson;
+        } else {
+          this.alertService.showErrorToastr(
+            'No admin user found in local storage.'
+          );
+        }
       } else {
-        this.alertService.showErrorToastr('No user found in localStorage.');
+        const loggedInEmail = this.authService.getLoggedInEmail();
+        const employeesStr = localStorage.getItem('employees');
+        if (employeesStr) {
+          try {
+            const employees = JSON.parse(employeesStr);
+            const foundEmployee = employees.find(
+              (emp: any) => emp.email === loggedInEmail
+            );
+            if (foundEmployee) {
+              this.loggedInPerson = {
+                name: foundEmployee.name,
+                email: foundEmployee.email,
+                password: foundEmployee.password,
+                createdDate: foundEmployee.createdDate,
+                role: foundEmployee.role,
+                phoneNumber: foundEmployee.phoneNumber,
+                lastLogin: foundEmployee.lastLogin,
+                lastPasswordChange: foundEmployee.lastPasswordChange,
+              };
+            } else {
+              this.alertService.showErrorToastr(
+                `Employee with email ${loggedInEmail} not found.`
+              );
+            }
+          } catch (error) {
+            this.alertService.showErrorToastr('Failed to parse employee data.');
+          }
+        } else {
+          this.alertService.showErrorToastr(
+            'No employee data found in local storage.'
+          );
+        }
       }
     }
   }
