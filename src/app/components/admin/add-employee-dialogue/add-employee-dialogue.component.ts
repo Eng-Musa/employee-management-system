@@ -13,7 +13,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import {
   MatDialogActions,
   MatDialogModule,
-  MatDialogRef
+  MatDialogRef,
 } from '@angular/material/dialog';
 import { MatFormField, MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';

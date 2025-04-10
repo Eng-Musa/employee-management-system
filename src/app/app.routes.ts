@@ -7,6 +7,7 @@ import { AdminHomeComponent } from './components/admin/admin-home/admin-home.com
 import { ViewEmployeeComponent } from './components/admin/view-employee/view-employee.component';
 import { authGuard } from './guards/auth.guard';
 import { childrenAuthGuard } from './guards/children-auth.guard';
+import { HomeComponent } from './components/employees/home/home.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -20,7 +21,8 @@ export const routes: Routes = [
       { path: 'view-profile', component: ViewProfileComponent },
       { path: 'checklists', component: ChecklistsComponent },
       { path: 'admin-home', component:AdminHomeComponent},
-      {path: 'employee-profile/:id/:name', component: ViewEmployeeComponent}
+      {path: 'employee-profile/:id/:name', component: ViewEmployeeComponent},
+      {path: 'home', component:HomeComponent}
     ],
   },
 ];

@@ -3,7 +3,7 @@ import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { RouterModule } from '@angular/router';
-import { EmployeesComponent } from "../employees/employees.component";
+import { EmployeesComponent } from '../employees/employees.component';
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
@@ -12,13 +12,15 @@ import { AuthService } from '../../../services/auth.service';
   templateUrl: './admin-home.component.html',
   styleUrl: './admin-home.component.scss',
 })
-export class AdminHomeComponent{
+export class AdminHomeComponent {
   completed: number = 85;
   incomplete: number = 15;
   updateFlag: boolean = false;
 
-
-  constructor(@Inject(PLATFORM_ID) private platformId: Object, private authService: AuthService) {
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private authService: AuthService
+  ) {
     this.isHighcharts = isPlatformBrowser(this.platformId);
   }
   isHighcharts = false;

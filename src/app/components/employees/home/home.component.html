@@ -1,1 +1,14 @@
-<p>home works!</p>
+@if(!isAdmin()){
+<div>
+  <h3>Hi, welcome back! 80% of your profile is complete</h3>
+  <ul class="checklist-items">
+    <li *ngFor="let itemKey of getKeys(onboardingStatus[loggedInUserEmail])">
+      <span
+        >{{ itemKey }} -
+        {{ onboardingStatus[loggedInUserEmail][itemKey] }}</span
+      >
+    </li>
+  </ul>
+</div>
+
+}

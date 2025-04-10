@@ -1,128 +1,128 @@
 @if (isAdmin()) {
-  <mat-dialog-content>
-    <mat-horizontal-stepper #stepper [linear]="true">
-      <!-- Step 1: Basic Information -->
-      <mat-step [stepControl]="basicInfoForm">
-        <form [formGroup]="basicInfoForm">
-          <ng-template matStepLabel>Basic Information</ng-template>
-          <mat-form-field appearance="fill">
-            <input
-              matInput
-              placeholder="Full Name"
-              formControlName="name"
-              required
-            />
-          </mat-form-field>
-          <mat-form-field appearance="fill">
-            <input
-              matInput
-              type="email"
-              placeholder="Email"
-              formControlName="email"
-              required
-            />
-          </mat-form-field>
-          <mat-form-field appearance="fill">
-            <input
-              matInput
-              placeholder="Phone Number"
-              formControlName="phoneNumber"
-              required
-            />
-          </mat-form-field>
-          <div>
-            <button mat-button matStepperNext [disabled]="basicInfoForm.invalid">
-              Next
-            </button>
-          </div>
-        </form>
-      </mat-step>
-  
-      <!-- Step 2: Employment Details -->
-      <mat-step [stepControl]="employmentForm">
-        <form [formGroup]="employmentForm">
-          <ng-template matStepLabel>Employment Details</ng-template>
-  
-          <mat-form-field appearance="fill">
-            <mat-select
-              placeholder="Department"
-              formControlName="department"
-              required
-            >
-              <mat-option value="Product House">Product House</mat-option>
-              <mat-option value="Human resource">Human resource</mat-option>
-            </mat-select>
-          </mat-form-field>
-  
-          <mat-form-field appearance="fill">
-            <mat-select placeholder="Role" formControlName="role" required>
-              <mat-option value="Designer">Designer</mat-option>
-              <mat-option value="Developer">Developer</mat-option>
-              <mat-option value="Hr">Hr</mat-option>
-            </mat-select>
-          </mat-form-field>
-  
-          <mat-form-field appearance="fill">
-            <input
-              matInput
-              [matDatepicker]="picker"
-              placeholder="Start Date"
-              formControlName="startDate"
-              required
-            />
-            <mat-datepicker-toggle
-              matSuffix
-              [for]="picker"
-            ></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
-  
-          <div>
-            <button mat-button matStepperPrevious>Back</button>
-            <button mat-button matStepperNext [disabled]="employmentForm.invalid">
-              Next
-            </button>
-          </div>
-        </form>
-      </mat-step>
-  
-      <!-- Step 3: Review & Submit -->
-      <mat-step>
-        <ng-template matStepLabel>Review & Submit</ng-template>
-        <h3>Review Information</h3>
-        <p><strong>Name:</strong> {{ basicInfoForm.value.name }}</p>
-        <p><strong>Email:</strong> {{ basicInfoForm.value.email }}</p>
-        <p>
-          <strong>Phone Number:</strong> {{ basicInfoForm.value.phoneNumber }}
-        </p>
-        <p><strong>Department:</strong> {{ employmentForm.value.department }}</p>
-        <p><strong>Role:</strong> {{ employmentForm.value.role }}</p>
-        <p>
-          <strong>Start Date:</strong>
-          {{
-            employmentForm.value.startDate
-              ? (employmentForm.value.startDate | date : "shortDate")
-              : ""
-          }}
-        </p>
-        <p><strong>Status:</strong> Onboarding</p>
-  
-        <div class="buttons">
-          <button mat-button matStepperPrevious>Back</button>
-          <button mat-button (click)="onSubmit()">Submit</button>
+<mat-dialog-content>
+  <mat-horizontal-stepper #stepper [linear]="true">
+    <!-- Step 1: Basic Information -->
+    <mat-step [stepControl]="basicInfoForm">
+      <form [formGroup]="basicInfoForm">
+        <ng-template matStepLabel>Basic Information</ng-template>
+        <mat-form-field appearance="fill">
+          <input
+            matInput
+            placeholder="Full Name"
+            formControlName="name"
+            required
+          />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <input
+            matInput
+            type="email"
+            placeholder="Email"
+            formControlName="email"
+            required
+          />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <input
+            matInput
+            placeholder="Phone Number"
+            formControlName="phoneNumber"
+            required
+          />
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperNext [disabled]="basicInfoForm.invalid">
+            Next
+          </button>
         </div>
-      </mat-step>
-    </mat-horizontal-stepper>
-  </mat-dialog-content>
-  
-  <mat-dialog-actions>
-    <button
-      mat-button
-      (click)="onCancel()"
-      style="color: rgb(95, 45, 45); background-color: rgb(230, 190, 190)"
-    >
-      Cancel
-    </button>
-  </mat-dialog-actions>
-  
+      </form>
+    </mat-step>
+
+    <!-- Step 2: Employment Details -->
+    <mat-step [stepControl]="employmentForm">
+      <form [formGroup]="employmentForm">
+        <ng-template matStepLabel>Employment Details</ng-template>
+
+        <mat-form-field appearance="fill">
+          <mat-select
+            placeholder="Department"
+            formControlName="department"
+            required
+          >
+            <mat-option value="Product House">Product House</mat-option>
+            <mat-option value="Human resource">Human resource</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-select placeholder="Role" formControlName="role" required>
+            <mat-option value="Designer">Designer</mat-option>
+            <mat-option value="Developer">Developer</mat-option>
+            <mat-option value="Hr">Hr</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <input
+            matInput
+            [matDatepicker]="picker"
+            placeholder="Start Date"
+            formControlName="startDate"
+            required
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext [disabled]="employmentForm.invalid">
+            Next
+          </button>
+        </div>
+      </form>
+    </mat-step>
+
+    <!-- Step 3: Review & Submit -->
+    <mat-step>
+      <ng-template matStepLabel>Review & Submit</ng-template>
+      <h3>Review Information</h3>
+      <p><strong>Name:</strong> {{ basicInfoForm.value.name }}</p>
+      <p><strong>Email:</strong> {{ basicInfoForm.value.email }}</p>
+      <p>
+        <strong>Phone Number:</strong> {{ basicInfoForm.value.phoneNumber }}
+      </p>
+      <p><strong>Department:</strong> {{ employmentForm.value.department }}</p>
+      <p><strong>Role:</strong> {{ employmentForm.value.role }}</p>
+      <p>
+        <strong>Start Date:</strong>
+        {{
+          employmentForm.value.startDate
+            ? (employmentForm.value.startDate | date : "shortDate")
+            : ""
+        }}
+      </p>
+      <p><strong>Status:</strong> Onboarding</p>
+
+      <div class="buttons">
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button (click)="onSubmit()">Submit</button>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button
+    mat-button
+    (click)="onCancel()"
+    style="color: rgb(95, 45, 45); background-color: rgb(230, 190, 190)"
+  >
+    Cancel
+  </button>
+</mat-dialog-actions>
+
 }

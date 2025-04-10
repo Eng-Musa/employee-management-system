@@ -69,7 +69,7 @@ export class DashboardLayoutComponent implements OnInit {
       // Check the window width if running in the browser
       if (window.innerWidth < 568) {
         this.isExpanded = false;
-      }      
+      }
     }
   }
 
@@ -120,10 +120,10 @@ export class DashboardLayoutComponent implements OnInit {
   goHome() {
     if (this.isAdmin()) {
       this.router.navigate(['dashboard/admin-home']);
+  
+    } else if (!this.isAdmin()) {
+      this.router.navigate(['dashboard/home']);
     }
-    // } else if (this.isAdmin()) {
-    //   this.router.navigate(['dashboard/landlord-home']);
-    // }
   }
 
   goToChecklists() {

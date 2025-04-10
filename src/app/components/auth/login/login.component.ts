@@ -91,7 +91,7 @@ export class LoginComponent implements OnInit {
               (emp: any) => emp.email === email && emp.password === password
             );
             if (authenticatedUser) {
-              this.router.navigate(['/dashboard']);
+              this.router.navigate(['/dashboard/home']);
               this.updateLastLogin();
             }
           }

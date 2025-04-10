@@ -1,34 +1,34 @@
 @if (isAdmin()) {
-  <div class="page-wrapper">
-    @if (isHighcharts) {
-    <div class="chart-container">
-      <div class="onboarding-card">
-        <p>Onboarding completion rate</p>
-        <div class="card-content">
-          <highcharts-chart
-            [Highcharts]="Highcharts"
-            [options]="pieChart"
-            [(update)]="updateFlag"
-          ></highcharts-chart>
-          <div class="selection-div">
-            <span>Complete: {{ completed }}%</span>
-            <span>Incomplete: {{ incomplete }}%</span>
-          </div>
-        </div>
-      </div>
-  
-      <div>
+<div class="page-wrapper">
+  @if (isHighcharts) {
+  <div class="chart-container">
+    <div class="onboarding-card">
+      <p>Onboarding completion rate</p>
+      <div class="card-content">
         <highcharts-chart
           [Highcharts]="Highcharts"
-          [options]="barChart"
+          [options]="pieChart"
+          [(update)]="updateFlag"
         ></highcharts-chart>
+        <div class="selection-div">
+          <span>Complete: {{ completed }}%</span>
+          <span>Incomplete: {{ incomplete }}%</span>
+        </div>
       </div>
     </div>
-    }
-  
+
     <div>
-      <app-employees></app-employees>
+      <highcharts-chart
+        [Highcharts]="Highcharts"
+        [options]="barChart"
+      ></highcharts-chart>
     </div>
   </div>
-  
+  }
+
+  <div>
+    <app-employees></app-employees>
+  </div>
+</div>
+
 }
