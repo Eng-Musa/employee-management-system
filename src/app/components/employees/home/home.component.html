@@ -1,14 +1,21 @@
 @if(!isAdmin()){
 <div>
-  <h3>Hi, welcome back! 80% of your profile is complete</h3>
+  <h3>
+    Hi, welcome back! {{ calculateCompletionPercentage() }}% of your profile is
+    complete
+  </h3>
   <ul class="checklist-items">
     <li *ngFor="let itemKey of getKeys(onboardingStatus[loggedInUserEmail])">
       <span
-        >{{ itemKey }} -
-        {{ onboardingStatus[loggedInUserEmail][itemKey] }}</span
-      >
+        >{{ itemKey }}
+        @if(!onboardingStatus[loggedInUserEmail][itemKey]){
+        <button mat-button type="submit">Submit</button>}
+        @if(onboardingStatus[loggedInUserEmail][itemKey]){<mat-icon
+          >done</mat-icon
+        >
+        }
+      </span>
     </li>
   </ul>
 </div>
-
 }
