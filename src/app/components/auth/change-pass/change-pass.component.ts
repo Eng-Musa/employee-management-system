@@ -17,6 +17,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { AlertService } from '../../../services/alert.service';
 import { MatButtonModule } from '@angular/material/button';
 import { LoggedInPerson } from '../../view-profile/view-profile.component';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-change-pass',
@@ -35,16 +36,7 @@ import { LoggedInPerson } from '../../view-profile/view-profile.component';
   styleUrl: './change-pass.component.scss',
 })
 export class ChangePassComponent implements OnInit {
-  loggedInPerson: LoggedInPerson = {
-    name: 'Unknown',
-    email: 'Unknown',
-    password: 'Unknown',
-    createdDate: 'Unknown',
-    role: 'Unknown',
-    phoneNumber: 'Unknown',
-    lastLogin: 'Unknown',
-    lastPasswordChange: 'Unknown',
-  };
+  loggedInPerson: any = {};
 
   passwordForm: FormGroup;
   loading = false;
@@ -57,7 +49,8 @@ export class ChangePassComponent implements OnInit {
     public dialogRef: MatDialogRef<ChangePassComponent>,
     private fb: FormBuilder,
     private alertService: AlertService,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private authService: AuthService
   ) {
     this.passwordForm = this.fb.group({
       oldPassword: ['', Validators.required],
@@ -95,16 +88,32 @@ export class ChangePassComponent implements OnInit {
         } else if (this.loggedInPerson.password !== oldPassword) {
           this.message = 'Wrong old password';
         } else {
-          this.loggedInPerson.password = password;
-          this.loggedInPerson.lastPasswordChange = new Date()
-            .toISOString()
-            .slice(0, 16);
-          localStorage.setItem(
-            'adminUser',
-            JSON.stringify(this.loggedInPerson)
-          );
-          this.isSuccess = true;
-          this.message = 'Password change successfull';
+          if (this.authService.getUserType() === 'admin') {
+            this.loggedInPerson.password = password;
+            this.loggedInPerson.lastPasswordChange = new Date()
+              .toISOString()
+              .slice(0, 16);
+            localStorage.setItem(
+              'adminUser',
+              JSON.stringify(this.loggedInPerson)
+            );
+            this.isSuccess = true;
+            this.message = 'Password change successfull';
+          } else {
+            this.loggedInPerson.password = password;
+            this.loggedInPerson.lastPasswordChange = new Date()
+              .toLocaleString('en-US', {
+                timeZone: 'Africa/Nairobi',
+              })
+              .slice(0, 16)
+              .replace(',', '');
+
+            this.employees[this.loggedinEmail] = this.loggedInPerson;
+
+            localStorage.setItem('employees', JSON.stringify(this.employees));
+            this.isSuccess = true;
+            this.message = 'Password change successfull';
+          }
         }
       }
     }, 1000);
@@ -114,26 +123,47 @@ export class ChangePassComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  employees: any = {};
+  loggedinEmail: string = '';
   getLoggedInPerson() {
     if (isPlatformBrowser(this.platformId)) {
-      const storedUserStr = localStorage.getItem('adminUser');
-      if (storedUserStr) {
-        this.loggedInPerson = JSON.parse(storedUserStr) as LoggedInPerson;
-        this.lastPasswordChange = this.getTimeDifference(
-          this.loggedInPerson.lastPasswordChange
-        );
+      if (this.authService.getUserType() === 'admin') {
+        const storedUserStr = localStorage.getItem('adminUser');
+        if (storedUserStr) {
+          this.loggedInPerson = JSON.parse(storedUserStr);
+          this.lastPasswordChange = this.getTimeDifference(
+            this.loggedInPerson.lastPasswordChange
+          );
+        } else {
+          this.alertService.showErrorToastr('No user found in localStorage.');
+        }
       } else {
-        this.alertService.showErrorToastr('No user found in localStorage.');
+        this.loggedinEmail = this.authService.getLoggedInEmail();
+        const employeeString = localStorage.getItem('employees');
+        if (employeeString) {
+          this.employees = JSON.parse(employeeString);
+          this.loggedInPerson = this.employees.find(
+            (emp: any) => emp.email === this.loggedinEmail
+          );
+
+          if (this.loggedInPerson.lastPasswordChange === 'Never') {
+            this.lastPasswordChange = 'Never';
+          } else {
+            this.lastPasswordChange = this.getTimeDifference(
+              this.loggedInPerson.lastPasswordChange
+            );
+          }
+        }
       }
     }
+
+    console.log(this.loggedInPerson);
   }
 
   getTimeDifference(lastPasswordChange: string): string {
-    // Parse the input date string
     const lastChangeDate = new Date(lastPasswordChange);
     const currentDate = new Date();
 
-    // Calculate the difference in milliseconds
     const differenceInMilliseconds =
       currentDate.getTime() - lastChangeDate.getTime();
 
@@ -143,8 +173,8 @@ export class ChangePassComponent implements OnInit {
     const hours = Math.floor(minutes / 60);
     const days = Math.floor(hours / 24);
     const weeks = Math.floor(days / 7);
-    const months = Math.floor(days / 30); // Approximate months (30 days)
-    const years = Math.floor(days / 365); // Approximate years (365 days)
+    const months = Math.floor(days / 30); 
+    const years = Math.floor(days / 365); 
 
     // Determine the relative time difference and return it
     if (years > 0) {
