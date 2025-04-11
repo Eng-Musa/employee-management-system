@@ -9,8 +9,15 @@
       <span
         >{{ itemKey }}
         @if(!onboardingStatus[loggedInUserEmail][itemKey]){
-        <button mat-button type="submit">Submit</button>}
-        @if(onboardingStatus[loggedInUserEmail][itemKey]){<mat-icon
+        <button mat-button type="submit" (click)="onSumit(itemKey)">
+          @if(!loading[itemKey]){
+          <span>Submit</span>
+          } @if(loading[itemKey]){
+          <div class="container">
+            <div class="dot" style="background-color: black"></div>
+          </div>
+          }</button
+        >} @if(onboardingStatus[loggedInUserEmail][itemKey]){<mat-icon
           >done</mat-icon
         >
         }

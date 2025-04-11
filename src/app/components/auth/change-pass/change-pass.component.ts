@@ -6,6 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import {
@@ -15,8 +16,6 @@ import {
 } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { AlertService } from '../../../services/alert.service';
-import { MatButtonModule } from '@angular/material/button';
-import { LoggedInPerson } from '../../view-profile/view-profile.component';
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
@@ -173,8 +172,8 @@ export class ChangePassComponent implements OnInit {
     const hours = Math.floor(minutes / 60);
     const days = Math.floor(hours / 24);
     const weeks = Math.floor(days / 7);
-    const months = Math.floor(days / 30); 
-    const years = Math.floor(days / 365); 
+    const months = Math.floor(days / 30);
+    const years = Math.floor(days / 365);
 
     // Determine the relative time difference and return it
     if (years > 0) {

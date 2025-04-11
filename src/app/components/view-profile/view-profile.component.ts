@@ -47,7 +47,7 @@ export class ViewProfileComponent implements OnInit {
       if (this.authService.getUserType() === 'admin') {
         const storedUserStr = localStorage.getItem('adminUser');
         if (storedUserStr) {
-          this.loggedInPerson = JSON.parse(storedUserStr) as LoggedInPerson;
+          this.loggedInPerson = JSON.parse(storedUserStr);
         } else {
           this.alertService.showErrorToastr(
             'No admin user found in local storage.'

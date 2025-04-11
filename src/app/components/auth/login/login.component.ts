@@ -6,11 +6,11 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { AlertService } from '../../../services/alert.service';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { Router, RouterModule } from '@angular/router';
+import { AlertService } from '../../../services/alert.service';
 
 @Component({
   selector: 'app-login',
@@ -58,7 +58,6 @@ export class LoginComponent implements OnInit {
       this.message = '';
 
       if (isPlatformBrowser(this.platformId)) {
-        // Retrieve the stored admin and employees from localStorage
         const storedAdminStr = localStorage.getItem('adminUser');
         const storedEmployeesStr = localStorage.getItem('employees');
 
@@ -67,10 +66,8 @@ export class LoginComponent implements OnInit {
           const email = this.loginForm.get('email')?.value;
           const password = this.loginForm.get('password')?.value;
 
-          // Initialize a variable to hold the authenticated user
           let authenticatedUser = null;
 
-          // First, check if there's an admin user and if the credentials match
           if (storedAdminStr) {
             const storedAdmin = JSON.parse(storedAdminStr);
             if (
@@ -83,10 +80,8 @@ export class LoginComponent implements OnInit {
             }
           }
 
-          // If no admin was authenticated, check the employees list
           if (!authenticatedUser && storedEmployeesStr) {
             const employees = JSON.parse(storedEmployeesStr);
-            // Find an employee with matching credentials
             authenticatedUser = employees.find(
               (emp: any) => emp.email === email && emp.password === password
             );
@@ -96,21 +91,18 @@ export class LoginComponent implements OnInit {
             }
           }
 
-          // If neither admin nor employee matched, show an error message
           if (!authenticatedUser) {
             this.message = 'Invalid credentials provided.';
           }
           this.loading = false;
         }, 1000);
       } else {
-        // Handle cases where localStorage isn't available
         setTimeout(() => {
           this.loading = false;
           this.message = 'localStorage is not available in this environment.';
         }, 1000);
       }
     } else {
-      // For an invalid form, still show a short delay before notifying the user
       setTimeout(() => {
         this.loading = false;
         this.alertService.showErrorToastr(
@@ -153,14 +145,12 @@ export class LoginComponent implements OnInit {
   }
 
   updateLastLogin(): void {
-    // Retrieve the email input from the login form
     const email = this.loginForm.get('email')?.value;
     const currentDate = new Date()
       .toLocaleString('en-US', { timeZone: 'Africa/Nairobi' })
       .slice(0, 16)
       .replace(',', '');
 
-    // Attempt to update admin user login if it matches the provided email
     const storedAdminStr = localStorage.getItem('adminUser');
     if (storedAdminStr) {
       const adminUser = JSON.parse(storedAdminStr);
@@ -173,7 +163,6 @@ export class LoginComponent implements OnInit {
       }
     }
 
-    // If admin doesn't match, look for the employee in the employees array.
     const storedEmployeesStr = localStorage.getItem('employees');
     if (storedEmployeesStr) {
       const employees = JSON.parse(storedEmployeesStr);

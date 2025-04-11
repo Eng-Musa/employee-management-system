@@ -1,10 +1,10 @@
-import { Component, Inject, PLATFORM_ID } from '@angular/core';
-import { AuthService } from '../../../services/auth.service';
-import { ChecklistData } from '../../admin/checklists/checklists.component';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { AlertService } from '../../../services/alert.service';
+import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { AlertService } from '../../../services/alert.service';
+import { AuthService } from '../../../services/auth.service';
+import { ChecklistData } from '../../admin/checklists/checklists.component';
 
 @Component({
   selector: 'app-home',
@@ -55,6 +55,34 @@ export class HomeComponent {
     this.loadOnboardingStatus();
   }
 
+  loading: { [key: string]: boolean } = {};
+
+  onSumit(itemKey: string): void {
+    this.loading[itemKey] = true;
+    setTimeout(() => {
+      this.loading[itemKey] = false;
+      if (!this.onboardingStatus[this.loggedInUserEmail]) {
+        this.alertService.showErrorToastr(
+          'Error occured while processing request.'
+        );
+        return;
+      }
+
+      this.onboardingStatus[this.loggedInUserEmail][itemKey] = true;
+
+      if (isPlatformBrowser(this.platformId)) {
+        localStorage.setItem(
+          this.LOCAL_STORAGE_KEY_ONBOARDING,
+          JSON.stringify(this.onboardingStatus)
+        );
+
+        this.alertService.showSuccessToastr(
+          `${itemKey} submitted successfully`
+        );
+      }
+    }, 1000);
+  }
+
   loadChecklistData(): void {
     if (isPlatformBrowser(this.platformId)) {
       const savedData = localStorage.getItem(this.LOCAL_STORAGE_KEY);
@@ -80,7 +108,6 @@ export class HomeComponent {
 
   storeOnboardingStatus(): void {
     if (isPlatformBrowser(this.platformId)) {
-      // Retrieve any existing onboarding status from local storage.
       let existingData: { [email: string]: { [key: string]: boolean } } = {};
       const savedData = localStorage.getItem(this.LOCAL_STORAGE_KEY_ONBOARDING);
       if (savedData) {
@@ -93,7 +120,6 @@ export class HomeComponent {
         }
       }
 
-      // If onboarding data for the logged-in email exists, do nothing.
       if (existingData[this.loggedInUserEmail]) {
         return;
       }
@@ -112,7 +138,6 @@ export class HomeComponent {
         ...this.checklistData.checklists.hr,
       ];
 
-      // Determine the new checklist data based on the user role.
       let newChecklist: { [key: string]: boolean } = {};
       if (this.isDesigner()) {
         newChecklist = this.transformChecklist(designerChecklist);
@@ -121,17 +146,13 @@ export class HomeComponent {
       } else if (this.isHr()) {
         newChecklist = this.transformChecklist(hrChecklist);
       } else {
-        // Optionally, handle the case when the role is not recognized.
         this.alertService.showErrorToastr(
           'User role not recognized for onboarding status.'
         );
         return;
       }
 
-      // Use the user's email as the key.
-      const currentEmail = this.loggedInUserEmail;
-      // Update the checklist for the current email while keeping entries for other emails intact.
-      existingData[currentEmail] = newChecklist;
+      existingData[this.loggedInUserEmail] = newChecklist;
 
       localStorage.setItem(
         this.LOCAL_STORAGE_KEY_ONBOARDING,
@@ -140,7 +161,6 @@ export class HomeComponent {
     }
   }
 
-  // Load the onboarding status from local storage for display purposes.
   loadOnboardingStatus(): void {
     if (isPlatformBrowser(this.platformId)) {
       const savedData = localStorage.getItem(this.LOCAL_STORAGE_KEY_ONBOARDING);
@@ -156,7 +176,7 @@ export class HomeComponent {
     }
   }
 
-  // Helper method to get keys for an object; handy for ngFor in the template.
+  // Helper method to get keys for an object;
   getKeys(obj: any): string[] {
     return Object.keys(obj);
   }
@@ -179,6 +199,6 @@ export class HomeComponent {
         completedItems++;
       }
     }
-    return (completedItems / totalItems) * 100;
+    return parseFloat(((completedItems / totalItems) * 100).toFixed(0));
   }
 }
