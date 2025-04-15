@@ -42,7 +42,7 @@ export class HomeComponent {
   }
 
   isHr(): boolean {
-    return this.authService.getUserType() === 'HR';
+    return this.authService.getUserType() === 'Hr';
   }
 
   isDesigner(): boolean {
