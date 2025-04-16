@@ -5,6 +5,7 @@ import { HighchartsChartModule } from 'highcharts-angular';
 import { RouterModule } from '@angular/router';
 import { EmployeesComponent } from '../employees/employees.component';
 import { AuthService } from '../../../services/auth.service';
+import { AlertService } from '../../../services/alert.service';
 
 @Component({
   selector: 'app-admin-home',
@@ -12,17 +13,28 @@ import { AuthService } from '../../../services/auth.service';
   templateUrl: './admin-home.component.html',
   styleUrl: './admin-home.component.scss',
 })
-export class AdminHomeComponent {
+export class AdminHomeComponent implements OnInit {
   completed: number = 85;
   incomplete: number = 15;
   updateFlag: boolean = false;
+  private readonly LOCAL_STORAGE_KEY_ONBOARDING = 'onboardingStatus';
+  onboardingStatus: any = {};
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
-    private authService: AuthService
+    private authService: AuthService,
+    private alertService: AlertService
   ) {
     this.isHighcharts = isPlatformBrowser(this.platformId);
   }
+
+  ngOnInit(): void {
+    this.loadOnboardingStatus();
+    this.calculateCompletionPercentage();
+  }
+
+  
+
   isHighcharts = false;
   Highcharts: typeof Highcharts = Highcharts;
   pieChart: Highcharts.Options = {
@@ -177,5 +189,62 @@ export class AdminHomeComponent {
 
   isAdmin(): boolean {
     return this.authService.getUserType() === 'admin';
+  }
+
+  loadOnboardingStatus(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      const savedData = localStorage.getItem(this.LOCAL_STORAGE_KEY_ONBOARDING);
+      if (savedData) {
+        try {
+          this.onboardingStatus = JSON.parse(savedData);
+        } catch (error) {
+          this.alertService.showErrorToastr(
+            'Failed to load onboarding status from local storage.'
+          );
+        }
+      }
+    }
+  }
+
+  // Helper method to get keys for an object;
+  getKeys(obj: any): string[] {
+    return Object.keys(obj);
+  }
+
+  calculateCompletionPercentage(): void {
+    let totalTasks = 0;
+    let completedTasks = 0;
+
+    for (const userEmail in this.onboardingStatus) {
+      if (this.onboardingStatus.hasOwnProperty(userEmail)) {
+        const userChecklist = this.onboardingStatus[userEmail];
+        const keys = this.getKeys(userChecklist);
+        totalTasks += keys.length;
+
+        for (const key of keys) {
+          if (userChecklist[key]) {
+            completedTasks++;
+          }
+        }
+      }
+    }
+
+    const percentage = totalTasks ? (completedTasks / totalTasks) * 100 : 0;
+    this.completed = Math.round(percentage);
+    this.incomplete = 100 - this.completed;
+
+    if (this.pieChart.series && this.pieChart.series.length > 0) {
+      // Safe to access series[0]
+      this.pieChart.series[0] = {
+        type: 'pie',
+        data: [
+          { name: 'Paid', y: this.completed, color: '#28a745' },
+          { name: 'Unpaid', y: this.incomplete, color: '#dc3545' },
+        ],
+      };
+    }
+
+    // Update the chart to reflect the new data
+    this.updateFlag = true;
   }
 }
