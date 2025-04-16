@@ -1,6 +1,9 @@
 // regular style toast
 @use "ngx-toastr/toastr" as toastr;
 
+// Stepper
+@use "@angular/material" as mat;
+
 /* You can add global styles to this file, and also import other style files */
 @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;700&family=Noto+Sans:wght@300;400;700&display=swap");
 
@@ -89,6 +92,18 @@ h6 {
   50% {
     transform: scale(1);
   }
+}
+
+// Customize the entire app. Change :root to your selector if you want to scope the styles.
+:root {
+  @include mat.stepper-overrides(
+    (
+      header-icon-foreground-color: white,
+      header-selected-state-icon-background-color: black,
+      header-hover-state-layer-color: transparent,
+      header-focus-state-layer-color: transparent,
+    )
+  );
 }
 
 @mixin background-image {
