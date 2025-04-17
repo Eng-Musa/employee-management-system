@@ -9,7 +9,7 @@
       <span
         >{{ itemKey }}
         @if(!onboardingStatus[loggedInUserEmail][itemKey]){
-        <button mat-button type="submit" (click)="onSumit(itemKey)">
+        <button mat-button type="submit" (click)="openSubmitDialog(itemKey)">
           @if(!loading[itemKey]){
           <span>Submit</span>
           } @if(loading[itemKey]){

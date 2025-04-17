@@ -5,6 +5,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { AlertService } from '../../../services/alert.service';
 import { AuthService } from '../../../services/auth.service';
 import { ChecklistData } from '../../admin/checklists/checklists.component';
+import { SubmitDialogComponent } from '../submit-dialog/submit-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { delay } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -31,7 +34,8 @@ export class HomeComponent {
   constructor(
     private authService: AuthService,
     @Inject(PLATFORM_ID) private platformId: Object,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private dialog: MatDialog
   ) {}
 
   isAdmin(): boolean {
@@ -86,6 +90,23 @@ export class HomeComponent {
       }
     }, 1000);
   }
+
+    openSubmitDialog(itemKey: string): void {
+      console.log(itemKey)
+      const dialogRef = this.dialog.open(SubmitDialogComponent, {
+        width: '40vw',
+        maxHeight: '90vh',
+        height: 'auto',
+        data: {itemKey},
+      });
+  
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          delay(3000);
+          this.onSumit(itemKey);
+        }
+      });
+    }
 
   loadChecklistData(): void {
     if (isPlatformBrowser(this.platformId)) {
