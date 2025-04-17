@@ -124,11 +124,7 @@ export class HomeComponent {
         }
       }
 
-      if (existingData[this.loggedInUserEmail]) {
-        return;
-      }
-
-      // Combine common checklist items with role-specific checklist items.
+      // Combine common checklist items with role-specific items.
       const designerChecklist = [
         ...this.checklistData.checklists.common,
         ...this.checklistData.checklists.designer,
@@ -142,6 +138,7 @@ export class HomeComponent {
         ...this.checklistData.checklists.hr,
       ];
 
+      // Compute the new checklist based on the user's role.
       let newChecklist: { [key: string]: boolean } = {};
       if (this.isDesigner()) {
         newChecklist = this.transformChecklist(designerChecklist);
@@ -156,12 +153,42 @@ export class HomeComponent {
         return;
       }
 
-      existingData[this.loggedInUserEmail] = newChecklist;
+      // If checklist exists for this user, compare and update if needed.
+      if (existingData[this.loggedInUserEmail]) {
+        const storedChecklist = existingData[this.loggedInUserEmail];
+        let changed = false;
 
-      localStorage.setItem(
-        this.LOCAL_STORAGE_KEY_ONBOARDING,
-        JSON.stringify(existingData)
-      );
+        // Add any missing fields
+        for (const key in newChecklist) {
+          if (!(key in storedChecklist)) {
+            storedChecklist[key] = newChecklist[key]; // typically false
+            changed = true;
+          }
+        }
+
+        // Remove fields not in the current definition.
+        for (const key in storedChecklist) {
+          if (!(key in newChecklist)) {
+            delete storedChecklist[key];
+            changed = true;
+          }
+        }
+
+        if (changed) {
+          existingData[this.loggedInUserEmail] = storedChecklist;
+          localStorage.setItem(
+            this.LOCAL_STORAGE_KEY_ONBOARDING,
+            JSON.stringify(existingData)
+          );
+        }
+      } else {
+        // If no record exists, simply store the new checklist.
+        existingData[this.loggedInUserEmail] = newChecklist;
+        localStorage.setItem(
+          this.LOCAL_STORAGE_KEY_ONBOARDING,
+          JSON.stringify(existingData)
+        );
+      }
     }
   }
 
