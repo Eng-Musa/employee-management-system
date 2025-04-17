@@ -19,6 +19,7 @@ export class AdminHomeComponent implements OnInit {
   updateFlag: boolean = false;
   private readonly LOCAL_STORAGE_KEY_ONBOARDING = 'onboardingStatus';
   onboardingStatus: any = {};
+  totalEmployees: number = 0;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -29,11 +30,10 @@ export class AdminHomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.calculateTotalEmployees();
     this.loadOnboardingStatus();
     this.calculateCompletionPercentage();
   }
-
-  
 
   isHighcharts = false;
   Highcharts: typeof Highcharts = Highcharts;
@@ -65,7 +65,7 @@ export class AdminHomeComponent implements OnInit {
       text: `
         <div style="text-align: center; font-family: Arial, sans-serif;">
           <span style="font-size: 12px; color: #6c757d;">Total</span><br>
-          <span style="font-size: 14px; font-weight: bold; color: #000;">608</span>
+          <span style="font-size: 14px; font-weight: bold; color: #000;">${this.totalEmployees}</span>
         </div>
       `,
     },
@@ -200,6 +200,38 @@ export class AdminHomeComponent implements OnInit {
         } catch (error) {
           this.alertService.showErrorToastr(
             'Failed to load onboarding status from local storage.'
+          );
+        }
+      }
+    }
+  }
+
+  calculateTotalEmployees(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      const savedEmployees = localStorage.getItem('employees');
+      if (savedEmployees) {
+        try {
+          const employees = JSON.parse(savedEmployees);
+          this.totalEmployees = Array.isArray(employees) ? employees.length : 0;
+          this.pieChart = {
+            ...this.pieChart,
+            title: {
+              verticalAlign: 'middle',
+              floating: true,
+              useHTML: true,
+              text: `
+                <div style="text-align: center; font-family: Arial, sans-serif;">
+                  <span style="font-size: 12px; color: #6c757d;">Total</span><br>
+                  <span style="font-size: 14px; font-weight: bold; color: #000;">${this.totalEmployees}</span>
+                </div>
+              `,
+            },
+          };
+
+          this.updateFlag = true;
+        } catch (error) {
+          this.alertService.showErrorToastr(
+            'Failed to load employee data from local storage.'
           );
         }
       }
