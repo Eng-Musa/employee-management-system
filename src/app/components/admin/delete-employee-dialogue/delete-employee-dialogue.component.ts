@@ -1,14 +1,13 @@
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import {
-  MatDialogRef,
   MAT_DIALOG_DATA,
-  MatDialog,
   MatDialogContent,
   MatDialogModule,
+  MatDialogRef,
 } from '@angular/material/dialog';
 import { AlertService } from '../../../services/alert.service';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-delete-employee-dialogue',
@@ -62,12 +61,17 @@ export class DeleteEmployeeDialogueComponent {
 
       // Delete associated employee onboarding status
 
-      const onboardingStatusStr = localStorage.getItem(this.LOCAL_STORAGE_KEY_ONBOARDING);
-      if(onboardingStatusStr){
+      const onboardingStatusStr = localStorage.getItem(
+        this.LOCAL_STORAGE_KEY_ONBOARDING
+      );
+      if (onboardingStatusStr) {
         const onboardingStatus = JSON.parse(onboardingStatusStr);
-        if(onboardingStatus[this.data.email]){
+        if (onboardingStatus[this.data.email]) {
           delete onboardingStatus[this.data.email];
-          localStorage.setItem(this.LOCAL_STORAGE_KEY_ONBOARDING, JSON.stringify(onboardingStatus));
+          localStorage.setItem(
+            this.LOCAL_STORAGE_KEY_ONBOARDING,
+            JSON.stringify(onboardingStatus)
+          );
         }
       }
     }

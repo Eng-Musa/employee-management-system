@@ -14,6 +14,7 @@ import {
   MatInputModule,
   MatLabel,
 } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -21,7 +22,6 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router, RouterModule } from '@angular/router';
 import { delay } from 'rxjs';
-import { MatMenuModule } from '@angular/material/menu';
 import { AddEmployeeDialogueComponent } from '../add-employee-dialogue/add-employee-dialogue.component';
 import { DeleteEmployeeDialogueComponent } from '../delete-employee-dialogue/delete-employee-dialogue.component';
 

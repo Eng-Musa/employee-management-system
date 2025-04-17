@@ -20,6 +20,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatStepperModule } from '@angular/material/stepper';
 import { AlertService } from '../../../services/alert.service';
 import { AuthService } from '../../../services/auth.service';
+import { ChecklistData } from '../checklists/checklists.component';
 
 @Component({
   selector: 'app-add-employee-dialogue',
@@ -41,10 +42,20 @@ import { AuthService } from '../../../services/auth.service';
   styleUrl: './add-employee-dialogue.component.scss',
 })
 export class AddEmployeeDialogueComponent {
+  private readonly LOCAL_STORAGE_KEY_CHECKLIST = 'checklistData';
+  private readonly LOCAL_STORAGE_KEY_ONBOARDING = 'onboardingStatus';
   basicInfoForm: FormGroup;
   employmentForm: FormGroup;
 
   employeesData: any[] = [];
+  checklistData: ChecklistData = {
+    checklists: {
+      common: [],
+      designer: [],
+      developer: [],
+      hr: [],
+    },
+  };
 
   constructor(
     public dialogRef: MatDialogRef<AddEmployeeDialogueComponent>,
@@ -117,6 +128,7 @@ export class AddEmployeeDialogueComponent {
 
     this.employeesData.push(employee);
     this.saveToLocalStorage();
+    this.storeOnboardingStatus();
     this.alertService.showSuccessToastr('Added employee successfully.');
     // Pass the employee data back and close the dialog.
     this.dialogRef.close(employee);
@@ -124,5 +136,85 @@ export class AddEmployeeDialogueComponent {
 
   isAdmin(): boolean {
     return this.authService.getUserType() === 'admin';
+  }
+
+  loadChecklistData(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      const savedData = localStorage.getItem(this.LOCAL_STORAGE_KEY_CHECKLIST);
+      if (savedData) {
+        try {
+          this.checklistData = JSON.parse(savedData) as ChecklistData;
+        } catch (error) {
+          this.alertService.showErrorToastr(
+            'Failed to parse checklist data from local storage.'
+          );
+        }
+      }
+    }
+  }
+
+  storeOnboardingStatus(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      let existingData: { [email: string]: { [key: string]: boolean } } = {};
+      const savedData = localStorage.getItem(this.LOCAL_STORAGE_KEY_ONBOARDING);
+      if (savedData) {
+        try {
+          existingData = JSON.parse(savedData);
+        } catch (error) {
+          this.alertService.showErrorToastr(
+            'Failed to parse onboarding status from local storage.'
+          );
+        }
+      }
+
+      if (existingData[this.basicInfoForm.value.email]) {
+        return;
+      }
+
+      this.loadChecklistData();
+      // Combine common checklist items with role-specific checklist items.
+      const designerChecklist = [
+        ...this.checklistData.checklists.common,
+        ...this.checklistData.checklists.designer,
+      ];
+      const developerChecklist = [
+        ...this.checklistData.checklists.common,
+        ...this.checklistData.checklists.developer,
+      ];
+      const hrChecklist = [
+        ...this.checklistData.checklists.common,
+        ...this.checklistData.checklists.hr,
+      ];
+
+      let newChecklist: { [key: string]: boolean } = {};
+
+      if (this.employmentForm.value.role === 'Designer') {
+        newChecklist = this.transformChecklist(designerChecklist);
+      } else if (this.employmentForm.value.role === 'Developer') {
+        newChecklist = this.transformChecklist(developerChecklist);
+      } else if (this.employmentForm.value.role === 'Hr') {
+        newChecklist = this.transformChecklist(hrChecklist);
+      } else {
+        this.alertService.showErrorToastr(
+          'User role not recognized for onboarding status.'
+        );
+        return;
+      }
+
+      existingData[this.basicInfoForm.value.email] = newChecklist;
+
+      localStorage.setItem(
+        this.LOCAL_STORAGE_KEY_ONBOARDING,
+        JSON.stringify(existingData)
+      );
+    }
+  }
+
+  transformChecklist(items: string[]): { [key: string]: boolean } {
+    let checklist: { [key: string]: boolean } = {};
+    for (let i = 0; i < items.length; i++) {
+      checklist[items[i]] = false;
+    }
+    return checklist;
   }
 }
