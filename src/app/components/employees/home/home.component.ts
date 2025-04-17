@@ -15,6 +15,7 @@ import { ChecklistData } from '../../admin/checklists/checklists.component';
 export class HomeComponent {
   private readonly LOCAL_STORAGE_KEY = 'checklistData';
   private readonly LOCAL_STORAGE_KEY_ONBOARDING = 'onboardingStatus';
+  private readonly LOCAL_STORAGE_KEY_EMPLOYEES = 'employees';
   checklistData: ChecklistData = {
     checklists: {
       common: [],
@@ -53,6 +54,7 @@ export class HomeComponent {
     this.loadChecklistData();
     this.storeOnboardingStatus();
     this.loadOnboardingStatus();
+    this.updateOverallOnboardingStatus();
   }
 
   loading: { [key: string]: boolean } = {};
@@ -79,6 +81,8 @@ export class HomeComponent {
         this.alertService.showSuccessToastr(
           `${itemKey} submitted successfully`
         );
+
+        this.updateOverallOnboardingStatus();
       }
     }, 1000);
   }
@@ -200,5 +204,33 @@ export class HomeComponent {
       }
     }
     return parseFloat(((completedItems / totalItems) * 100).toFixed(0));
+  }
+
+  updateOverallOnboardingStatus(): void {
+    if (
+      this.calculateCompletionPercentage() === 100 &&
+      isPlatformBrowser(this.platformId)
+    ) {
+      const employeesStr = localStorage.getItem(
+        this.LOCAL_STORAGE_KEY_EMPLOYEES
+      );
+      if (employeesStr) {
+        const employees = JSON.parse(employeesStr);
+
+        const employeeIndex = employees.findIndex(
+          (emp: any) => emp.email === this.loggedInUserEmail
+        );
+
+        if (employeeIndex !== -1) {
+          employees[employeeIndex].status = 'Created';
+          localStorage.setItem(
+            this.LOCAL_STORAGE_KEY_EMPLOYEES,
+            JSON.stringify(employees)
+          );
+        }
+      } else {
+        this.alertService.showErrorToastr('No employees found');
+      }
+    }
   }
 }
