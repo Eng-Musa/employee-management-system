@@ -168,7 +168,13 @@
           <button
             mat-menu-item
             style="color: rgba(220, 20, 60, 0.7)"
-            (click)="openDeleteEmployeeDialog(employee.id, employee.name)"
+            (click)="
+              openDeleteEmployeeDialog(
+                employee.id,
+                employee.name,
+                employee.email
+              )
+            "
           >
             <mat-icon style="color: rgba(220, 20, 60, 0.7)">delete</mat-icon>
             <span style="margin-left: 8px">Delete</span>

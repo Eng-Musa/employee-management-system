@@ -117,12 +117,12 @@ export class EmployeesComponent implements OnInit {
     });
   }
 
-  openDeleteEmployeeDialog(id: number, name: string): void {
+  openDeleteEmployeeDialog(id: number, name: string, email: string): void {
     const dialogRef = this.dialog.open(DeleteEmployeeDialogueComponent, {
       width: '40vw',
       maxHeight: '90vh',
       height: 'auto',
-      data: { id, name },
+      data: { id, name, email },
     });
 
     dialogRef.afterClosed().subscribe((result) => {

@@ -18,9 +18,11 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class DeleteEmployeeDialogueComponent {
   employees: any[] = [];
+  private readonly LOCAL_STORAGE_KEY_ONBOARDING = 'onboardingStatus';
   constructor(
     public dialogRef: MatDialogRef<DeleteEmployeeDialogueComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { id: number; name: string },
+    @Inject(MAT_DIALOG_DATA)
+    public data: { id: number; name: string; email: string },
     private alertService: AlertService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
@@ -44,7 +46,6 @@ export class DeleteEmployeeDialogueComponent {
       const storedEmployees = localStorage.getItem('employees');
       if (storedEmployees) {
         this.employees = JSON.parse(storedEmployees);
-        console.log(this.employees);
       }
     }
   }
@@ -58,6 +59,17 @@ export class DeleteEmployeeDialogueComponent {
 
       localStorage.setItem('employees', JSON.stringify(this.employees));
       console.log(`Employee with id ${this.data.id} has been deleted.`);
+
+      // Delete associated employee onboarding status
+
+      const onboardingStatusStr = localStorage.getItem(this.LOCAL_STORAGE_KEY_ONBOARDING);
+      if(onboardingStatusStr){
+        const onboardingStatus = JSON.parse(onboardingStatusStr);
+        if(onboardingStatus[this.data.email]){
+          delete onboardingStatus[this.data.email];
+          localStorage.setItem(this.LOCAL_STORAGE_KEY_ONBOARDING, JSON.stringify(onboardingStatus));
+        }
+      }
     }
   }
 }
