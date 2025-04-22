@@ -97,7 +97,28 @@
     </form>
 
     }@else if(data.itemKey === 'Birth certificate'){
-    <p>{{ data.itemKey }}</p>
+        <h5>Submit Birth certificate pdf</h5>
+        <form [formGroup]="idForm" (ngSubmit)="onSubmit()" style="margin-bottom: 10px;">
+          <div>
+            <button
+              type="button"
+              matbutton
+              color="primary"
+              (click)="fileInput.click()"
+            >
+              Choose File
+            </button>
+            <span>{{ selectedFileNames || "No file chosen" }}</span>
+            <input
+              #fileInput
+              type="file"
+              (change)="onFileChange($event)"
+              accept=".pdf,image/*"
+              hidden
+              required
+            />
+          </div>
+        </form>
     }@else if(data.itemKey === 'Contact details'){
     <p>{{ data.itemKey }}</p>
     }@else if(data.itemKey === 'Submit design portfolio'){
@@ -105,7 +126,28 @@
     }@else if(data.itemKey === 'Install Figma Suite'){
     <p>{{ data.itemKey }}</p>
     } @else if(data.itemKey === "Submit certificates"){
-    <p>{{ data.itemKey }}</p>
+        <h5>Submit relevant certificates pdf</h5>
+        <form [formGroup]="idForm" (ngSubmit)="onSubmit()" style="margin-bottom: 10px;">
+          <div>
+            <button
+              type="button"
+              matbutton
+              color="primary"
+              (click)="fileInput.click()"
+            >
+              Choose File
+            </button>
+            <span>{{ selectedFileNames || "No file chosen" }}</span>
+            <input
+              #fileInput
+              type="file"
+              (change)="onFileChange($event)"
+              accept=".pdf,image/*"
+              hidden
+              required
+            />
+          </div>
+        </form>
     }@else if(data.itemKey === "Technical Assessment"){
     <p>{{ data.itemKey }}</p>
     }@else if(data.itemKey === "Share work tools"){
