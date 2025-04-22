@@ -33,6 +33,7 @@ export class SubmitDialogComponent implements OnInit {
   contactForm: FormGroup;
   linkForm: FormGroup;
   toolsForm: FormGroup;
+  policiesForm: FormGroup;
   isSubmitted = false;
   selectedFileNames: string = 'No file chosen';
 
@@ -67,6 +68,10 @@ export class SubmitDialogComponent implements OnInit {
 
     this.toolsForm = this.fb.group({
       workingTools: ['', Validators.required]
+    });
+
+    this.policiesForm = this.fb.group({
+      comment: ['', Validators.required]
     });
   }
 

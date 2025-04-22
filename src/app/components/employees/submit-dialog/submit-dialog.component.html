@@ -145,7 +145,11 @@
 
     }@else if(data.itemKey === 'Submit design portfolio'){
     <h5>Enter links below</h5>
-    <form [formGroup]="linkForm" (ngSubmit)="onSubmit()">
+    <form
+      [formGroup]="linkForm"
+      (ngSubmit)="onSubmit()"
+      style="margin-bottom: 15px"
+    >
       <label for="link">Link</label>
       <input
         id="link"
@@ -157,7 +161,11 @@
 
     }@else if(data.itemKey === 'Install Figma Suite'){
     <h5>Enter figma link below</h5>
-    <form [formGroup]="linkForm" (ngSubmit)="onSubmit()">
+    <form
+      [formGroup]="linkForm"
+      (ngSubmit)="onSubmit()"
+      style="margin-bottom: 15px"
+    >
       <label for="link">Link</label>
       <input
         id="link"
@@ -229,7 +237,267 @@
 
     } @else {
     <p>Not Implemented</p>
-    } }
+    } } @else if(authService.getUserType() === 'Hr'){ @if(data.itemKey ===
+    "Qualification"){
+    <div class="qualification-container">
+      <h5>Qualification Submission</h5>
+      <form
+        [formGroup]="qualificationForm"
+        (ngSubmit)="onSubmit()"
+        *ngIf="!isSubmitted"
+      >
+        <div class="form-group">
+          <label for="qualification">Qualification Type</label>
+          <select id="qualification" formControlName="qualification">
+            <option value="" disabled>Select qualification type</option>
+            <option
+              *ngFor="let type of qualificationTypes"
+              [value]="type.value"
+            >
+              {{ type.label }}
+            </option>
+          </select>
+          <div class="error-message" *ngIf="isFieldInvalid('qualification')">
+            Please select a qualification type
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="institution">Institution/University</label>
+          <input type="text" id="institution" formControlName="institution" />
+          <div class="error-message" *ngIf="isFieldInvalid('institution')">
+            Please enter your institution/university
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="year">Completion Year</label>
+          <input type="text" id="year" formControlName="year" />
+          <div class="error-message" *ngIf="isFieldInvalid('year')">
+            Please enter the completion year
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Upload Supporting Documents</label>
+          <div class="file-upload">
+            <label class="file-upload-label">Choose File</label>
+            <span class="file-name">{{ selectedFileNames }}</span>
+            <input
+              type="file"
+              id="supporting"
+              (change)="onFileChange($event)"
+              accept=".pdf,.doc,.docx,.jpg,.png"
+              multiple
+            />
+          </div>
+        </div>
+
+        <button type="submit">Submit Qualification</button>
+      </form>
+
+      <!-- Success message will show only after successful submission -->
+      <div class="success-message" *ngIf="isSubmitted">
+        Your qualification has been submitted successfully!
+      </div>
+    </div>
+    }@else if(data.itemKey === 'ID/passport'){
+
+    <h5>Submit scanned photo of id</h5>
+    <form
+      [formGroup]="idForm"
+      (ngSubmit)="onSubmit()"
+      style="margin-bottom: 10px"
+    >
+      <div>
+        <button
+          type="button"
+          matbutton
+          color="primary"
+          (click)="fileInput.click()"
+        >
+          Choose File
+        </button>
+        <span>{{ selectedFileNames || "No file chosen" }}</span>
+        <input
+          #fileInput
+          type="file"
+          (change)="onFileChange($event)"
+          accept=".pdf,image/*"
+          hidden
+          required
+        />
+      </div>
+    </form>
+
+    }@else if(data.itemKey === 'Birth certificate'){
+    <h5>Submit Birth certificate pdf</h5>
+    <form
+      [formGroup]="idForm"
+      (ngSubmit)="onSubmit()"
+      style="margin-bottom: 10px"
+    >
+      <div>
+        <button
+          type="button"
+          matbutton
+          color="primary"
+          (click)="fileInput.click()"
+        >
+          Choose File
+        </button>
+        <span>{{ selectedFileNames || "No file chosen" }}</span>
+        <input
+          #fileInput
+          type="file"
+          (change)="onFileChange($event)"
+          accept=".pdf,image/*"
+          hidden
+          required
+        />
+      </div>
+    </form>
+    }@else if(data.itemKey === 'Contact details'){
+    <h5>Enter contact below</h5>
+    <form
+      [formGroup]="contactForm"
+      (ngSubmit)="onSubmit()"
+      style="margin-bottom: 15px"
+    >
+      <label for="phoneNumber">Phone Number</label>
+      <input
+        id="phoneNumber"
+        type="tel"
+        formControlName="phoneNumber"
+        placeholder="Enter phone number"
+      />
+    </form>
+
+    }@else if(data.itemKey === 'Submit HR certifications'){
+    <h5>Enter links below</h5>
+    <form
+      [formGroup]="linkForm"
+      (ngSubmit)="onSubmit()"
+      style="margin-bottom: 15px"
+    >
+      <label for="link">Link</label>
+      <input
+        id="link"
+        type="url"
+        formControlName="link"
+        placeholder="Enter a valid URL"
+      />
+    </form>
+
+    }@else if(data.itemKey === 'Provide job references'){
+    <h5>Enter link below</h5>
+    <form
+      [formGroup]="linkForm"
+      (ngSubmit)="onSubmit()"
+      style="margin-bottom: 15px"
+    >
+      <label for="link">Link</label>
+      <input
+        id="link"
+        type="url"
+        formControlName="link"
+        placeholder="Enter a valid URL"
+      />
+    </form>
+
+    } @else if(data.itemKey === "Submit HR certifications"){
+    <h5>Submit relevant certificates pdf</h5>
+    <form
+      [formGroup]="idForm"
+      (ngSubmit)="onSubmit()"
+      style="margin-bottom: 10px"
+    >
+      <div>
+        <button
+          type="button"
+          matbutton
+          color="primary"
+          (click)="fileInput.click()"
+        >
+          Choose File
+        </button>
+        <span>{{ selectedFileNames || "No file chosen" }}</span>
+        <input
+          #fileInput
+          type="file"
+          (change)="onFileChange($event)"
+          accept=".pdf,image/*"
+          hidden
+          required
+        />
+      </div>
+    </form>
+    }@else if(data.itemKey === "Read company policies"){
+    <h5>Leave a comment</h5>
+    <form
+      [formGroup]="policiesForm"
+      (ngSubmit)="onSubmit()"
+      style="margin-bottom: 15px"
+    >
+      <label for="comment">Comment</label>
+      <input
+        id="comment"
+        type="text"
+        formControlName="comment"
+        placeholder="Enter a comment"
+      />
+    </form>
+
+    }@else if(data.itemKey === "Setup HR systems"){
+    <h5>Leave a comment</h5>
+    <form
+      [formGroup]="policiesForm"
+      (ngSubmit)="onSubmit()"
+      style="margin-bottom: 15px"
+    >
+      <label for="comment">Comment</label>
+      <input
+        id="comment"
+        type="text"
+        formControlName="comment"
+        placeholder="Enter a comment"
+      />
+    </form>
+
+    }@else if(data.itemKey === 'Submit confidentiality form'){
+
+    <h5>Submit signed form</h5>
+    <form
+      [formGroup]="idForm"
+      (ngSubmit)="onSubmit()"
+      style="margin-bottom: 10px"
+    >
+      <div>
+        <button
+          type="button"
+          matbutton
+          color="primary"
+          (click)="fileInput.click()"
+        >
+          Choose File
+        </button>
+        <span>{{ selectedFileNames || "No file chosen" }}</span>
+        <input
+          #fileInput
+          type="file"
+          (change)="onFileChange($event)"
+          accept=".pdf,image/*"
+          hidden
+          required
+        />
+      </div>
+    </form>
+
+    } @else {
+    <p>Not Implemented</p>
+    } }@else if(authService.getUserType() === 'Developer'){ } @else{
+    <p style="color: red">Error occured, contact admin</p>
+    }
 
     <div
       class="dialog-actions"
