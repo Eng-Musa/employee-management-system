@@ -1,7 +1,43 @@
-@if(data.itemKey === "Qualification"){
-<p>{{ data.itemKey }}</p>
-}@else if(data.itemKey === "Submit certificates"){
-<p>{{ data.itemKey }}</p>
-} @else {
-<p>To Do</p>
-}
+<div
+  style="
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  "
+>
+  <mat-dialog-content style="text-align: center">
+    @if(authService.getUserType() === "Designer"){ @if(data.itemKey ===
+    "Qualification"){
+    <p>{{ data.itemKey }}</p>
+    }@else if(data.itemKey === "Submit certificates"){
+    <p>{{ data.itemKey }}</p>
+    } @else {
+    <p>To Do</p>
+    } }
+
+    <div
+      class="dialog-actions"
+      style="display: flex; gap: 10px; justify-content: center"
+    >
+      <button
+        mat-button
+        mat-dialog-close
+        (click)="onCancel()"
+        class="cancel-btn"
+      >
+        Cancel
+      </button>
+      <button
+        class="submit-btn"
+        mat-button
+        cdkFocusInitial
+        color="primary"
+        type="submit"
+        (click)="onConfirm()"
+      >
+        Submit
+      </button>
+    </div>
+  </mat-dialog-content>
+</div>

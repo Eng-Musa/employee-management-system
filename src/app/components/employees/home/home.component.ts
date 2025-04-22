@@ -91,22 +91,21 @@ export class HomeComponent {
     }, 1000);
   }
 
-    openSubmitDialog(itemKey: string): void {
-      console.log(itemKey)
-      const dialogRef = this.dialog.open(SubmitDialogComponent, {
-        width: '40vw',
-        maxHeight: '90vh',
-        height: 'auto',
-        data: {itemKey},
-      });
-  
-      dialogRef.afterClosed().subscribe((result) => {
-        if (result) {
-          delay(3000);
-          this.onSumit(itemKey);
-        }
-      });
-    }
+  openSubmitDialog(itemKey: string): void {
+    const dialogRef = this.dialog.open(SubmitDialogComponent, {
+      width: '40vw',
+      maxHeight: '90vh',
+      height: 'auto',
+      data: { itemKey },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        delay(3000);
+        this.onSumit(itemKey);
+      }
+    });
+  }
 
   loadChecklistData(): void {
     if (isPlatformBrowser(this.platformId)) {
