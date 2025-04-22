@@ -67,11 +67,11 @@ export class SubmitDialogComponent implements OnInit {
     });
 
     this.toolsForm = this.fb.group({
-      workingTools: ['', Validators.required]
+      workingTools: ['', Validators.required],
     });
 
     this.policiesForm = this.fb.group({
-      comment: ['', Validators.required]
+      comment: ['', Validators.required],
     });
   }
 
