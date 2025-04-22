@@ -74,7 +74,11 @@
     }@else if(data.itemKey === 'ID/passport'){
 
     <h5>Submit scanned photo of id</h5>
-    <form [formGroup]="idForm" (ngSubmit)="onSubmit()" style="margin-bottom: 10px;">
+    <form
+      [formGroup]="idForm"
+      (ngSubmit)="onSubmit()"
+      style="margin-bottom: 10px"
+    >
       <div>
         <button
           type="button"
@@ -97,61 +101,132 @@
     </form>
 
     }@else if(data.itemKey === 'Birth certificate'){
-        <h5>Submit Birth certificate pdf</h5>
-        <form [formGroup]="idForm" (ngSubmit)="onSubmit()" style="margin-bottom: 10px;">
-          <div>
-            <button
-              type="button"
-              matbutton
-              color="primary"
-              (click)="fileInput.click()"
-            >
-              Choose File
-            </button>
-            <span>{{ selectedFileNames || "No file chosen" }}</span>
-            <input
-              #fileInput
-              type="file"
-              (change)="onFileChange($event)"
-              accept=".pdf,image/*"
-              hidden
-              required
-            />
-          </div>
-        </form>
+    <h5>Submit Birth certificate pdf</h5>
+    <form
+      [formGroup]="idForm"
+      (ngSubmit)="onSubmit()"
+      style="margin-bottom: 10px"
+    >
+      <div>
+        <button
+          type="button"
+          matbutton
+          color="primary"
+          (click)="fileInput.click()"
+        >
+          Choose File
+        </button>
+        <span>{{ selectedFileNames || "No file chosen" }}</span>
+        <input
+          #fileInput
+          type="file"
+          (change)="onFileChange($event)"
+          accept=".pdf,image/*"
+          hidden
+          required
+        />
+      </div>
+    </form>
     }@else if(data.itemKey === 'Contact details'){
-    <p>{{ data.itemKey }}</p>
+    <h5>Enter contact below</h5>
+    <form
+      [formGroup]="contactForm"
+      (ngSubmit)="onSubmit()"
+      style="margin-bottom: 15px"
+    >
+      <label for="phoneNumber">Phone Number</label>
+      <input
+        id="phoneNumber"
+        type="tel"
+        formControlName="phoneNumber"
+        placeholder="Enter phone number"
+      />
+    </form>
+
     }@else if(data.itemKey === 'Submit design portfolio'){
-    <p>{{ data.itemKey }}</p>
+    <h5>Enter links below</h5>
+    <form [formGroup]="linkForm" (ngSubmit)="onSubmit()">
+      <label for="link">Link</label>
+      <input
+        id="link"
+        type="url"
+        formControlName="link"
+        placeholder="Enter a valid URL"
+      />
+    </form>
+
     }@else if(data.itemKey === 'Install Figma Suite'){
-    <p>{{ data.itemKey }}</p>
+    <h5>Enter figma link below</h5>
+    <form [formGroup]="linkForm" (ngSubmit)="onSubmit()">
+      <label for="link">Link</label>
+      <input
+        id="link"
+        type="url"
+        formControlName="link"
+        placeholder="Enter a valid URL"
+      />
+    </form>
+
     } @else if(data.itemKey === "Submit certificates"){
-        <h5>Submit relevant certificates pdf</h5>
-        <form [formGroup]="idForm" (ngSubmit)="onSubmit()" style="margin-bottom: 10px;">
-          <div>
-            <button
-              type="button"
-              matbutton
-              color="primary"
-              (click)="fileInput.click()"
-            >
-              Choose File
-            </button>
-            <span>{{ selectedFileNames || "No file chosen" }}</span>
-            <input
-              #fileInput
-              type="file"
-              (change)="onFileChange($event)"
-              accept=".pdf,image/*"
-              hidden
-              required
-            />
-          </div>
-        </form>
+    <h5>Submit relevant certificates pdf</h5>
+    <form
+      [formGroup]="idForm"
+      (ngSubmit)="onSubmit()"
+      style="margin-bottom: 10px"
+    >
+      <div>
+        <button
+          type="button"
+          matbutton
+          color="primary"
+          (click)="fileInput.click()"
+        >
+          Choose File
+        </button>
+        <span>{{ selectedFileNames || "No file chosen" }}</span>
+        <input
+          #fileInput
+          type="file"
+          (change)="onFileChange($event)"
+          accept=".pdf,image/*"
+          hidden
+          required
+        />
+      </div>
+    </form>
     }@else if(data.itemKey === "Technical Assessment"){
-    <p>{{ data.itemKey }}</p>
+    <h5>Enter link to your Technical Assessment</h5>
+    <form
+      [formGroup]="linkForm"
+      (ngSubmit)="onSubmit()"
+      style="margin-bottom: 15px"
+    >
+      <label for="link">Link</label>
+      <input
+        id="link"
+        type="url"
+        formControlName="link"
+        placeholder="Enter a valid URL"
+      />
+    </form>
+
     }@else if(data.itemKey === "Share work tools"){
-    <p>{{ data.itemKey }}</p>
+    <h5>Enter list below, comma seperated</h5>
+    <form
+      [formGroup]="toolsForm"
+      (ngSubmit)="onSubmit()"
+      style="margin-bottom: 15px"
+    >
+      <label for="workingTools">Preferred Working Tools</label>
+      <input
+        id="workingTools"
+        type="text"
+        formControlName="workingTools"
+        placeholder="Enter your preferred working tools"
+        required
+      />
+    </form>
+
     } @else {
     <p>Not Implemented</p>
     } }

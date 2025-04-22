@@ -30,9 +30,11 @@ import {
 export class SubmitDialogComponent implements OnInit {
   qualificationForm: FormGroup;
   idForm: FormGroup;
+  contactForm: FormGroup;
+  linkForm: FormGroup;
+  toolsForm: FormGroup;
   isSubmitted = false;
   selectedFileNames: string = 'No file chosen';
-
 
   constructor(
     public dialogRef: MatDialogRef<SubmitDialogComponent>,
@@ -49,8 +51,23 @@ export class SubmitDialogComponent implements OnInit {
     });
 
     this.idForm = this.fb.group({
-      idPhoto: [null, Validators.required]
-    })
+      idPhoto: [null, Validators.required],
+    });
+
+    this.contactForm = this.fb.group({
+      phoneNumber: [
+        '',
+        [Validators.required, Validators.pattern('^\\+?[0-9]{10,15}$')],
+      ],
+    });
+
+    this.linkForm = this.fb.group({
+      link: ['', [Validators.required, Validators.pattern('https?://.+')]],
+    });
+
+    this.toolsForm = this.fb.group({
+      workingTools: ['', Validators.required]
+    });
   }
 
   onCancel(): void {
@@ -58,6 +75,7 @@ export class SubmitDialogComponent implements OnInit {
   }
 
   onConfirm(): void {
+    this.isSubmitted = true;
     if (this.isSubmitted) {
       this.dialogRef.close(true);
     }
