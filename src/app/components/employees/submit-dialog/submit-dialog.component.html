@@ -7,13 +7,111 @@
   "
 >
   <mat-dialog-content style="text-align: center">
-    @if(authService.getUserType() === "Designer"){ @if(data.itemKey ===
+    @if(authService.getUserType() === 'Designer'){ @if(data.itemKey ===
     "Qualification"){
+    <div class="qualification-container">
+      <h5>Qualification Submission</h5>
+      <form
+        [formGroup]="qualificationForm"
+        (ngSubmit)="onSubmit()"
+        *ngIf="!isSubmitted"
+      >
+        <div class="form-group">
+          <label for="qualification">Qualification Type</label>
+          <select id="qualification" formControlName="qualification">
+            <option value="" disabled>Select qualification type</option>
+            <option
+              *ngFor="let type of qualificationTypes"
+              [value]="type.value"
+            >
+              {{ type.label }}
+            </option>
+          </select>
+          <div class="error-message" *ngIf="isFieldInvalid('qualification')">
+            Please select a qualification type
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="institution">Institution/University</label>
+          <input type="text" id="institution" formControlName="institution" />
+          <div class="error-message" *ngIf="isFieldInvalid('institution')">
+            Please enter your institution/university
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="year">Completion Year</label>
+          <input type="text" id="year" formControlName="year" />
+          <div class="error-message" *ngIf="isFieldInvalid('year')">
+            Please enter the completion year
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Upload Supporting Documents</label>
+          <div class="file-upload">
+            <label class="file-upload-label">Choose File</label>
+            <span class="file-name">{{ selectedFileNames }}</span>
+            <input
+              type="file"
+              id="supporting"
+              (change)="onFileChange($event)"
+              accept=".pdf,.doc,.docx,.jpg,.png"
+              multiple
+            />
+          </div>
+        </div>
+
+        <button type="submit">Submit Qualification</button>
+      </form>
+
+      <!-- Success message will show only after successful submission -->
+      <div class="success-message" *ngIf="isSubmitted">
+        Your qualification has been submitted successfully!
+      </div>
+    </div>
+    }@else if(data.itemKey === 'ID/passport'){
+
+    <h5>Submit scanned photo of id</h5>
+    <form [formGroup]="idForm" (ngSubmit)="onSubmit()" style="margin-bottom: 10px;">
+      <div>
+        <button
+          type="button"
+          matbutton
+          color="primary"
+          (click)="fileInput.click()"
+        >
+          Choose File
+        </button>
+        <span>{{ selectedFileNames || "No file chosen" }}</span>
+        <input
+          #fileInput
+          type="file"
+          (change)="onFileChange($event)"
+          accept=".pdf,image/*"
+          hidden
+          required
+        />
+      </div>
+    </form>
+
+    }@else if(data.itemKey === 'Birth certificate'){
     <p>{{ data.itemKey }}</p>
-    }@else if(data.itemKey === "Submit certificates"){
+    }@else if(data.itemKey === 'Contact details'){
+    <p>{{ data.itemKey }}</p>
+    }@else if(data.itemKey === 'Submit design portfolio'){
+    <p>{{ data.itemKey }}</p>
+    }@else if(data.itemKey === 'Install Figma Suite'){
+    <p>{{ data.itemKey }}</p>
+    } @else if(data.itemKey === "Submit certificates"){
+    <p>{{ data.itemKey }}</p>
+    }@else if(data.itemKey === "Technical Assessment"){
+    <p>{{ data.itemKey }}</p>
+    }@else if(data.itemKey === "Share work tools"){
     <p>{{ data.itemKey }}</p>
     } @else {
-    <p>To Do</p>
+    <p>Not Implemented</p>
     } }
 
     <div
