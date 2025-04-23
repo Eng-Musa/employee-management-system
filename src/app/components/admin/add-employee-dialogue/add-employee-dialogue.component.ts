@@ -1,5 +1,5 @@
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -18,8 +18,10 @@ import {
 import { MatFormField, MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatStepperModule } from '@angular/material/stepper';
+import { constants } from '../../../environments/constants';
 import { AlertService } from '../../../services/alert.service';
 import { AuthService } from '../../../services/auth.service';
+import { LocalStorageService } from '../../../services/local-storage.service';
 import { ChecklistData } from '../checklists/checklists.component';
 
 @Component({
@@ -42,8 +44,6 @@ import { ChecklistData } from '../checklists/checklists.component';
   styleUrl: './add-employee-dialogue.component.scss',
 })
 export class AddEmployeeDialogueComponent {
-  private readonly LOCAL_STORAGE_KEY_CHECKLIST = 'checklistData';
-  private readonly LOCAL_STORAGE_KEY_ONBOARDING = 'onboardingStatus';
   basicInfoForm: FormGroup;
   employmentForm: FormGroup;
 
@@ -61,8 +61,8 @@ export class AddEmployeeDialogueComponent {
     public dialogRef: MatDialogRef<AddEmployeeDialogueComponent>,
     private fb: FormBuilder,
     private alertService: AlertService,
-    @Inject(PLATFORM_ID) private platformId: Object,
-    private authService: AuthService
+    private authService: AuthService,
+    private localStorageService: LocalStorageService
   ) {
     // Step 1: Basic Information
     this.basicInfoForm = this.fb.group({
@@ -84,18 +84,16 @@ export class AddEmployeeDialogueComponent {
   }
 
   loadEmployeesFromLocalStorage(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      const storedEmployees = localStorage.getItem('employees');
-      if (storedEmployees) {
-        this.employeesData = JSON.parse(storedEmployees);
-      }
-    }
+    this.employeesData = this.localStorageService.retrieve<any>(
+      constants.LOCAL_STORAGE_KEY_EMPLOYEES
+    );
   }
 
   saveToLocalStorage(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem('employees', JSON.stringify(this.employeesData));
-    }
+    this.localStorageService.save(
+      constants.LOCAL_STORAGE_KEY_EMPLOYEES,
+      this.employeesData
+    );
   }
 
   onCancel(): void {
@@ -139,75 +137,67 @@ export class AddEmployeeDialogueComponent {
   }
 
   loadChecklistData(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      const savedData = localStorage.getItem(this.LOCAL_STORAGE_KEY_CHECKLIST);
-      if (savedData) {
-        try {
-          this.checklistData = JSON.parse(savedData) as ChecklistData;
-        } catch (error) {
-          this.alertService.showErrorToastr(
-            'Failed to parse checklist data from local storage.'
-          );
-        }
-      }
-    }
+    const retrievedData = this.localStorageService.retrieve<ChecklistData>(
+      constants.LOCAL_STORAGE_KEY_CHECKLIST
+    );
+    this.checklistData = retrievedData || {
+      // Fallback if null
+      checklists: {
+        common: [],
+        designer: [],
+        developer: [],
+        hr: [],
+      },
+    };
   }
 
   storeOnboardingStatus(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      let existingData: { [email: string]: { [key: string]: boolean } } = {};
-      const savedData = localStorage.getItem(this.LOCAL_STORAGE_KEY_ONBOARDING);
-      if (savedData) {
-        try {
-          existingData = JSON.parse(savedData);
-        } catch (error) {
-          this.alertService.showErrorToastr(
-            'Failed to parse onboarding status from local storage.'
-          );
-        }
-      }
+    let existingData: { [email: string]: { [key: string]: boolean } } = {};
 
-      if (existingData[this.basicInfoForm.value.email]) {
-        return;
-      }
+    existingData = this.localStorageService.retrieve<any>(
+      constants.LOCAL_STORAGE_KEY_ONBOARDING
+    );
 
-      this.loadChecklistData();
-      // Combine common checklist items with role-specific checklist items.
-      const designerChecklist = [
-        ...this.checklistData.checklists.common,
-        ...this.checklistData.checklists.designer,
-      ];
-      const developerChecklist = [
-        ...this.checklistData.checklists.common,
-        ...this.checklistData.checklists.developer,
-      ];
-      const hrChecklist = [
-        ...this.checklistData.checklists.common,
-        ...this.checklistData.checklists.hr,
-      ];
-
-      let newChecklist: { [key: string]: boolean } = {};
-
-      if (this.employmentForm.value.role === 'Designer') {
-        newChecklist = this.transformChecklist(designerChecklist);
-      } else if (this.employmentForm.value.role === 'Developer') {
-        newChecklist = this.transformChecklist(developerChecklist);
-      } else if (this.employmentForm.value.role === 'Hr') {
-        newChecklist = this.transformChecklist(hrChecklist);
-      } else {
-        this.alertService.showErrorToastr(
-          'User role not recognized for onboarding status.'
-        );
-        return;
-      }
-
-      existingData[this.basicInfoForm.value.email] = newChecklist;
-
-      localStorage.setItem(
-        this.LOCAL_STORAGE_KEY_ONBOARDING,
-        JSON.stringify(existingData)
-      );
+    if (existingData[this.basicInfoForm.value.email]) {
+      return;
     }
+
+    this.loadChecklistData();
+    // Combine common checklist items with role-specific checklist items.
+    const designerChecklist = [
+      ...this.checklistData.checklists.common,
+      ...this.checklistData.checklists.designer,
+    ];
+    const developerChecklist = [
+      ...this.checklistData.checklists.common,
+      ...this.checklistData.checklists.developer,
+    ];
+    const hrChecklist = [
+      ...this.checklistData.checklists.common,
+      ...this.checklistData.checklists.hr,
+    ];
+
+    let newChecklist: { [key: string]: boolean } = {};
+
+    if (this.employmentForm.value.role === 'Designer') {
+      newChecklist = this.transformChecklist(designerChecklist);
+    } else if (this.employmentForm.value.role === 'Developer') {
+      newChecklist = this.transformChecklist(developerChecklist);
+    } else if (this.employmentForm.value.role === 'Hr') {
+      newChecklist = this.transformChecklist(hrChecklist);
+    } else {
+      this.alertService.showErrorToastr(
+        'User role not recognized for onboarding status.'
+      );
+      return;
+    }
+
+    existingData[this.basicInfoForm.value.email] = newChecklist;
+
+    this.localStorageService.save(
+      constants.LOCAL_STORAGE_KEY_ONBOARDING,
+      existingData
+    );
   }
 
   transformChecklist(items: string[]): { [key: string]: boolean } {
