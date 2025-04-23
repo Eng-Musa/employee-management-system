@@ -6,6 +6,8 @@ import { RouterModule } from '@angular/router';
 import { EmployeesComponent } from '../employees/employees.component';
 import { AuthService } from '../../../services/auth.service';
 import { AlertService } from '../../../services/alert.service';
+import { LocalStorageService } from '../../../services/local-storage.service';
+import { constants } from '../../../environments/constants';
 
 @Component({
   selector: 'app-admin-home',
@@ -17,14 +19,14 @@ export class AdminHomeComponent implements OnInit {
   completed: number = 85;
   incomplete: number = 15;
   updateFlag: boolean = false;
-  private readonly LOCAL_STORAGE_KEY_ONBOARDING = 'onboardingStatus';
   onboardingStatus: any = {};
   totalEmployees: number = 0;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private authService: AuthService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private localStorageService: LocalStorageService
   ) {
     this.isHighcharts = isPlatformBrowser(this.platformId);
   }
@@ -192,49 +194,37 @@ export class AdminHomeComponent implements OnInit {
   }
 
   loadOnboardingStatus(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      const savedData = localStorage.getItem(this.LOCAL_STORAGE_KEY_ONBOARDING);
-      if (savedData) {
-        try {
-          this.onboardingStatus = JSON.parse(savedData);
-        } catch (error) {
-          this.alertService.showErrorToastr(
-            'Failed to load onboarding status from local storage.'
-          );
-        }
-      }
-    }
+    this.onboardingStatus = this.localStorageService.retrieve<any>(
+      constants.LOCAL_STORAGE_KEY_ONBOARDING
+    );
   }
 
   calculateTotalEmployees(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      const savedEmployees = localStorage.getItem('employees');
-      if (savedEmployees) {
-        try {
-          const employees = JSON.parse(savedEmployees);
-          this.totalEmployees = Array.isArray(employees) ? employees.length : 0;
-          this.pieChart = {
-            ...this.pieChart,
-            title: {
-              verticalAlign: 'middle',
-              floating: true,
-              useHTML: true,
-              text: `
+    try {
+      const employees = this.localStorageService.retrieve<any[]>(
+        constants.LOCAL_STORAGE_KEY_EMPLOYEES
+      );
+      this.totalEmployees = Array.isArray(employees) ? employees.length : 0;
+      this.pieChart = {
+        ...this.pieChart,
+        title: {
+          verticalAlign: 'middle',
+          floating: true,
+          useHTML: true,
+          text: `
                 <div style="text-align: center; font-family: Arial, sans-serif;">
                   <span style="font-size: 12px; color: #6c757d;">Total</span><br>
                   <span style="font-size: 14px; font-weight: bold; color: #000;">${this.totalEmployees}</span>
                 </div>
               `,
-            },
-          };
+        },
+      };
 
-          this.updateFlag = true;
-        } catch (error) {
-          this.alertService.showErrorToastr(
-            'Failed to load employee data from local storage.'
-          );
-        }
-      }
+      this.updateFlag = true;
+    } catch (error) {
+      this.alertService.showErrorToastr(
+        'Failed to load employee data from local storage.'
+      );
     }
   }
 
