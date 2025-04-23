@@ -1,13 +1,15 @@
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { delay } from 'rxjs';
+import { constants } from '../../../environments/constants';
 import { AlertService } from '../../../services/alert.service';
 import { AuthService } from '../../../services/auth.service';
+import { LocalStorageService } from '../../../services/local-storage.service';
 import { ChecklistData } from '../../admin/checklists/checklists.component';
 import { SubmitDialogComponent } from '../submit-dialog/submit-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
-import { delay } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -16,9 +18,6 @@ import { delay } from 'rxjs';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
-  private readonly LOCAL_STORAGE_KEY = 'checklistData';
-  private readonly LOCAL_STORAGE_KEY_ONBOARDING = 'onboardingStatus';
-  private readonly LOCAL_STORAGE_KEY_EMPLOYEES = 'employees';
   checklistData: ChecklistData = {
     checklists: {
       common: [],
@@ -33,7 +32,7 @@ export class HomeComponent {
 
   constructor(
     private authService: AuthService,
-    @Inject(PLATFORM_ID) private platformId: Object,
+    private localStorageService: LocalStorageService,
     private alertService: AlertService,
     private dialog: MatDialog
   ) {}
@@ -76,18 +75,13 @@ export class HomeComponent {
 
       this.onboardingStatus[this.loggedInUserEmail][itemKey] = true;
 
-      if (isPlatformBrowser(this.platformId)) {
-        localStorage.setItem(
-          this.LOCAL_STORAGE_KEY_ONBOARDING,
-          JSON.stringify(this.onboardingStatus)
-        );
+      this.localStorageService.save(
+        constants.LOCAL_STORAGE_KEY_ONBOARDING,
+        this.onboardingStatus
+      );
+      this.alertService.showSuccessToastr(`${itemKey} submitted successfully`);
 
-        this.alertService.showSuccessToastr(
-          `${itemKey} submitted successfully`
-        );
-
-        this.updateOverallOnboardingStatus();
-      }
+      this.updateOverallOnboardingStatus();
     }, 1000);
   }
 
@@ -108,18 +102,9 @@ export class HomeComponent {
   }
 
   loadChecklistData(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      const savedData = localStorage.getItem(this.LOCAL_STORAGE_KEY);
-      if (savedData) {
-        try {
-          this.checklistData = JSON.parse(savedData) as ChecklistData;
-        } catch (error) {
-          this.alertService.showErrorToastr(
-            'Failed to parse checklist data from local storage.'
-          );
-        }
-      }
-    }
+    this.checklistData = this.localStorageService.retrieve(
+      constants.LOCAL_STORAGE_KEY_CHECKLIST
+    ) as ChecklistData;
   }
 
   transformChecklist(items: string[]): { [key: string]: boolean } {
@@ -131,100 +116,82 @@ export class HomeComponent {
   }
 
   storeOnboardingStatus(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      let existingData: { [email: string]: { [key: string]: boolean } } = {};
-      const savedData = localStorage.getItem(this.LOCAL_STORAGE_KEY_ONBOARDING);
-      if (savedData) {
-        try {
-          existingData = JSON.parse(savedData);
-        } catch (error) {
-          this.alertService.showErrorToastr(
-            'Failed to parse onboarding status from local storage.'
-          );
+    let existingData: { [email: string]: { [key: string]: boolean } } =
+      this.localStorageService.retrieve<{
+        [email: string]: { [key: string]: boolean };
+      }>(constants.LOCAL_STORAGE_KEY_ONBOARDING) || {};
+
+    // Combine common checklist items with role-specific items.
+    const designerChecklist = [
+      ...this.checklistData.checklists.common,
+      ...this.checklistData.checklists.designer,
+    ];
+    const developerChecklist = [
+      ...this.checklistData.checklists.common,
+      ...this.checklistData.checklists.developer,
+    ];
+    const hrChecklist = [
+      ...this.checklistData.checklists.common,
+      ...this.checklistData.checklists.hr,
+    ];
+
+    // Compute the new checklist based on the user's role.
+    let newChecklist: { [key: string]: boolean } = {};
+    if (this.isDesigner()) {
+      newChecklist = this.transformChecklist(designerChecklist);
+    } else if (this.isDeveloper()) {
+      newChecklist = this.transformChecklist(developerChecklist);
+    } else if (this.isHr()) {
+      newChecklist = this.transformChecklist(hrChecklist);
+    } else {
+      this.alertService.showErrorToastr(
+        'User role not recognized for onboarding status.'
+      );
+      return;
+    }
+
+    // If checklist exists for this user, compare and update if needed.
+    if (existingData[this.loggedInUserEmail]) {
+      const storedChecklist = existingData[this.loggedInUserEmail];
+      let changed = false;
+
+      // Add any missing fields
+      for (const key in newChecklist) {
+        if (!(key in storedChecklist)) {
+          storedChecklist[key] = newChecklist[key]; // typically false
+          changed = true;
         }
       }
 
-      // Combine common checklist items with role-specific items.
-      const designerChecklist = [
-        ...this.checklistData.checklists.common,
-        ...this.checklistData.checklists.designer,
-      ];
-      const developerChecklist = [
-        ...this.checklistData.checklists.common,
-        ...this.checklistData.checklists.developer,
-      ];
-      const hrChecklist = [
-        ...this.checklistData.checklists.common,
-        ...this.checklistData.checklists.hr,
-      ];
-
-      // Compute the new checklist based on the user's role.
-      let newChecklist: { [key: string]: boolean } = {};
-      if (this.isDesigner()) {
-        newChecklist = this.transformChecklist(designerChecklist);
-      } else if (this.isDeveloper()) {
-        newChecklist = this.transformChecklist(developerChecklist);
-      } else if (this.isHr()) {
-        newChecklist = this.transformChecklist(hrChecklist);
-      } else {
-        this.alertService.showErrorToastr(
-          'User role not recognized for onboarding status.'
-        );
-        return;
+      // Remove fields not in the current definition.
+      for (const key in storedChecklist) {
+        if (!(key in newChecklist)) {
+          delete storedChecklist[key];
+          changed = true;
+        }
       }
 
-      // If checklist exists for this user, compare and update if needed.
-      if (existingData[this.loggedInUserEmail]) {
-        const storedChecklist = existingData[this.loggedInUserEmail];
-        let changed = false;
-
-        // Add any missing fields
-        for (const key in newChecklist) {
-          if (!(key in storedChecklist)) {
-            storedChecklist[key] = newChecklist[key]; // typically false
-            changed = true;
-          }
-        }
-
-        // Remove fields not in the current definition.
-        for (const key in storedChecklist) {
-          if (!(key in newChecklist)) {
-            delete storedChecklist[key];
-            changed = true;
-          }
-        }
-
-        if (changed) {
-          existingData[this.loggedInUserEmail] = storedChecklist;
-          localStorage.setItem(
-            this.LOCAL_STORAGE_KEY_ONBOARDING,
-            JSON.stringify(existingData)
-          );
-        }
-      } else {
-        // If no record exists, simply store the new checklist.
-        existingData[this.loggedInUserEmail] = newChecklist;
-        localStorage.setItem(
-          this.LOCAL_STORAGE_KEY_ONBOARDING,
-          JSON.stringify(existingData)
+      if (changed) {
+        existingData[this.loggedInUserEmail] = storedChecklist;
+        this.localStorageService.save(
+          constants.LOCAL_STORAGE_KEY_ONBOARDING,
+          existingData
         );
       }
+    } else {
+      // If no record exists, simply store the new checklist.
+      existingData[this.loggedInUserEmail] = newChecklist;
+      this.localStorageService.save(
+        constants.LOCAL_STORAGE_KEY_ONBOARDING,
+        existingData
+      );
     }
   }
 
   loadOnboardingStatus(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      const savedData = localStorage.getItem(this.LOCAL_STORAGE_KEY_ONBOARDING);
-      if (savedData) {
-        try {
-          this.onboardingStatus = JSON.parse(savedData);
-        } catch (error) {
-          this.alertService.showErrorToastr(
-            'Failed to load onboarding status from local storage.'
-          );
-        }
-      }
-    }
+    this.onboardingStatus = this.localStorageService.retrieve<any>(
+      constants.LOCAL_STORAGE_KEY_ONBOARDING
+    );
   }
 
   // Helper method to get keys for an object;
@@ -254,25 +221,21 @@ export class HomeComponent {
   }
 
   updateOverallOnboardingStatus(): void {
-    if (
-      this.calculateCompletionPercentage() === 100 &&
-      isPlatformBrowser(this.platformId)
-    ) {
-      const employeesStr = localStorage.getItem(
-        this.LOCAL_STORAGE_KEY_EMPLOYEES
+    if (this.calculateCompletionPercentage() === 100) {
+      const employees = this.localStorageService.retrieve<any[]>(
+        constants.LOCAL_STORAGE_KEY_EMPLOYEES
       );
-      if (employeesStr) {
-        const employees = JSON.parse(employeesStr);
-
+      if (employees) {
         const employeeIndex = employees.findIndex(
           (emp: any) => emp.email === this.loggedInUserEmail
         );
 
         if (employeeIndex !== -1) {
           employees[employeeIndex].status = 'Created';
-          localStorage.setItem(
-            this.LOCAL_STORAGE_KEY_EMPLOYEES,
-            JSON.stringify(employees)
+
+          this.localStorageService.save(
+            constants.LOCAL_STORAGE_KEY_EMPLOYEES,
+            employees
           );
         }
       } else {
