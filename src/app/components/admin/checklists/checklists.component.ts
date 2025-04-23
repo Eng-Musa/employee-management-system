@@ -3,6 +3,8 @@ import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AlertService } from '../../../services/alert.service';
 import { AuthService } from '../../../services/auth.service';
+import { LocalStorageService } from '../../../services/local-storage.service';
+import { constants } from '../../../environments/constants';
 
 // Define an interface for each checklist
 interface Checklist {
@@ -23,8 +25,6 @@ export interface ChecklistData {
   styleUrl: './checklists.component.scss',
 })
 export class ChecklistsComponent implements OnInit {
-  // Define the local storage key as a constant for reusability and to avoid typos
-  private readonly LOCAL_STORAGE_KEY = 'checklistData';
   checklistData: ChecklistData = {
     checklists: {
       common: [],
@@ -65,9 +65,9 @@ export class ChecklistsComponent implements OnInit {
   // };
 
   constructor(
-    @Inject(PLATFORM_ID) private platformId: Object,
     private alertService: AlertService,
-    private authService: AuthService
+    private authService: AuthService,
+    private localStorageService: LocalStorageService
   ) {}
 
   ngOnInit(): void {
@@ -75,18 +75,18 @@ export class ChecklistsComponent implements OnInit {
   }
 
   loadChecklistData(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      const savedData = localStorage.getItem(this.LOCAL_STORAGE_KEY);
-      if (savedData) {
-        try {
-          this.checklistData = JSON.parse(savedData) as ChecklistData;
-        } catch (error) {
-          this.alertService.showErrorToastr(
-            'Failed to parse checklist data from local storage.'
-          );
-        }
-      }
-    }
+    const retrievedData = this.localStorageService.retrieve<ChecklistData>(
+      constants.LOCAL_STORAGE_KEY_CHECKLIST
+    );
+    this.checklistData = retrievedData || {
+      // Fallback if null
+      checklists: {
+        common: [],
+        designer: [],
+        developer: [],
+        hr: [],
+      },
+    };
   }
 
   // Editing state for each checklist section.
@@ -125,14 +125,10 @@ export class ChecklistsComponent implements OnInit {
     // Remove any empty items
     this.cleanEmptyItems(section);
 
-    if (isPlatformBrowser(this.platformId)) {
+   
       this.alertService.showSuccessToastr('Changes saved successfully');
       this.editingState[section] = false;
-      localStorage.setItem(
-        this.LOCAL_STORAGE_KEY,
-        JSON.stringify(this.checklistData)
-      );
-    }
+      this.localStorageService.save(constants.LOCAL_STORAGE_KEY_CHECKLIST, this.checklistData);
   }
 
   isAdmin(): boolean {
