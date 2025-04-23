@@ -24,6 +24,8 @@ import { Router, RouterModule } from '@angular/router';
 import { delay } from 'rxjs';
 import { AddEmployeeDialogueComponent } from '../add-employee-dialogue/add-employee-dialogue.component';
 import { DeleteEmployeeDialogueComponent } from '../delete-employee-dialogue/delete-employee-dialogue.component';
+import { LocalStorageService } from '../../../services/local-storage.service';
+import { constants } from '../../../environments/constants';
 
 interface EmployeeList {
   id: number;
@@ -64,7 +66,7 @@ export class EmployeesComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private router: Router,
-    @Inject(PLATFORM_ID) private platformId: Object
+    private localStorageService: LocalStorageService
   ) {}
   ngOnInit(): void {
     // this.saveEmployees();
@@ -90,14 +92,12 @@ export class EmployeesComponent implements OnInit {
   fetchEmployees(): void {
     this.loading = true;
     setTimeout(() => {
-      if (isPlatformBrowser(this.platformId)) {
-        this.loading = false;
-        const storedEmployees = localStorage.getItem('employees');
-        if (storedEmployees) {
-          this.employee = JSON.parse(storedEmployees);
-          this.dataSource.data = this.employee;
-        }
-      }
+      this.loading = false;
+      this.employee =
+        this.localStorageService.retrieve<any[]>(
+          constants.LOCAL_STORAGE_KEY_EMPLOYEES
+        ) || [];
+      this.dataSource.data = this.employee;
     }, 1000);
   }
 
