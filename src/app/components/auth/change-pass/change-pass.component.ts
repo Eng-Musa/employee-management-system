@@ -17,6 +17,8 @@ import {
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { AlertService } from '../../../services/alert.service';
 import { AuthService } from '../../../services/auth.service';
+import { LocalStorageService } from '../../../services/local-storage.service';
+import { constants } from '../../../environments/constants';
 
 @Component({
   selector: 'app-change-pass',
@@ -48,8 +50,8 @@ export class ChangePassComponent implements OnInit {
     public dialogRef: MatDialogRef<ChangePassComponent>,
     private fb: FormBuilder,
     private alertService: AlertService,
-    @Inject(PLATFORM_ID) private platformId: Object,
-    private authService: AuthService
+    private authService: AuthService,
+    private localStorageService: LocalStorageService
   ) {
     this.passwordForm = this.fb.group({
       oldPassword: ['', Validators.required],
@@ -80,8 +82,6 @@ export class ChangePassComponent implements OnInit {
       if (this.passwordForm.valid && this.loggedInPerson) {
         const oldPassword = this.passwordForm.get('oldPassword')?.value;
         const password = this.passwordForm.get('password')?.value;
-        console.log(this.passwordForm.value);
-        console.table(this.loggedInPerson);
         if (this.loggedInPerson.password === password) {
           this.message = 'Old password cannot be same as new password';
         } else if (this.loggedInPerson.password !== oldPassword) {
@@ -90,11 +90,15 @@ export class ChangePassComponent implements OnInit {
           if (this.authService.getUserType() === 'admin') {
             this.loggedInPerson.password = password;
             this.loggedInPerson.lastPasswordChange = new Date()
-              .toISOString()
-              .slice(0, 16);
-            localStorage.setItem(
-              'adminUser',
-              JSON.stringify(this.loggedInPerson)
+              .toLocaleString('en-US', {
+                timeZone: 'Africa/Nairobi',
+              })
+              .slice(0, 16)
+              .replace(',', '');
+
+            this.localStorageService.save(
+              constants.LOCAL_STORAGE_KEY_ADMIN,
+              this.loggedInPerson
             );
             this.isSuccess = true;
             this.message = 'Password change successfull';
@@ -109,7 +113,10 @@ export class ChangePassComponent implements OnInit {
 
             this.employees[this.loggedinEmail] = this.loggedInPerson;
 
-            localStorage.setItem('employees', JSON.stringify(this.employees));
+            this.localStorageService.save(
+              constants.LOCAL_STORAGE_KEY_EMPLOYEES,
+              this.employees
+            );
             this.isSuccess = true;
             this.message = 'Password change successfull';
           }
@@ -125,33 +132,33 @@ export class ChangePassComponent implements OnInit {
   employees: any = {};
   loggedinEmail: string = '';
   getLoggedInPerson() {
-    if (isPlatformBrowser(this.platformId)) {
-      if (this.authService.getUserType() === 'admin') {
-        const storedUserStr = localStorage.getItem('adminUser');
-        if (storedUserStr) {
-          this.loggedInPerson = JSON.parse(storedUserStr);
+    if (this.authService.getUserType() === 'admin') {
+      this.loggedInPerson = this.localStorageService.retrieve(
+        constants.LOCAL_STORAGE_KEY_ADMIN
+      );
+      if (this.loggedInPerson) {
+        this.lastPasswordChange = this.getTimeDifference(
+          this.loggedInPerson.lastPasswordChange
+        );
+      } else {
+        this.alertService.showErrorToastr('No user found in localStorage.');
+      }
+    } else {
+      this.loggedinEmail = this.authService.getLoggedInEmail();
+      const employees = this.localStorageService.retrieve<any[]>(
+        constants.LOCAL_STORAGE_KEY_EMPLOYEES
+      );
+      if (employees) {
+        this.loggedInPerson = this.employees.find(
+          (emp: any) => emp.email === this.loggedinEmail
+        );
+
+        if (this.loggedInPerson.lastPasswordChange === 'Never') {
+          this.lastPasswordChange = 'Never';
+        } else {
           this.lastPasswordChange = this.getTimeDifference(
             this.loggedInPerson.lastPasswordChange
           );
-        } else {
-          this.alertService.showErrorToastr('No user found in localStorage.');
-        }
-      } else {
-        this.loggedinEmail = this.authService.getLoggedInEmail();
-        const employeeString = localStorage.getItem('employees');
-        if (employeeString) {
-          this.employees = JSON.parse(employeeString);
-          this.loggedInPerson = this.employees.find(
-            (emp: any) => emp.email === this.loggedinEmail
-          );
-
-          if (this.loggedInPerson.lastPasswordChange === 'Never') {
-            this.lastPasswordChange = 'Never';
-          } else {
-            this.lastPasswordChange = this.getTimeDifference(
-              this.loggedInPerson.lastPasswordChange
-            );
-          }
         }
       }
     }
