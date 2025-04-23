@@ -125,10 +125,12 @@ export class ChecklistsComponent implements OnInit {
     // Remove any empty items
     this.cleanEmptyItems(section);
 
-   
-      this.alertService.showSuccessToastr('Changes saved successfully');
-      this.editingState[section] = false;
-      this.localStorageService.save(constants.LOCAL_STORAGE_KEY_CHECKLIST, this.checklistData);
+    this.alertService.showSuccessToastr('Changes saved successfully');
+    this.editingState[section] = false;
+    this.localStorageService.save(
+      constants.LOCAL_STORAGE_KEY_CHECKLIST,
+      this.checklistData
+    );
   }
 
   isAdmin(): boolean {
