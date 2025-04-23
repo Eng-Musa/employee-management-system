@@ -11,6 +11,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Router, RouterModule } from '@angular/router';
 import { AlertService } from '../../../services/alert.service';
+import { LocalStorageService } from '../../../services/local-storage.service';
+import { constants } from '../../../environments/constants';
 
 @Component({
   selector: 'app-login',
@@ -36,7 +38,8 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private alertService: AlertService,
     @Inject(PLATFORM_ID) private platformId: Object,
-    private router: Router
+    private router: Router,
+    private localStorageService: LocalStorageService
   ) {
     this.loginForm = this.fb.group({
       email: ['', Validators.required],
@@ -57,51 +60,47 @@ export class LoginComponent implements OnInit {
       this.isSuccess = false;
       this.message = '';
 
-      if (isPlatformBrowser(this.platformId)) {
-        const storedAdminStr = localStorage.getItem('adminUser');
-        const storedEmployeesStr = localStorage.getItem('employees');
+      // Get users
+      const storedAdmin = this.localStorageService.retrieve<any>(
+        constants.LOCAL_STORAGE_KEY_ADMIN
+      );
+      const storedEmployees = this.localStorageService.retrieve<any[]>(
+        constants.LOCAL_STORAGE_KEY_EMPLOYEES
+      );
 
-        // Simulate a delay of 1 second
-        setTimeout(() => {
-          const email = this.loginForm.get('email')?.value;
-          const password = this.loginForm.get('password')?.value;
+      
+      // Simulate a delay of 1 second
+      setTimeout(() => {
+        const email = this.loginForm.get('email')?.value;
+        const password = this.loginForm.get('password')?.value;
+        let authenticatedUser = null;
 
-          let authenticatedUser = null;
-
-          if (storedAdminStr) {
-            const storedAdmin = JSON.parse(storedAdminStr);
-            if (
-              storedAdmin.email === email &&
-              storedAdmin.password === password
-            ) {
-              authenticatedUser = storedAdmin;
-              this.router.navigate(['/dashboard/admin-home']);
-              this.updateLastLogin();
-            }
+        if (storedAdmin) {
+          if (
+            storedAdmin.email === email &&
+            storedAdmin.password === password
+          ) {
+            authenticatedUser = storedAdmin;
+            this.router.navigate(['/dashboard/admin-home']);
+            this.updateLastLogin();
           }
+        }
 
-          if (!authenticatedUser && storedEmployeesStr) {
-            const employees = JSON.parse(storedEmployeesStr);
-            authenticatedUser = employees.find(
-              (emp: any) => emp.email === email && emp.password === password
-            );
-            if (authenticatedUser) {
-              this.router.navigate(['/dashboard/home']);
-              this.updateLastLogin();
-            }
+        if (!authenticatedUser && storedEmployees) {
+          authenticatedUser = storedEmployees.find(
+            (emp: any) => emp.email === email && emp.password === password
+          );
+          if (authenticatedUser) {
+            this.router.navigate(['/dashboard/home']);
+            this.updateLastLogin();
           }
+        }
 
-          if (!authenticatedUser) {
-            this.message = 'Invalid credentials provided.';
-          }
-          this.loading = false;
-        }, 1000);
-      } else {
-        setTimeout(() => {
-          this.loading = false;
-          this.message = 'localStorage is not available in this environment.';
-        }, 1000);
-      }
+        if (!authenticatedUser) {
+          this.message = 'Invalid credentials provided.';
+        }
+        this.loading = false;
+      }, 1000);
     } else {
       setTimeout(() => {
         this.loading = false;
@@ -113,34 +112,34 @@ export class LoginComponent implements OnInit {
   }
 
   createAdmin() {
-    if (typeof window !== 'undefined' && localStorage) {
-      const existingUser = localStorage.getItem('adminUser');
-      if (!existingUser) {
-        const user = {
-          name: 'System Admin',
-          email: 'admin@gmail.com',
-          password: 'Admin@1234',
-          createdDate: new Date()
-            .toLocaleString('en-US', {
-              timeZone: 'Africa/Nairobi',
-            })
-            .slice(0, 16)
-            .replace(',', ''),
-          role: 'admin',
-          phoneNumber: '254 763 000 000',
-          lastLogin: null,
-          lastPasswordChange: new Date()
-            .toLocaleString('en-US', {
-              timeZone: 'Africa/Nairobi',
-            })
-            .slice(0, 16)
-            .replace(',', ''),
-        };
-        localStorage.setItem('adminUser', JSON.stringify(user));
-        console.log('User created with createdDate and saved to localStorage.');
-      } else {
-        console.log('User already exists in localStorage.');
-      }
+    const existingAdminUser = this.localStorageService.retrieve<any>(
+      constants.LOCAL_STORAGE_KEY_ADMIN
+    );
+    if (!existingAdminUser) {
+      const adminUser = {
+        name: 'System Admin',
+        email: 'admin@gmail.com',
+        password: 'Admin@1234',
+        createdDate: new Date()
+          .toLocaleString('en-US', {
+            timeZone: 'Africa/Nairobi',
+          })
+          .slice(0, 16)
+          .replace(',', ''),
+        role: 'admin',
+        phoneNumber: '254 763 000 000',
+        lastLogin: null,
+        lastPasswordChange: new Date()
+          .toLocaleString('en-US', {
+            timeZone: 'Africa/Nairobi',
+          })
+          .slice(0, 16)
+          .replace(',', ''),
+      };
+      this.localStorageService.save(constants.LOCAL_STORAGE_KEY_ADMIN, adminUser);
+     // console.log('User created with createdDate and saved to localStorage.');
+    } else {
+     // console.log('User already exists in localStorage.');
     }
   }
 
@@ -151,55 +150,46 @@ export class LoginComponent implements OnInit {
       .slice(0, 16)
       .replace(',', '');
 
-    const storedAdminStr = localStorage.getItem('adminUser');
-    if (storedAdminStr) {
-      const adminUser = JSON.parse(storedAdminStr);
-      if (adminUser.email === email) {
-        adminUser.lastLogin = currentDate;
-        localStorage.setItem('adminUser', JSON.stringify(adminUser));
-
-        this.saveToSessionStorage(adminUser.email, adminUser.role);
+    const storedAdmin = this.localStorageService.retrieve<any>(
+      constants.LOCAL_STORAGE_KEY_ADMIN
+    );
+    if (storedAdmin) {
+      if (storedAdmin.email === email) {
+        storedAdmin.lastLogin = currentDate;
+        this.localStorageService.save(
+          constants.LOCAL_STORAGE_KEY_ADMIN,
+          storedAdmin
+        );
+        this.localStorageService.saveToSessionStorage(
+          storedAdmin.email,
+          storedAdmin.role
+        );
         return;
       }
     }
 
-    const storedEmployeesStr = localStorage.getItem('employees');
-    if (storedEmployeesStr) {
-      const employees = JSON.parse(storedEmployeesStr);
-      const employeeIndex = employees.findIndex(
+    const storedEmployees = this.localStorageService.retrieve<any[]>(
+      constants.LOCAL_STORAGE_KEY_EMPLOYEES
+    );
+    if (storedEmployees) {
+      const employeeIndex = storedEmployees.findIndex(
         (emp: any) => emp.email === email
       );
       if (employeeIndex !== -1) {
-        employees[employeeIndex].lastLogin = currentDate;
-        localStorage.setItem('employees', JSON.stringify(employees));
-
-        this.saveToSessionStorage(
-          employees[employeeIndex].email,
-          employees[employeeIndex].role
+        storedEmployees[employeeIndex].lastLogin = currentDate;
+        this.localStorageService.save(
+          constants.LOCAL_STORAGE_KEY_EMPLOYEES,
+          storedEmployees
+        );
+        this.localStorageService.saveToSessionStorage(
+          storedEmployees[employeeIndex].email,
+          storedEmployees[employeeIndex].role
         );
       } else {
         console.error('Employee not found for email: ' + email);
       }
     } else {
       console.error('No employees data found in localStorage.');
-    }
-  }
-
-  saveToSessionStorage(email: string, role: string): void {
-    const loginTime = new Date()
-      .toLocaleString('en-US', { timeZone: 'Africa/Nairobi' })
-      .slice(0, 16)
-      .replace(',', '');
-
-    if (isPlatformBrowser(this.platformId)) {
-      const loggedInPersion = {
-        email: email,
-        loginTime: loginTime,
-        role: role,
-      };
-      sessionStorage.setItem('userSession', JSON.stringify(loggedInPersion));
-    } else {
-      console.error('SessionStorage is not available in this environment.');
     }
   }
 }
