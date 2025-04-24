@@ -1,4 +1,5 @@
 <div
+  role="main"
   style="
     width: 100%;
     margin: 0 auto;
@@ -30,7 +31,11 @@
     >
       Profile
       <span style="display: inline-block; margin-left: 0.5rem; color: #05204c">
-        <i class="ri-user-fill" style="width: 1.5rem; height: 1.5rem"></i>
+        <i
+          class="ri-user-fill"
+          style="width: 1.5rem; height: 1.5rem"
+          aria-hidden="true"
+        ></i>
       </span>
     </h4>
   </div>
@@ -55,6 +60,7 @@
         <i
           class="ri-user-fill"
           style="width: 1.5rem; height: 1.5rem; color: white"
+          aria-hidden="true"
         ></i>
       </div>
       <div>
@@ -93,6 +99,7 @@
         <i
           class="ri-mail-line"
           style="width: 1.25rem; height: 1.25rem; color: #3b82f6"
+          ria-hidden="true"
         ></i>
         <span style="color: #374151">{{ loggedInPerson.email }}</span>
       </div>
@@ -109,6 +116,7 @@
         <i
           class="ri-phone-line"
           style="width: 1.25rem; height: 1.25rem; color: #3b82f6"
+          ria-hidden="true"
         ></i>
         <span style="color: #374151">+{{ loggedInPerson.phoneNumber }}</span>
       </div>
@@ -129,6 +137,7 @@
     <i
       class="ri-global-line"
       style="width: 1.5rem; height: 1.5rem; color: #3b82f6"
+      ria-hidden="true"
     ></i>
     <div>
       <h5 style="font-weight: 600; color: #1f2937">Language</h5>
@@ -158,10 +167,12 @@
         <i
           class="ri-mail-line"
           style="width: 1.25rem; height: 1.25rem; color: #3b82f6"
+          ria-hidden="true"
         ></i>
         <span style="color: #374151">Email Us</span>
       </button>
       <button
+        type="button"
         style="
           display: flex;
           align-items: center;
@@ -177,6 +188,7 @@
         <i
           class="ri-phone-line"
           style="width: 1.25rem; height: 1.25rem; color: #10b981"
+          ria-hidden="true"
         ></i>
         <span style="color: #374151">Call Us</span>
       </button>
@@ -187,7 +199,12 @@
   </div>
 
   <!-- Guides and Tours Section -->
-  <div style="display: flex; flex-direction: column; gap: 1rem">
+  <div
+    role="button"
+    tabindex="0"
+    aria-label="Explore Guides and Tours"
+    style="display: flex; flex-direction: column; gap: 1rem"
+  >
     <h5 style="font-weight: 600; font-size: 1.125rem; color: #1f2937">
       Guides and Tours
     </h5>
@@ -211,12 +228,14 @@
           <i
             class="ri-book-line"
             style="width: 1.25rem; height: 1.25rem; color: #8b5cf6"
+            ria-hidden="true"
           ></i>
           <span style="color: #374151">What do you want to learn today?</span>
         </div>
         <i
           class="ri-arrow-right-line"
           style="width: 1.25rem; height: 1.25rem; color: #9ca3af"
+          ria-hidden="true"
         ></i>
       </div>
     </div>
@@ -228,6 +247,7 @@
       Recommend
     </h5>
     <button
+      type="button"
       style="
         width: 100%;
         display: flex;
@@ -245,6 +265,7 @@
       <i
         class="ri-heart-line"
         style="width: 1.25rem; height: 1.25rem; color: #ef4444"
+        ria-hidden="true"
       ></i>
       <span style="color: #374151">Recommend AOS to a friend</span>
     </button>

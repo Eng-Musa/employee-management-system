@@ -1,5 +1,5 @@
 <div id="dashboad-wrapper">
-  <div class="navbar-container">
+  <div class="navbar-container" role="navigation">
     <div class="left-group">
       <div class="header-container">
         <span class="circle"></span>
@@ -28,7 +28,7 @@
           [matBadge]="notifications.length"
           matBadgeOverlap="false"
           class="no-badge-background"
-          aria-hidden="false"
+          aria-hidden="true"
         >
           notifications
         </mat-icon>
@@ -63,8 +63,15 @@
       [style.width]="isExpanded ? '210px' : '60px'"
       [opened]="true"
       (click)="toggleSidenav()"
+      role="navigation"
+      aria-label="Side Navigation"
     >
-      <div class="sidenav-content" (click)="toggleSidenav()">
+      <div
+        class="sidenav-content"
+        (click)="toggleSidenav()"
+        role="button"
+        tabindex="0"
+      >
         <button
           mat-button
           class="sidenav-button"
@@ -72,7 +79,7 @@
           *ngIf="isAdmin()"
           (click)="goHome()"
         >
-          <i class="ri-home-9-line icon"></i>
+          <i class="ri-home-9-line icon" aria-hidden="true"></i>
           <h4 *ngIf="isExpanded">Home</h4>
         </button>
 
@@ -83,7 +90,7 @@
           *ngIf="!isAdmin()"
           (click)="goHome()"
         >
-          <i class="ri-home-9-line icon"></i>
+          <i class="ri-home-9-line icon" aria-hidden="true"></i>
           <h4 *ngIf="isExpanded">Home</h4>
         </button>
 
@@ -94,7 +101,7 @@
           *ngIf="isAdmin()"
           (click)="goToChecklists()"
         >
-          <i class="ri-check-double-line icon"></i>
+          <i class="ri-check-double-line icon" aria-hidden="true"></i>
           <h4 *ngIf="isExpanded">Checklists</h4>
         </button>
 
@@ -104,7 +111,7 @@
           *ngIf="!isExpanded"
           (click)="isExpanded = true"
         >
-          <i class="ri-settings-4-line icon"></i>
+          <i class="ri-settings-4-line icon" aria-hidden="true"></i>
           <h4 *ngIf="isExpanded">Settings</h4>
         </button>
 
@@ -117,22 +124,32 @@
               </mat-panel-title>
             </mat-expansion-panel-header>
             <ul>
-              <li><i class="ri-moon-fill"></i>Dark theme</li>
-              <li (click)="openAddChangePassDialog()">
-                <i class="ri-lock-2-fill"></i>Change Pass
+              <li><i class="ri-moon-fill" aria-hidden="true"></i>Dark theme</li>
+              <li
+                role="button"
+                tabindex="0"
+                (click)="openAddChangePassDialog()"
+                (keydown.enter)="openAddChangePassDialog()"
+                (keydown.space)="openAddChangePassDialog()"
+              >
+                <i class="ri-lock-2-fill" aria-hidden="true"></i>Change Pass
               </li>
               <li
+                role="button"
+                tabindex="0"
                 [ngClass]="{ active: isActive('/dashboard/view-profile') }"
                 (click)="goToViewProfile()"
+                (keydown.enter)="goToViewProfile()"
+                (keydown.space)="goToViewProfile()"
               >
-                <i class="ri-user-2-fill"></i>View profile
+                <i class="ri-user-2-fill" aria-hidden="true"></i>View profile
               </li>
             </ul>
           </mat-expansion-panel>
         </mat-accordion>
 
         <button mat-button (click)="logout()" class="sidenav-button">
-          <i class="ri-logout-box-r-line icon"></i>
+          <i class="ri-logout-box-r-line icon" aria-hidden="true"></i>
           <h4 *ngIf="isExpanded">Logout</h4>
         </button>
       </div>
