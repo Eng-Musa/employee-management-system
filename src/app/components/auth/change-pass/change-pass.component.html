@@ -8,20 +8,21 @@
       overflow: hidden;
     "
   >
-  <h5>Last changed on: {{lastPasswordChange}}</h5>
-    <h3 class="mb-3 mt-2">Change Password</h3>
+    <h5>Last changed on: {{ lastPasswordChange }}</h5>
+    <h3 id="changePasswordHeader">Change Password</h3>
 
     <mat-progress-bar
       *ngIf="loading"
       mode="indeterminate"
       color="primary"
-      style="margin-bottom: 10px;"
+      style="margin-bottom: 10px"
     ></mat-progress-bar>
 
     <form
       [formGroup]="passwordForm"
       (ngSubmit)="onSubmit()"
-      style="height: calc(100% - 50px);"
+      style="height: calc(100% - 50px)"
+      aria-labelledby="changePasswordHeader"
     >
       <!-- Old Password -->
       <mat-form-field appearance="outline" class="full-width">
@@ -32,12 +33,13 @@
           formControlName="oldPassword"
           required
           [type]="hide ? 'password' : 'text'"
+          autocomplete="current-password"
         />
         <button
           mat-icon-button
           matSuffix
           (click)="hide = !hide"
-          [attr.aria-label]="'Hide password'"
+          [attr.aria-label]="hide ? 'Show password' : 'Hide password'"
           [attr.aria-pressed]="hide"
           type="button"
         >
@@ -59,12 +61,13 @@
           formControlName="password"
           required
           [type]="hide ? 'password' : 'text'"
+          autocomplete="current-password"
         />
         <button
           mat-icon-button
           matSuffix
           (click)="hide = !hide"
-          [attr.aria-label]="'Hide password'"
+          [attr.aria-label]="hide ? 'Show password' : 'Hide password'"
           [attr.aria-pressed]="hide"
           type="button"
         >
@@ -78,6 +81,8 @@
 
       <!-- Message -->
       <div
+        role="alert"
+        aria-live="assertive"
         *ngIf="message"
         [ngClass]="{
           'success-message': isSuccess,
@@ -95,10 +100,8 @@
       </div>
 
       <!-- Actions -->
-      <div style="display: flex; justify-content: center; gap: 10px;">
-        <button mat-button mat-dialog-close (click)="onCancel()">
-          Cancel
-        </button>
+      <div style="display: flex; justify-content: center; gap: 10px">
+        <button mat-button mat-dialog-close (click)="onCancel()">Cancel</button>
         <button
           class="submit-btn"
           mat-button
