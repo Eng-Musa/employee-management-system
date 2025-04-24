@@ -130,6 +130,12 @@ $backgroundImage: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/s
   }
 }
 
+@media screen and (max-width: 992px){
+  #left{
+    display: none;
+  }
+}
+
 // Animations
 @keyframes slideInFromLeft {
   0% {
