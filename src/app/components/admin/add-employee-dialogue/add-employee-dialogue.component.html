@@ -1,6 +1,6 @@
 @if (isAdmin()) {
 <mat-dialog-content>
-  <mat-horizontal-stepper #stepper [linear]="true">
+  <mat-horizontal-stepper #stepper [linear]="true" aria-label="Employee Onboarding Stepper">
     <!-- Step 1: Basic Information -->
     <mat-step [stepControl]="basicInfoForm">
       <form [formGroup]="basicInfoForm">

@@ -6,7 +6,9 @@
     height: 100%;
   "
 >
-  <mat-dialog-content style="text-align: center">
+  <mat-dialog-content style="text-align: center" role="dialog" 
+      aria-modal="true"
+      aria-labelledby="dialog-title">
     <p>
       Are you sure you want to delete employee with ID: {{ data.id }} ({{
         data.name
@@ -22,6 +24,8 @@
         mat-dialog-close
         (click)="onCancel()"
         class="cancel-btn"
+        type="button"
++        aria-label="Cancel deletion"
       >
         Cancel
       </button>
@@ -32,6 +36,7 @@
         color="primary"
         type="submit"
         (click)="onConfirm()"
+        aria-label="Confirm deletion of employee"
       >
         Submit
       </button>

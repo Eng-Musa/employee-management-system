@@ -1,14 +1,16 @@
 @if (isAdmin()) {
-<div class="page-wrapper">
+<div class="page-wrapper" role="main">
   @if (isHighcharts) {
   <div class="chart-container">
     <div class="onboarding-card">
-      <p>Onboarding completion rate</p>
+      <h3>Onboarding completion rate</h3>
       <div class="card-content">
         <highcharts-chart
           [Highcharts]="Highcharts"
           [options]="pieChart"
           [(update)]="updateFlag"
+          role="img"
+          aria-label="Onboarding Completion Rate Chart"
         ></highcharts-chart>
         <div class="selection-div">
           <span>Complete: {{ completed }}%</span>
@@ -21,6 +23,8 @@
       <highcharts-chart
         [Highcharts]="Highcharts"
         [options]="barChart"
+        role="img"
+        aria-label="Onboarding Bar Chart"
       ></highcharts-chart>
     </div>
   </div>
