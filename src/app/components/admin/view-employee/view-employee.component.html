@@ -1,47 +1,60 @@
-<div class="profile-container">
+<div class="profile-container" role="region" aria-labelledby="employee-name">
   <div class="profile-info">
     <!-- Basic Info -->
     <div class="name-container">
       <div class="icon">
-        <i class="ri-user-fill"></i>
+        <i class="ri-user-fill" arial-hidden="true"></i>
       </div>
       <div>
-        <h5>{{employee?.name}}</h5>
-        <p>{{employee?.role}}</p>
+        <h5 id="employee-name">{{ employee?.name }}</h5>
+        <p>{{ employee?.role }}</p>
       </div>
     </div>
 
     <!-- Employee Details Grid -->
     <div class="card-container">
       <div class="card">
-        <p style="margin: 0"><strong>ID:</strong> {{employee?.id}}</p>
+        <p style="margin: 0"><strong>ID:</strong> {{ employee?.id }}</p>
       </div>
       <div class="card">
-        <p style="margin: 0"><strong>Email:</strong> {{employee?.email}}</p>
+        <p style="margin: 0"><strong>Email:</strong> {{ employee?.email }}</p>
       </div>
       <div class="card">
-        <p style="margin: 0"><strong>Phone:</strong> {{employee?.phoneNumber}}</p>
+        <p style="margin: 0">
+          <strong>Phone:</strong> {{ employee?.phoneNumber }}
+        </p>
       </div>
       <div class="card">
-        <p style="margin: 0"><strong>Department:</strong> {{employee?.department}}</p>
+        <p style="margin: 0">
+          <strong>Department:</strong> {{ employee?.department }}
+        </p>
       </div>
       <div class="card">
-        <p style="margin: 0"><strong>Start Date:</strong> {{employee?.startDate}}</p>
+        <p style="margin: 0">
+          <strong>Start Date:</strong> {{ employee?.startDate }}
+        </p>
       </div>
       <div class="card">
         <p style="margin: 0">
           <strong>Status:</strong>
-          <span style="color: green">{{employee?.status}}</span>
+          <span style="color: green">{{ employee?.status }}</span>
         </p>
       </div>
       <div class="card">
-        <p style="margin: 0"><strong>Created:</strong> {{employee?.createdDate}}</p>
+        <p style="margin: 0">
+          <strong>Created:</strong> {{ employee?.createdDate }}
+        </p>
       </div>
       <div class="card">
-        <p style="margin: 0"><strong>Last Login:</strong> {{employee?.lastLogin}}</p>
+        <p style="margin: 0">
+          <strong>Last Login:</strong> {{ employee?.lastLogin }}
+        </p>
       </div>
       <div class="card">
-        <p style="margin: 0"><strong>Last Password Change:</strong> {{employee?.lastPasswordChange}}</p>
+        <p style="margin: 0">
+          <strong>Last Password Change:</strong>
+          {{ employee?.lastPasswordChange }}
+        </p>
       </div>
     </div>
   </div>

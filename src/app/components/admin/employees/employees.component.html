@@ -1,8 +1,8 @@
-<div class="employee-container">
+<div class="employee-container" role="main">
   <div class="top-content">
     <h4>
       Employees
-      <i class="ri-user-2-fill"></i>
+      <i class="ri-user-2-fill" aria-hidden="true"></i>
     </h4>
 
     <div class="top-right-content">
@@ -17,7 +17,13 @@
             (input)="applyFilter($event.target)"
           /> </mat-form-field
         >} @if (!searchClicked) {
-        <i class="ri-search-2-line" (click)="searchClicked = true"></i>
+        <i
+          class="ri-search-2-line"
+          (click)="searchClicked = true"
+          role="button"
+          tabindex="0"
+          aria-label="Open search"
+        ></i>
         }
       </div>
 
@@ -145,6 +151,7 @@
             mat-icon-button
             class="table-icons"
             [matMenuTriggerFor]="moreMenu"
+            aria-label="Show employee options"
           >
             <mat-icon>more_horiz</mat-icon>
           </button>
@@ -229,7 +236,7 @@
   <mat-paginator
     [pageSizeOptions]="[5, 10, 20]"
     showFirstLastButtons
-    aria-label="Select page of tenants"
+    aria-label="Select page of employees"
   >
   </mat-paginator>
 </div>
