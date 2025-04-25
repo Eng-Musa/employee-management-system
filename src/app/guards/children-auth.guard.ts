@@ -10,11 +10,11 @@ export const childrenAuthGuard: CanActivateChildFn = (childRoute, state) => {
 
   if (!authService.isAthenticated()) {
     router.navigate(['login']);
-    alertService.showInfoToastr('Kindly login');
+    alertService.information('Kindly login');
     return false;
   }else if (authService.isTokenExpired()){
     router.navigate(['login']);
-    alertService.showInfoToastr('Session expired, kindly login')
+    alertService.information('Session expired, kindly login')
     return false;
   }
 

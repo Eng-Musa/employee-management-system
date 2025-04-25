@@ -101,7 +101,11 @@ export class ChangePassComponent implements OnInit {
               this.loggedInPerson
             );
             this.isSuccess = true;
-            this.message = 'Password change successfull';
+            this.message = 'Password change successfull. Logging out...';
+            setTimeout(() => {
+              this.dialogRef.close();
+              this.authService.logout();
+            }, 500);
           } else {
             this.loggedInPerson.password = password;
             this.loggedInPerson.lastPasswordChange = new Date()
@@ -111,17 +115,23 @@ export class ChangePassComponent implements OnInit {
               .slice(0, 16)
               .replace(',', '');
 
-              const index = this.employees?.findIndex((emp: any) => emp.email === this.loggedinEmail);
-              if (index !== -1 && index !== undefined && this.employees) {
-                this.employees[index] = this.loggedInPerson;
-              }
-              
+            const index = this.employees?.findIndex(
+              (emp: any) => emp.email === this.loggedinEmail
+            );
+            if (index !== -1 && index !== undefined && this.employees) {
+              this.employees[index] = this.loggedInPerson;
+            }
+
             this.localStorageService.save(
               constants.LOCAL_STORAGE_KEY_EMPLOYEES,
               this.employees
             );
             this.isSuccess = true;
-            this.message = 'Password change successfull';
+            this.message = 'Password change successfull.Logging out...';
+            setTimeout(() => {
+              this.dialogRef.close();
+              this.authService.logout();
+            }, 1000);
           }
         }
       }
