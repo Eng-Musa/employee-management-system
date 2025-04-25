@@ -144,7 +144,7 @@ export class ChangePassComponent implements OnInit {
           this.loggedInPerson.lastPasswordChange
         );
       } else {
-        this.alertService.showErrorToastr('No user found in localStorage.');
+        this.alertService.error('No user found in localStorage.');
       }
     } else {
       this.loggedinEmail = this.authService.getLoggedInEmail();

@@ -1,19 +1,19 @@
+import { CommonModule } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import {
-  MatDialogRef,
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import {
   MAT_DIALOG_DATA,
   MatDialogContent,
   MatDialogModule,
+  MatDialogRef,
 } from '@angular/material/dialog';
 import { AuthService } from '../../../services/auth.service';
-import { CommonModule } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
-import {
-  FormGroup,
-  FormBuilder,
-  Validators,
-  ReactiveFormsModule,
-} from '@angular/forms';
 
 @Component({
   selector: 'app-submit-dialog',

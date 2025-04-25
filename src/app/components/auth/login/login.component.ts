@@ -1,4 +1,4 @@
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import {
   FormBuilder,
@@ -10,9 +10,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Router, RouterModule } from '@angular/router';
+import { constants } from '../../../environments/constants';
 import { AlertService } from '../../../services/alert.service';
 import { LocalStorageService } from '../../../services/local-storage.service';
-import { constants } from '../../../environments/constants';
 
 @Component({
   selector: 'app-login',
@@ -104,7 +104,7 @@ export class LoginComponent implements OnInit {
     } else {
       setTimeout(() => {
         this.loading = false;
-        this.alertService.showErrorToastr(
+        this.alertService.error(
           'Invalid form, fill required fields!'
         );
       }, 1000);

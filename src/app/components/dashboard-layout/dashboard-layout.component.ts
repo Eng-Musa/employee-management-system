@@ -1,3 +1,4 @@
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import {
   Component,
   HostListener,
@@ -5,25 +6,24 @@ import {
   OnInit,
   PLATFORM_ID,
 } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatIconModule } from '@angular/material/icon';
 import {
   MatFormField,
   MatInputModule,
   MatLabel,
 } from '@angular/material/input';
-import { Router, RouterModule } from '@angular/router';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { ChangePassComponent } from '../auth/change-pass/change-pass.component';
-import { MatDialog } from '@angular/material/dialog';
-import { MatMenuModule } from '@angular/material/menu';
 import { MatListModule } from '@angular/material/list';
-import { MatDividerModule } from '@angular/material/divider';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { ChangePassComponent } from '../auth/change-pass/change-pass.component';
 
 interface Notification {
   id: number;

@@ -127,7 +127,7 @@ export class AddEmployeeDialogueComponent {
     this.employeesData.push(employee);
     this.saveToLocalStorage();
     this.storeOnboardingStatus();
-    this.alertService.showSuccessToastr('Added employee successfully.');
+    this.alertService.success('Added employee successfully.');
     // Pass the employee data back and close the dialog.
     this.dialogRef.close(employee);
   }
@@ -186,7 +186,7 @@ export class AddEmployeeDialogueComponent {
     } else if (this.employmentForm.value.role === 'Hr') {
       newChecklist = this.transformChecklist(hrChecklist);
     } else {
-      this.alertService.showErrorToastr(
+      this.alertService.error(
         'User role not recognized for onboarding status.'
       );
       return;

@@ -1,10 +1,8 @@
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import {
   Component,
-  Inject,
   OnInit,
-  PLATFORM_ID,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
@@ -22,10 +20,10 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router, RouterModule } from '@angular/router';
 import { delay } from 'rxjs';
+import { constants } from '../../../environments/constants';
+import { LocalStorageService } from '../../../services/local-storage.service';
 import { AddEmployeeDialogueComponent } from '../add-employee-dialogue/add-employee-dialogue.component';
 import { DeleteEmployeeDialogueComponent } from '../delete-employee-dialogue/delete-employee-dialogue.component';
-import { LocalStorageService } from '../../../services/local-storage.service';
-import { constants } from '../../../environments/constants';
 
 interface EmployeeList {
   id: number;
@@ -118,7 +116,6 @@ export class EmployeesComponent implements OnInit {
   }
 
   openDeleteEmployeeDialog(id: number, name: string, email: string): void {
-    console.log("ajkshghgahs")
     const dialogRef = this.dialog.open(DeleteEmployeeDialogueComponent, {
       width: '40vw',
       maxHeight: '90vh',

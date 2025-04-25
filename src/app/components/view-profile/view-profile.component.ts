@@ -49,7 +49,7 @@ export class ViewProfileComponent implements OnInit {
         constants.LOCAL_STORAGE_KEY_ADMIN
       );
       if (!this.loggedInPerson) {
-        this.alertService.showErrorToastr(
+        this.alertService.error(
           'No admin user found in local storage.'
         );
       }
@@ -75,15 +75,15 @@ export class ViewProfileComponent implements OnInit {
               lastPasswordChange: foundEmployee.lastPasswordChange,
             };
           } else {
-            this.alertService.showErrorToastr(
+            this.alertService.error(
               `Employee with email ${loggedInEmail} not found.`
             );
           }
         } catch (error) {
-          this.alertService.showErrorToastr('Failed to parse employee data.');
+          this.alertService.error('Failed to parse employee data.');
         }
       } else {
-        this.alertService.showErrorToastr(
+        this.alertService.error(
           'No employee data found in local storage.'
         );
       }

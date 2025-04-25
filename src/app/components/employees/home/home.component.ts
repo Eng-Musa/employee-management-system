@@ -67,7 +67,7 @@ export class HomeComponent {
     setTimeout(() => {
       this.loading[itemKey] = false;
       if (!this.onboardingStatus[this.loggedInUserEmail]) {
-        this.alertService.showErrorToastr(
+        this.alertService.error(
           'Error occured while processing request.'
         );
         return;
@@ -79,7 +79,7 @@ export class HomeComponent {
         constants.LOCAL_STORAGE_KEY_ONBOARDING,
         this.onboardingStatus
       );
-      this.alertService.showSuccessToastr(`${itemKey} submitted successfully`);
+      this.alertService.success(`${itemKey} submitted successfully`);
 
       this.updateOverallOnboardingStatus();
     }, 1000);
@@ -144,7 +144,7 @@ export class HomeComponent {
     } else if (this.isHr()) {
       newChecklist = this.transformChecklist(hrChecklist);
     } else {
-      this.alertService.showErrorToastr(
+      this.alertService.error(
         'User role not recognized for onboarding status.'
       );
       return;
@@ -239,7 +239,7 @@ export class HomeComponent {
           );
         }
       } else {
-        this.alertService.showErrorToastr('No employees found');
+        this.alertService.error('No employees found');
       }
     }
   }

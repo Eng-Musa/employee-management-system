@@ -1,5 +1,5 @@
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, Inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import {
   MAT_DIALOG_DATA,
@@ -7,9 +7,9 @@ import {
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
+import { constants } from '../../../environments/constants';
 import { AlertService } from '../../../services/alert.service';
 import { LocalStorageService } from '../../../services/local-storage.service';
-import { constants } from '../../../environments/constants';
 
 @Component({
   selector: 'app-delete-employee-dialogue',
@@ -38,7 +38,7 @@ export class DeleteEmployeeDialogueComponent {
 
   onConfirm(): void {
     this.deleteEmployee();
-    this.alertService.showSuccessToastr('Employee deleted successfully!');
+    this.alertService.success('Employee deleted successfully!');
     this.dialogRef.close(true);
   }
 

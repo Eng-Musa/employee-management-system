@@ -1,5 +1,4 @@
-import { isPlatformBrowser } from '@angular/common';
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AlertService } from '../../../services/alert.service';
 import { LocalStorageService } from '../../../services/local-storage.service';
@@ -54,12 +53,12 @@ export class ViewEmployeeComponent implements OnInit {
       this.employee = employees.find((emp: Employee) => emp.id === id) || null;
 
       if (!this.employee) {
-        this.alertService.showErrorToastr(
+        this.alertService.error(
           'Employee not found in localStorage!'
         );
       }
     } else {
-      this.alertService.showErrorToastr('No employees found in localStorage');
+      this.alertService.error('No employees found in localStorage');
     }
   }
 }

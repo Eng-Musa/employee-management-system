@@ -8,57 +8,57 @@ import { ToastrService } from 'ngx-toastr';
 export class AlertService {
   constructor(private toastr: ToastrService, private snackbar: MatSnackBar) {}
 
-  showErrorToastr(message: string) {
-    this.toastr.error(message, 'Error', {
-      timeOut: 2000, // Increased time to make it more visible
-      extendedTimeOut: 1000, //Time to close after a user hovers over toast
-      progressBar: true, // Add a progress bar
-      progressAnimation: 'decreasing',
-      positionClass: 'toast-top-right', // Corrected position class
-      closeButton: false, // Add a close button
-      newestOnTop: true, // Makes sure the newest toast appears on top
-      tapToDismiss: true, // Allows dismissing on click
-    });
-  }
+  // showErrorToastr(message: string) {
+  //   this.toastr.error(message, 'Error', {
+  //     timeOut: 2000, // Increased time to make it more visible
+  //     extendedTimeOut: 1000, //Time to close after a user hovers over toast
+  //     progressBar: true, // Add a progress bar
+  //     progressAnimation: 'decreasing',
+  //     positionClass: 'toast-top-right', // Corrected position class
+  //     closeButton: false, // Add a close button
+  //     newestOnTop: true, // Makes sure the newest toast appears on top
+  //     tapToDismiss: true, // Allows dismissing on click
+  //   });
+  // }
 
-  showSuccessToastr(message: string) {
-    this.toastr.success(message, 'Success', {
-      timeOut: 3000, // Increased time to make it more visible
-      extendedTimeOut: 1000, //Time to close after a user hovers over toast
-      progressBar: true, // Add a progress bar
-      progressAnimation: 'decreasing',
-      positionClass: 'toast-top-right', // Corrected position class
-      closeButton: false, // Add a close button
-      newestOnTop: true, // Makes sure the newest toast appears on top
-      tapToDismiss: true, // Allows dismissing on click
-    });
-  }
+  // showSuccessToastr(message: string) {
+  //   this.toastr.success(message, 'Success', {
+  //     timeOut: 3000, // Increased time to make it more visible
+  //     extendedTimeOut: 1000, //Time to close after a user hovers over toast
+  //     progressBar: true, // Add a progress bar
+  //     progressAnimation: 'decreasing',
+  //     positionClass: 'toast-top-right', // Corrected position class
+  //     closeButton: false, // Add a close button
+  //     newestOnTop: true, // Makes sure the newest toast appears on top
+  //     tapToDismiss: true, // Allows dismissing on click
+  //   });
+  // }
 
-  showInfoToastr(message: string) {
-    this.toastr.info(message, 'Info', {
-      timeOut: 3000, // Increased time to make it more visible
-      extendedTimeOut: 1000, //Time to close after a user hovers over toast
-      progressBar: true, // Add a progress bar
-      progressAnimation: 'decreasing',
-      positionClass: 'toast-top-right', // Corrected position class
-      closeButton: false, // Add a close button
-      newestOnTop: true, // Makes sure the newest toast appears on top
-      tapToDismiss: true, // Allows dismissing on click
-    });
-  }
+  // showInfoToastr(message: string) {
+  //   this.toastr.info(message, 'Info', {
+  //     timeOut: 3000, // Increased time to make it more visible
+  //     extendedTimeOut: 1000, //Time to close after a user hovers over toast
+  //     progressBar: true, // Add a progress bar
+  //     progressAnimation: 'decreasing',
+  //     positionClass: 'toast-top-right', // Corrected position class
+  //     closeButton: false, // Add a close button
+  //     newestOnTop: true, // Makes sure the newest toast appears on top
+  //     tapToDismiss: true, // Allows dismissing on click
+  //   });
+  // }
 
-  showWarnToastr(message: string) {
-    this.toastr.warning(message, 'Warning', {
-      timeOut: 3000, // Increased time to make it more visible
-      extendedTimeOut: 1000, //Time to close after a user hovers over toast
-      progressBar: true, // Add a progress bar
-      progressAnimation: 'decreasing',
-      positionClass: 'toast-top-right', // Corrected position class
-      closeButton: false, // Add a close button
-      newestOnTop: true, // Makes sure the newest toast appears on top
-      tapToDismiss: true, // Allows dismissing on click
-    });
-  }
+  // showWarnToastr(message: string) {
+  //   this.toastr.warning(message, 'Warning', {
+  //     timeOut: 3000, // Increased time to make it more visible
+  //     extendedTimeOut: 1000, //Time to close after a user hovers over toast
+  //     progressBar: true, // Add a progress bar
+  //     progressAnimation: 'decreasing',
+  //     positionClass: 'toast-top-right', // Corrected position class
+  //     closeButton: false, // Add a close button
+  //     newestOnTop: true, // Makes sure the newest toast appears on top
+  //     tapToDismiss: true, // Allows dismissing on click
+  //   });
+  // }
 
   //snackbar to show success
   success(message: string) {
@@ -71,7 +71,7 @@ export class AlertService {
   }
 
   //snackbar to show an error
-  danger(message: string) {
+  error(message: string) {
     this.snackbar.open(message, 'X', {
       horizontalPosition: 'right',
       verticalPosition: 'top',

@@ -222,7 +222,7 @@ export class AdminHomeComponent implements OnInit {
 
       this.updateFlag = true;
     } catch (error) {
-      this.alertService.showErrorToastr(
+      this.alertService.error(
         'Failed to load employee data from local storage.'
       );
     }
