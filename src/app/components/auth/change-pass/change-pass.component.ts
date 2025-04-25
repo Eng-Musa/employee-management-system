@@ -1,5 +1,5 @@
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -15,10 +15,10 @@ import {
   MatInputModule,
 } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { constants } from '../../../environments/constants';
 import { AlertService } from '../../../services/alert.service';
 import { AuthService } from '../../../services/auth.service';
 import { LocalStorageService } from '../../../services/local-storage.service';
-import { constants } from '../../../environments/constants';
 
 @Component({
   selector: 'app-change-pass',
