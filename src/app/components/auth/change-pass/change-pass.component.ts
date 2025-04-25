@@ -111,8 +111,11 @@ export class ChangePassComponent implements OnInit {
               .slice(0, 16)
               .replace(',', '');
 
-            this.employees[this.loggedinEmail] = this.loggedInPerson;
-
+              const index = this.employees?.findIndex((emp: any) => emp.email === this.loggedinEmail);
+              if (index !== -1 && index !== undefined && this.employees) {
+                this.employees[index] = this.loggedInPerson;
+              }
+              
             this.localStorageService.save(
               constants.LOCAL_STORAGE_KEY_EMPLOYEES,
               this.employees
@@ -129,7 +132,7 @@ export class ChangePassComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  employees: any = {};
+  employees: any[] | null = [];
   loggedinEmail: string = '';
   getLoggedInPerson() {
     if (this.authService.getUserType() === 'admin') {
@@ -145,10 +148,10 @@ export class ChangePassComponent implements OnInit {
       }
     } else {
       this.loggedinEmail = this.authService.getLoggedInEmail();
-      const employees = this.localStorageService.retrieve<any[]>(
+      this.employees = this.localStorageService.retrieve<any[]>(
         constants.LOCAL_STORAGE_KEY_EMPLOYEES
       );
-      if (employees) {
+      if (this.employees) {
         this.loggedInPerson = this.employees.find(
           (emp: any) => emp.email === this.loggedinEmail
         );
@@ -162,8 +165,6 @@ export class ChangePassComponent implements OnInit {
         }
       }
     }
-
-    console.log(this.loggedInPerson);
   }
 
   getTimeDifference(lastPasswordChange: string): string {

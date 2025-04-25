@@ -118,6 +118,7 @@ export class EmployeesComponent implements OnInit {
   }
 
   openDeleteEmployeeDialog(id: number, name: string, email: string): void {
+    console.log("ajkshghgahs")
     const dialogRef = this.dialog.open(DeleteEmployeeDialogueComponent, {
       width: '40vw',
       maxHeight: '90vh',
