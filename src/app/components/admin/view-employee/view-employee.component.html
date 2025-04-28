@@ -57,20 +57,27 @@
         </p>
       </div>
     </div>
-  </div>
-</div>
 
-<div>
-  <ul *ngFor="let key of getKeys(employeeOnboardingStatus)">
-    <ul>
-      {{
-        key
-      }}
-      - @if(employeeOnboardingStatus[key]){
-      <mat-icon>done</mat-icon
-      >} @else {
-        <span>Pending</span>
-      }
-    </ul>
-  </ul>
+    <!-- employeeOnboardingStatus -->
+    <div class="employee-status">
+      <ul class="status-list">
+        <li
+          *ngFor="let key of getKeys(employeeOnboardingStatus)"
+          class="status-item"
+        >
+          {{ key }} -
+          <ng-container *ngIf="employeeOnboardingStatus[key]; else pending">
+            <mat-icon class="status-tick">done</mat-icon>
+          </ng-container>
+          <ng-template #pending>
+            <span class="status-pending">Pending</span>
+          </ng-template>
+        </li>
+      </ul>
+      <p *ngIf="calculateCompletionPercentage() < 100" class="reminder-message">
+        Profile is {{ calculateCompletionPercentage() }}% complete.
+        <a href="#send-reminder">Send reminder?</a>
+      </p>
+    </div>
+  </div>
 </div>

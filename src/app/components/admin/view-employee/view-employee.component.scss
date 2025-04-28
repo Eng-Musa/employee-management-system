@@ -56,3 +56,43 @@
     }
   }
 }
+
+
+.employee-status {
+  margin-top: 2em;
+  .status-list {
+    list-style: none;
+    padding: 0;
+
+    .status-item {
+      margin-bottom: 10px;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+
+      mat-icon,
+      .status-pending {
+        margin-left: 5px;
+      }
+      
+      .status-tick {
+        color: green; 
+      }
+
+      .status-pending {
+        color: red; 
+      }
+    }
+  }
+
+  .reminder-message {
+    font-size: 16px;
+    margin-top: 20px;
+
+    a {
+      text-decoration: underline;
+      color: #007bff;
+    }
+  }
+}
+

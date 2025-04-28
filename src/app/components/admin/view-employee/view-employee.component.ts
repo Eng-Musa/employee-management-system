@@ -76,6 +76,23 @@ export class ViewEmployeeComponent implements OnInit {
       : null;
   }
 
+  calculateCompletionPercentage(): number {
+    const keys = this.getKeys(this.employeeOnboardingStatus);
+
+    if (!keys || keys.length === 0) {
+      return 0;
+    }
+
+    let completed = 0;
+    for (let key of keys) {
+      if (this.employeeOnboardingStatus[key]) {
+        completed++;
+      }
+    }
+
+    return Math.round((completed / keys.length) * 100);
+  }
+
   // Helper method to get keys for an object;
   getKeys(obj: any): string[] {
     return Object.keys(obj);
