@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AlertService } from '../../../services/alert.service';
 import { LocalStorageService } from '../../../services/local-storage.service';
+import { constants } from '../../../environments/constants';
+import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 
 export interface Employee {
   id: number;
@@ -20,7 +23,7 @@ export interface Employee {
 
 @Component({
   selector: 'app-view-employee',
-  imports: [],
+  imports: [CommonModule, MatIconModule],
   templateUrl: './view-employee.component.html',
   styleUrl: './view-employee.component.scss',
 })
@@ -28,6 +31,7 @@ export class ViewEmployeeComponent implements OnInit {
   employeeId!: number;
   employeeName: string = '';
   employee!: Employee | null;
+  employeeOnboardingStatus: any = {};
 
   constructor(
     private route: ActivatedRoute,
@@ -42,23 +46,38 @@ export class ViewEmployeeComponent implements OnInit {
       this.employeeName = params['name'];
 
       this.getEmployeeById(this.employeeId);
+      this.loadOnboardingStatus();
     });
   }
 
   getEmployeeById(id: number): void {
-    const employees =
-      this.localStorageService.retrieve<Employee[]>('employees');
+    const employees = this.localStorageService.retrieve<Employee[]>(
+      constants.LOCAL_STORAGE_KEY_EMPLOYEES
+    );
 
     if (employees) {
       this.employee = employees.find((emp: Employee) => emp.id === id) || null;
 
       if (!this.employee) {
-        this.alertService.error(
-          'Employee not found in localStorage!'
-        );
+        this.alertService.error('Employee not found in localStorage!');
       }
     } else {
       this.alertService.error('No employees found in localStorage');
     }
+  }
+
+  loadOnboardingStatus(): void {
+    const onboardingStatus = this.localStorageService.retrieve<any>(
+      constants.LOCAL_STORAGE_KEY_ONBOARDING
+    );
+    const employeeEmail = this.employee?.email;
+    this.employeeOnboardingStatus = employeeEmail
+      ? onboardingStatus[employeeEmail]
+      : null;
+  }
+
+  // Helper method to get keys for an object;
+  getKeys(obj: any): string[] {
+    return Object.keys(obj);
   }
 }

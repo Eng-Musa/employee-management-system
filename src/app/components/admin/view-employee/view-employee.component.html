@@ -59,3 +59,18 @@
     </div>
   </div>
 </div>
+
+<div>
+  <ul *ngFor="let key of getKeys(employeeOnboardingStatus)">
+    <ul>
+      {{
+        key
+      }}
+      - @if(employeeOnboardingStatus[key]){
+      <mat-icon>done</mat-icon
+      >} @else {
+        <span>Pending</span>
+      }
+    </ul>
+  </ul>
+</div>
