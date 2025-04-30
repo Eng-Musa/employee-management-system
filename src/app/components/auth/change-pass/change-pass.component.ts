@@ -19,6 +19,7 @@ import { constants } from '../../../environments/constants';
 import { AlertService } from '../../../services/alert.service';
 import { AuthService } from '../../../services/auth.service';
 import { LocalStorageService } from '../../../services/local-storage.service';
+import { Employee, LoggedInPerson } from '../../view-profile/view-profile.component';
 
 @Component({
   selector: 'app-change-pass',
@@ -37,7 +38,14 @@ import { LocalStorageService } from '../../../services/local-storage.service';
   styleUrl: './change-pass.component.scss',
 })
 export class ChangePassComponent implements OnInit {
-  loggedInPerson: any = {};
+  loggedInPerson: LoggedInPerson = { name: 'Unknown',
+    email: 'Unknown',
+    password: 'Unknown',
+    createdDate: 'Unknown',
+    role: 'Unknown',
+    phoneNumber: 'Unknown',
+    lastLogin: 'Unknown',
+    lastPasswordChange: 'Unknown'};
 
   passwordForm: FormGroup;
   loading = false;
@@ -116,7 +124,7 @@ export class ChangePassComponent implements OnInit {
               .replace(',', '');
 
             const index = this.employees?.findIndex(
-              (emp: any) => emp.email === this.loggedinEmail
+              (emp: Employee) => emp.email === this.loggedinEmail
             );
             if (index !== -1 && index !== undefined && this.employees) {
               this.employees[index] = this.loggedInPerson;
@@ -146,9 +154,15 @@ export class ChangePassComponent implements OnInit {
   loggedinEmail = '';
   getLoggedInPerson() {
     if (this.authService.getUserType() === 'admin') {
-      this.loggedInPerson = this.localStorageService.retrieve(
+      const retrievedPerson = this.localStorageService.retrieve<LoggedInPerson>(
         constants.LOCAL_STORAGE_KEY_ADMIN
       );
+
+      if (retrievedPerson) {
+        this.loggedInPerson = retrievedPerson;
+      } else {
+        this.alertService.error('No admin user found in local storage.');
+      }
       if (this.loggedInPerson) {
         this.lastPasswordChange = this.getTimeDifference(
           this.loggedInPerson.lastPasswordChange
@@ -158,12 +172,12 @@ export class ChangePassComponent implements OnInit {
       }
     } else {
       this.loggedinEmail = this.authService.getLoggedInEmail();
-      this.employees = this.localStorageService.retrieve<any[]>(
+      this.employees = this.localStorageService.retrieve<Employee[]>(
         constants.LOCAL_STORAGE_KEY_EMPLOYEES
       );
       if (this.employees) {
         this.loggedInPerson = this.employees.find(
-          (emp: any) => emp.email === this.loggedinEmail
+          (emp: Employee) => emp.email === this.loggedinEmail
         );
 
         if (this.loggedInPerson.lastPasswordChange === 'Never') {
