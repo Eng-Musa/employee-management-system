@@ -24,17 +24,9 @@ import { constants } from '../../../environments/constants';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { AddEmployeeDialogueComponent } from '../add-employee-dialogue/add-employee-dialogue.component';
 import { DeleteEmployeeDialogueComponent } from '../delete-employee-dialogue/delete-employee-dialogue.component';
+import { Employee } from '../../view-profile/view-profile.component';
 
-interface EmployeeList {
-  id: number;
-  name: string;
-  email: string;
-  phoneNumber: string;
-  department: string;
-  role: string;
-  startDate: string;
-  status: string;
-}
+
 
 @Component({
   selector: 'app-employees',
@@ -57,7 +49,7 @@ interface EmployeeList {
   styleUrl: './employees.component.scss',
 })
 export class EmployeesComponent implements OnInit, AfterViewInit {
-  employee: EmployeeList[] = [];
+  employee: Employee[] = [];
   dataSource = new MatTableDataSource(this.employee);
   searchClicked = false;
 
@@ -92,7 +84,7 @@ export class EmployeesComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.loading = false;
       this.employee =
-        this.localStorageService.retrieve<any[]>(
+        this.localStorageService.retrieve<Employee[]>(
           constants.LOCAL_STORAGE_KEY_EMPLOYEES
         ) || [];
       this.dataSource.data = this.employee;
