@@ -13,6 +13,8 @@ import { Router, RouterModule } from '@angular/router';
 import { constants } from '../../../environments/constants';
 import { AlertService } from '../../../services/alert.service';
 import { LocalStorageService } from '../../../services/local-storage.service';
+import { LoggedInPerson } from '../../view-profile/view-profile.component';
+import { Employee } from '../../admin/view-employee/view-employee.component';
 
 @Component({
   selector: 'app-login',
@@ -50,7 +52,7 @@ export class LoginComponent implements OnInit {
     this.createAdmin();
   }
 
-  clickEvent(event: MouseEvent) {
+  clickEvent() {
     this.hide.set(!this.hide());
   }
 
@@ -61,10 +63,10 @@ export class LoginComponent implements OnInit {
       this.message = '';
 
       // Get users
-      const storedAdmin = this.localStorageService.retrieve<any>(
+      const storedAdmin = this.localStorageService.retrieve<LoggedInPerson>(
         constants.LOCAL_STORAGE_KEY_ADMIN
       );
-      const storedEmployees = this.localStorageService.retrieve<any[]>(
+      const storedEmployees = this.localStorageService.retrieve<Employee[]>(
         constants.LOCAL_STORAGE_KEY_EMPLOYEES
       );
 
@@ -88,7 +90,7 @@ export class LoginComponent implements OnInit {
 
         if (!authenticatedUser && storedEmployees) {
           authenticatedUser = storedEmployees.find(
-            (emp: any) => emp.email === email && emp.password === password
+            (emp: Employee) => emp.email === email && emp.password === password
           );
           if (authenticatedUser) {
             this.router.navigate(['/dashboard/home']);
@@ -112,7 +114,7 @@ export class LoginComponent implements OnInit {
   }
 
   createAdmin() {
-    const existingAdminUser = this.localStorageService.retrieve<any>(
+    const existingAdminUser = this.localStorageService.retrieve<LoggedInPerson>(
       constants.LOCAL_STORAGE_KEY_ADMIN
     );
     if (!existingAdminUser) {
@@ -150,7 +152,7 @@ export class LoginComponent implements OnInit {
       .slice(0, 16)
       .replace(',', '');
 
-    const storedAdmin = this.localStorageService.retrieve<any>(
+    const storedAdmin = this.localStorageService.retrieve<LoggedInPerson>(
       constants.LOCAL_STORAGE_KEY_ADMIN
     );
     if (storedAdmin) {
@@ -168,12 +170,12 @@ export class LoginComponent implements OnInit {
       }
     }
 
-    const storedEmployees = this.localStorageService.retrieve<any[]>(
+    const storedEmployees = this.localStorageService.retrieve<Employee[]>(
       constants.LOCAL_STORAGE_KEY_EMPLOYEES
     );
     if (storedEmployees) {
       const employeeIndex = storedEmployees.findIndex(
-        (emp: any) => emp.email === email
+        (emp: Employee) => emp.email === email
       );
       if (employeeIndex !== -1) {
         storedEmployees[employeeIndex].lastLogin = currentDate;
