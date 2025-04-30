@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -27,7 +27,7 @@ import { AuthService } from '../../../services/auth.service';
   templateUrl: './submit-dialog.component.html',
   styleUrl: './submit-dialog.component.scss',
 })
-export class SubmitDialogComponent implements OnInit {
+export class SubmitDialogComponent {
   qualificationForm: FormGroup;
   idForm: FormGroup;
   contactForm: FormGroup;
@@ -35,7 +35,7 @@ export class SubmitDialogComponent implements OnInit {
   toolsForm: FormGroup;
   policiesForm: FormGroup;
   isSubmitted = false;
-  selectedFileNames: string = 'No file chosen';
+  selectedFileNames = 'No file chosen';
 
   constructor(
     public dialogRef: MatDialogRef<SubmitDialogComponent>,
@@ -95,7 +95,7 @@ export class SubmitDialogComponent implements OnInit {
     { value: 'other', label: 'Other' },
   ];
 
-  ngOnInit(): void {}
+
 
   /**
    * Handle file selection

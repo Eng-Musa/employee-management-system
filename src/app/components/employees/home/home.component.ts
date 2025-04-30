@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -17,7 +17,7 @@ import { SubmitDialogComponent } from '../submit-dialog/submit-dialog.component'
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   checklistData: ChecklistData = {
     checklists: {
       common: [],
@@ -28,7 +28,7 @@ export class HomeComponent {
   };
 
   onboardingStatus: any = {};
-  loggedInUserEmail: string = '';
+  loggedInUserEmail = '';
 
   constructor(
     private authService: AuthService,
@@ -60,7 +60,7 @@ export class HomeComponent {
     this.updateOverallOnboardingStatus();
   }
 
-  loading: { [key: string]: boolean } = {};
+  loading: Record<string, boolean> = {};
 
   onSumit(itemKey: string): void {
     this.loading[itemKey] = true;
@@ -107,19 +107,17 @@ export class HomeComponent {
     ) as ChecklistData;
   }
 
-  transformChecklist(items: string[]): { [key: string]: boolean } {
-    let checklist: { [key: string]: boolean } = {};
-    for (let i = 0; i < items.length; i++) {
-      checklist[items[i]] = false;
+  transformChecklist(items: string[]): Record<string, boolean> {
+    const checklist: Record<string, boolean> = {};
+    for (const item of items) {
+      checklist[item] = false;
     }
     return checklist;
   }
 
   storeOnboardingStatus(): void {
-    let existingData: { [email: string]: { [key: string]: boolean } } =
-      this.localStorageService.retrieve<{
-        [email: string]: { [key: string]: boolean };
-      }>(constants.LOCAL_STORAGE_KEY_ONBOARDING) || {};
+    const existingData: Record<string, Record<string, boolean>> =
+      this.localStorageService.retrieve<Record<string, Record<string, boolean>>>(constants.LOCAL_STORAGE_KEY_ONBOARDING) || {};
 
     // Combine common checklist items with role-specific items.
     const designerChecklist = [
@@ -136,7 +134,7 @@ export class HomeComponent {
     ];
 
     // Compute the new checklist based on the user's role.
-    let newChecklist: { [key: string]: boolean } = {};
+    let newChecklist: Record<string, boolean> = {};
     if (this.isDesigner()) {
       newChecklist = this.transformChecklist(designerChecklist);
     } else if (this.isDeveloper()) {

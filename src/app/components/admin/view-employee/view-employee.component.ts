@@ -29,7 +29,7 @@ export interface Employee {
 })
 export class ViewEmployeeComponent implements OnInit {
   employeeId!: number;
-  employeeName: string = '';
+  employeeName = '';
   employee!: Employee | null;
   employeeOnboardingStatus: any = {};
 
@@ -84,7 +84,7 @@ export class ViewEmployeeComponent implements OnInit {
     }
 
     let completed = 0;
-    for (let key of keys) {
+    for (const key of keys) {
       if (this.employeeOnboardingStatus[key]) {
         completed++;
       }

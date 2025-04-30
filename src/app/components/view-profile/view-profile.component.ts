@@ -15,6 +15,21 @@ export interface LoggedInPerson {
   lastPasswordChange: string;
 }
 
+export interface Employee {
+  id: number;
+  name: string;
+  email: string;
+  phoneNumber: string;
+  department: string;
+  role: string;
+  startDate: string;           
+  status: string;              
+  createdDate: string;         
+  lastLogin: string;          
+  lastPasswordChange: string;  
+  password: string;
+}
+
 @Component({
   selector: 'app-view-profile',
   imports: [],
@@ -45,23 +60,25 @@ export class ViewProfileComponent implements OnInit {
 
   getLoggedInPerson() {
     if (this.authService.getUserType() === 'admin') {
-      this.loggedInPerson = this.localStorageService.retrieve<any>(
+      const retrievedPerson = this.localStorageService.retrieve<LoggedInPerson>(
         constants.LOCAL_STORAGE_KEY_ADMIN
       );
-      if (!this.loggedInPerson) {
-        this.alertService.error(
-          'No admin user found in local storage.'
-        );
+
+      if (retrievedPerson) {
+        this.loggedInPerson = retrievedPerson;
+      } else {
+        this.alertService.error('No admin user found in local storage.');
       }
     } else {
       const loggedInEmail = this.authService.getLoggedInEmail();
-      const employees = this.localStorageService.retrieve<any[]>(
+      const employees = this.localStorageService.retrieve<Employee[]>(
         constants.LOCAL_STORAGE_KEY_EMPLOYEES
       );
+      console.log(employees);
       if (employees) {
         try {
           const foundEmployee = employees.find(
-            (emp: any) => emp.email === loggedInEmail
+            (emp: Employee) => emp.email === loggedInEmail
           );
           if (foundEmployee) {
             this.loggedInPerson = {
@@ -79,13 +96,11 @@ export class ViewProfileComponent implements OnInit {
               `Employee with email ${loggedInEmail} not found.`
             );
           }
-        } catch (error) {
+        } catch {
           this.alertService.error('Failed to parse employee data.');
         }
       } else {
-        this.alertService.error(
-          'No employee data found in local storage.'
-        );
+        this.alertService.error('No employee data found in local storage.');
       }
     }
   }

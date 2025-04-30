@@ -71,6 +71,8 @@
         (click)="toggleSidenav()"
         role="button"
         tabindex="0"
+        (keydown.enter)="toggleSidenav()"
+        (keydown.space)="toggleSidenav()"
       >
         <button
           mat-button

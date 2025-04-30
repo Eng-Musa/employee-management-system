@@ -16,14 +16,14 @@ import { constants } from '../../../environments/constants';
   styleUrl: './admin-home.component.scss',
 })
 export class AdminHomeComponent implements OnInit {
-  completed: number = 85;
-  incomplete: number = 15;
-  updateFlag: boolean = false;
+  completed = 85;
+  incomplete = 15;
+  updateFlag = false;
   onboardingStatus: any = {};
-  totalEmployees: number = 0;
+  totalEmployees = 0;
 
   constructor(
-    @Inject(PLATFORM_ID) private platformId: Object,
+    @Inject(PLATFORM_ID) private platformId: object,
     private authService: AuthService,
     private alertService: AlertService,
     private localStorageService: LocalStorageService

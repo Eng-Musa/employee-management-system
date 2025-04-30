@@ -1,14 +1,13 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
-import { platform } from 'os';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   constructor(
-    @Inject(PLATFORM_ID) private platformId: Object,
+    @Inject(PLATFORM_ID) private platformId: object,
     private router: Router
   ) {}
 
@@ -75,7 +74,7 @@ export class AuthService {
         return sessionData.role;
       }
       return 'Unknown';
-    } catch (error) {
+    } catch {
       return 'Unknown';
     }
   }
@@ -98,7 +97,7 @@ export class AuthService {
         return sessionData.email;
       }
       return 'Unknown';
-    } catch (error) {
+    } catch {
       return 'Unknown';
     }
   }

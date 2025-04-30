@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import {
   MAT_DIALOG_DATA,
@@ -17,7 +17,7 @@ import { LocalStorageService } from '../../../services/local-storage.service';
   templateUrl: './delete-employee-dialogue.component.html',
   styleUrl: './delete-employee-dialogue.component.scss',
 })
-export class DeleteEmployeeDialogueComponent {
+export class DeleteEmployeeDialogueComponent implements OnInit {
   employees: any[] = [];
   private readonly LOCAL_STORAGE_KEY_ONBOARDING = 'onboardingStatus';
   constructor(

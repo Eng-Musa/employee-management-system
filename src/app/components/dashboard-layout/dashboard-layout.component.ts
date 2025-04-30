@@ -55,11 +55,11 @@ interface Notification {
   styleUrl: './dashboard-layout.component.scss',
 })
 export class DashboardLayoutComponent implements OnInit {
-  isExpanded: boolean = true;
+  isExpanded = true;
 
   constructor(
     private router: Router,
-    @Inject(PLATFORM_ID) private platformId: Object,
+    @Inject(PLATFORM_ID) private platformId: object,
     private dialog: MatDialog,
     private authService: AuthService
   ) {}
@@ -106,7 +106,7 @@ export class DashboardLayoutComponent implements OnInit {
 
   // HostListener to detect window resizing
   @HostListener('window:resize', ['$event'])
-  onResize(event: Event) {
+  onResize() {
     if (isPlatformBrowser(this.platformId)) {
       const windowWidth = window.innerWidth;
       if (windowWidth < 568) {
@@ -120,7 +120,6 @@ export class DashboardLayoutComponent implements OnInit {
   goHome() {
     if (this.isAdmin()) {
       this.router.navigate(['dashboard/admin-home']);
-  
     } else if (!this.isAdmin()) {
       this.router.navigate(['dashboard/home']);
     }
@@ -137,15 +136,10 @@ export class DashboardLayoutComponent implements OnInit {
   }
 
   openAddChangePassDialog(): void {
-    const dialogRef = this.dialog.open(ChangePassComponent, {
+    this.dialog.open(ChangePassComponent, {
       width: '350px',
       height: 'auto',
       maxHeight: '90vh',
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-      }
     });
   }
 

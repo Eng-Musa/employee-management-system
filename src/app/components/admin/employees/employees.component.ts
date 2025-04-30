@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import {
   Component,
   OnInit,
-  ViewChild
+  ViewChild, AfterViewInit
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
@@ -56,10 +56,10 @@ interface EmployeeList {
   templateUrl: './employees.component.html',
   styleUrl: './employees.component.scss',
 })
-export class EmployeesComponent implements OnInit {
+export class EmployeesComponent implements OnInit, AfterViewInit {
   employee: EmployeeList[] = [];
   dataSource = new MatTableDataSource(this.employee);
-  searchClicked: boolean = false;
+  searchClicked = false;
 
   constructor(
     private dialog: MatDialog,
@@ -86,7 +86,7 @@ export class EmployeesComponent implements OnInit {
     }
   }
 
-  loading: boolean = false;
+  loading = false;
   fetchEmployees(): void {
     this.loading = true;
     setTimeout(() => {

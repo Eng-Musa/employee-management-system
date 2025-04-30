@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -43,7 +43,7 @@ import { ChecklistData } from '../checklists/checklists.component';
   templateUrl: './add-employee-dialogue.component.html',
   styleUrl: './add-employee-dialogue.component.scss',
 })
-export class AddEmployeeDialogueComponent {
+export class AddEmployeeDialogueComponent implements OnInit {
   basicInfoForm: FormGroup;
   employmentForm: FormGroup;
 
@@ -152,7 +152,7 @@ export class AddEmployeeDialogueComponent {
   }
 
   storeOnboardingStatus(): void {
-    let existingData: { [email: string]: { [key: string]: boolean } } = {};
+    let existingData: Record<string, Record<string, boolean>> = {};
 
     existingData = this.localStorageService.retrieve<any>(
       constants.LOCAL_STORAGE_KEY_ONBOARDING
@@ -177,7 +177,7 @@ export class AddEmployeeDialogueComponent {
       ...this.checklistData.checklists.hr,
     ];
 
-    let newChecklist: { [key: string]: boolean } = {};
+    let newChecklist: Record<string, boolean> = {};
 
     if (this.employmentForm.value.role === 'Designer') {
       newChecklist = this.transformChecklist(designerChecklist);
@@ -200,8 +200,8 @@ export class AddEmployeeDialogueComponent {
     );
   }
 
-  transformChecklist(items: string[]): { [key: string]: boolean } {
-    let checklist: { [key: string]: boolean } = {};
+  transformChecklist(items: string[]): Record<string, boolean> {
+    const checklist: Record<string, boolean> = {};
     for (let i = 0; i < items.length; i++) {
       checklist[items[i]] = false;
     }

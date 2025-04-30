@@ -3,7 +3,7 @@ import { CanActivateChildFn, Router } from '@angular/router';
 import { AlertService } from '../services/alert.service';
 import { AuthService } from '../services/auth.service';
 
-export const childrenAuthGuard: CanActivateChildFn = (childRoute, state) => {
+export const childrenAuthGuard: CanActivateChildFn = () => {
   const authService = inject(AuthService);
   const router = inject(Router);
   const alertService = inject(AlertService);

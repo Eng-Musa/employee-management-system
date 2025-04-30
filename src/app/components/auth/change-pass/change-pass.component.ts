@@ -41,10 +41,10 @@ export class ChangePassComponent implements OnInit {
 
   passwordForm: FormGroup;
   loading = false;
-  message: string = '';
-  isSuccess: boolean = false;
+  message = '';
+  isSuccess = false;
   hide = true;
-  lastPasswordChange: string = 'Unknown';
+  lastPasswordChange = 'Unknown';
 
   constructor(
     public dialogRef: MatDialogRef<ChangePassComponent>,
@@ -143,7 +143,7 @@ export class ChangePassComponent implements OnInit {
   }
 
   employees: any[] | null = [];
-  loggedinEmail: string = '';
+  loggedinEmail = '';
   getLoggedInPerson() {
     if (this.authService.getUserType() === 'admin') {
       this.loggedInPerson = this.localStorageService.retrieve(

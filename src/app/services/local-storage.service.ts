@@ -7,7 +7,7 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 export class LocalStorageService {
   private isBrowser: boolean;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+  constructor(@Inject(PLATFORM_ID) private platformId: object) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 

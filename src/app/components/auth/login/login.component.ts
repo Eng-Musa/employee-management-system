@@ -30,14 +30,14 @@ import { LocalStorageService } from '../../../services/local-storage.service';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   hide = signal(true);
-  message: string = '';
-  isSuccess: boolean = false;
-  loading: boolean = false;
+  message = '';
+  isSuccess = false;
+  loading = false;
 
   constructor(
     private fb: FormBuilder,
     private alertService: AlertService,
-    @Inject(PLATFORM_ID) private platformId: Object,
+    @Inject(PLATFORM_ID) private platformId: object,
     private router: Router,
     private localStorageService: LocalStorageService
   ) {
