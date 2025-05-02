@@ -76,7 +76,7 @@
       </ul>
       <p *ngIf="calculateCompletionPercentage() < 100" class="reminder-message">
         Profile is {{ calculateCompletionPercentage() }}% complete.
-        <a href="#send-reminder">Send reminder?</a>
+        <a href="javascript:void(0)" (click)="sendReminder()">Send reminder?</a>
       </p>
     </div>
   </div>

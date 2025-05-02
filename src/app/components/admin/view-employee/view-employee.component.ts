@@ -93,6 +93,10 @@ export class ViewEmployeeComponent implements OnInit {
     return Math.round((completed / keys.length) * 100);
   }
 
+  sendReminder(): void{
+    this.alertService.success('Reminder sent!')
+  }
+
   // Helper method to get keys for an object;
   getKeys(obj: Record<string, boolean>): string[] {
     return Object.keys(obj);
