@@ -20,7 +20,7 @@ export class AdminHomeComponent implements OnInit {
   completed = 85;
   incomplete = 15;
   updateFlag = false;
-  onboardingStatus: any = {};
+  onboardingStatus: Record<string, Record<string, boolean>> = {};
   totalEmployees = 0;
 
   constructor(
@@ -195,9 +195,14 @@ export class AdminHomeComponent implements OnInit {
   }
 
   loadOnboardingStatus(): void {
-    this.onboardingStatus = this.localStorageService.retrieve<any>(
+    const retrievedData = this.localStorageService.retrieve<Record<string, Record<string, boolean>>>(
       constants.LOCAL_STORAGE_KEY_ONBOARDING
     );
+    if(retrievedData){
+      this.onboardingStatus = retrievedData;
+    }else{
+      this.alertService.error("Error fetching onboarding status");
+    }
   }
 
   calculateTotalEmployees(): void {

@@ -19,7 +19,10 @@ import { constants } from '../../../environments/constants';
 import { AlertService } from '../../../services/alert.service';
 import { AuthService } from '../../../services/auth.service';
 import { LocalStorageService } from '../../../services/local-storage.service';
-import { Employee, LoggedInPerson } from '../../view-profile/view-profile.component';
+import {
+  Employee,
+  LoggedInPerson,
+} from '../../view-profile/view-profile.component';
 
 @Component({
   selector: 'app-change-pass',
@@ -38,14 +41,16 @@ import { Employee, LoggedInPerson } from '../../view-profile/view-profile.compon
   styleUrl: './change-pass.component.scss',
 })
 export class ChangePassComponent implements OnInit {
-  loggedInPerson: LoggedInPerson = { name: 'Unknown',
+  loggedInPerson: LoggedInPerson = {
+    name: 'Unknown',
     email: 'Unknown',
     password: 'Unknown',
     createdDate: 'Unknown',
     role: 'Unknown',
     phoneNumber: 'Unknown',
     lastLogin: 'Unknown',
-    lastPasswordChange: 'Unknown'};
+    lastPasswordChange: 'Unknown',
+  };
 
   passwordForm: FormGroup;
   loading = false;
@@ -115,8 +120,8 @@ export class ChangePassComponent implements OnInit {
               this.authService.logout();
             }, 500);
           } else {
-            this.loggedInPerson.password = password;
-            this.loggedInPerson.lastPasswordChange = new Date()
+            this.loggedInEmployee.password = password;
+            this.loggedInEmployee.lastPasswordChange = new Date()
               .toLocaleString('en-US', {
                 timeZone: 'Africa/Nairobi',
               })
@@ -127,7 +132,7 @@ export class ChangePassComponent implements OnInit {
               (emp: Employee) => emp.email === this.loggedinEmail
             );
             if (index !== -1 && index !== undefined && this.employees) {
-              this.employees[index] = this.loggedInPerson;
+              this.employees[index] = this.loggedInEmployee;
             }
 
             this.localStorageService.save(
@@ -150,7 +155,21 @@ export class ChangePassComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  employees: any[] | null = [];
+  employees: Employee[] = [];
+  loggedInEmployee: Employee = {
+    id: 0,
+    name: '',
+    email: '',
+    phoneNumber: '',
+    department: '',
+    role: '',
+    startDate: '',
+    status: '',
+    createdDate: '',
+    lastLogin: '',
+    lastPasswordChange: '',
+    password: '',
+  };
   loggedinEmail = '';
   getLoggedInPerson() {
     if (this.authService.getUserType() === 'admin') {
@@ -172,19 +191,26 @@ export class ChangePassComponent implements OnInit {
       }
     } else {
       this.loggedinEmail = this.authService.getLoggedInEmail();
-      this.employees = this.localStorageService.retrieve<Employee[]>(
+      const retrievedData = this.localStorageService.retrieve<Employee[]>(
         constants.LOCAL_STORAGE_KEY_EMPLOYEES
       );
+      if (retrievedData) {
+        this.employees = retrievedData;
+      }
       if (this.employees) {
-        this.loggedInPerson = this.employees.find(
+        const retrievedData = this.employees.find(
           (emp: Employee) => emp.email === this.loggedinEmail
         );
 
-        if (this.loggedInPerson.lastPasswordChange === 'Never') {
+        if(retrievedData){
+          this.loggedInEmployee = retrievedData;
+        }
+
+        if (this.loggedInEmployee.lastPasswordChange === 'Never') {
           this.lastPasswordChange = 'Never';
         } else {
           this.lastPasswordChange = this.getTimeDifference(
-            this.loggedInPerson.lastPasswordChange
+            this.loggedInEmployee.lastPasswordChange
           );
         }
       }

@@ -31,7 +31,7 @@ export class ViewEmployeeComponent implements OnInit {
   employeeId!: number;
   employeeName = '';
   employee!: Employee | null;
-  employeeOnboardingStatus: any = {};
+  employeeOnboardingStatus: Record<string, boolean> = {};
 
   constructor(
     private route: ActivatedRoute,
@@ -67,13 +67,15 @@ export class ViewEmployeeComponent implements OnInit {
   }
 
   loadOnboardingStatus(): void {
-    const onboardingStatus = this.localStorageService.retrieve<any>(
-      constants.LOCAL_STORAGE_KEY_ONBOARDING
-    );
+    const onboardingStatus = this.localStorageService.retrieve<
+      Record<string, Record<string, boolean>>
+    >(constants.LOCAL_STORAGE_KEY_ONBOARDING);
     const employeeEmail = this.employee?.email;
-    this.employeeOnboardingStatus = employeeEmail
-      ? onboardingStatus[employeeEmail]
-      : null;
+    if (onboardingStatus && employeeEmail) {
+      this.employeeOnboardingStatus = onboardingStatus[employeeEmail];
+    }
+
+    console.log(this.employeeOnboardingStatus);
   }
 
   calculateCompletionPercentage(): number {

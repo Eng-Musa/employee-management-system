@@ -74,7 +74,7 @@ export class ViewProfileComponent implements OnInit {
       const employees = this.localStorageService.retrieve<Employee[]>(
         constants.LOCAL_STORAGE_KEY_EMPLOYEES
       );
-      console.log(employees);
+     
       if (employees) {
         try {
           const foundEmployee = employees.find(

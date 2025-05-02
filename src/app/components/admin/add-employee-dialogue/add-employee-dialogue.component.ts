@@ -161,9 +161,12 @@ export class AddEmployeeDialogueComponent implements OnInit {
   storeOnboardingStatus(): void {
     let existingData: Record<string, Record<string, boolean>> = {};
 
-    existingData = this.localStorageService.retrieve<any>(
+    const retrievedData = this.localStorageService.retrieve<Record<string, Record<string, boolean>>>(
       constants.LOCAL_STORAGE_KEY_ONBOARDING
     );
+    if(retrievedData){
+      existingData = retrievedData
+    }
 
     if (existingData[this.basicInfoForm.value.email]) {
       return;

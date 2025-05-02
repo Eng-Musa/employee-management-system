@@ -10,6 +10,7 @@ import { AuthService } from '../../../services/auth.service';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { ChecklistData } from '../../admin/checklists/checklists.component';
 import { SubmitDialogComponent } from '../submit-dialog/submit-dialog.component';
+import { Employee } from '../../view-profile/view-profile.component';
 
 @Component({
   selector: 'app-home',
@@ -27,7 +28,7 @@ export class HomeComponent implements OnInit {
     },
   };
 
-  onboardingStatus: any = {};
+  onboardingStatus: Record<string, Record<string, boolean>> = {};
   loggedInUserEmail = '';
 
   constructor(
@@ -187,9 +188,15 @@ export class HomeComponent implements OnInit {
   }
 
   loadOnboardingStatus(): void {
-    this.onboardingStatus = this.localStorageService.retrieve<any>(
+    const retrivedData = this.localStorageService.retrieve<Record<string, Record<string, boolean>>>(
       constants.LOCAL_STORAGE_KEY_ONBOARDING
     );
+
+    if(retrivedData){
+      this.onboardingStatus = retrivedData;
+    }else{
+      this.alertService.error('Error occured while fetching onboarding status');
+    }
   }
 
   // Helper method to get keys for an object;
@@ -220,12 +227,12 @@ export class HomeComponent implements OnInit {
 
   updateOverallOnboardingStatus(): void {
     if (this.calculateCompletionPercentage() === 100) {
-      const employees = this.localStorageService.retrieve<any[]>(
+      const employees = this.localStorageService.retrieve<Employee[]>(
         constants.LOCAL_STORAGE_KEY_EMPLOYEES
       );
       if (employees) {
         const employeeIndex = employees.findIndex(
-          (emp: any) => emp.email === this.loggedInUserEmail
+          (emp: Employee) => emp.email === this.loggedInUserEmail
         );
 
         if (employeeIndex !== -1) {

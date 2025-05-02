@@ -63,15 +63,17 @@ export class DeleteEmployeeDialogueComponent implements OnInit {
 
     // Delete associated employee onboarding status
 
-    const onboardingStatus = this.localStorageService.retrieve<any>(
+    const onboardingStatus = this.localStorageService.retrieve<Record<string, Record<string, boolean>>>(
       constants.LOCAL_STORAGE_KEY_ONBOARDING
     );
-    if (onboardingStatus[this.data.email]) {
-      delete onboardingStatus[this.data.email];
-      localStorage.setItem(
-        this.LOCAL_STORAGE_KEY_ONBOARDING,
-        JSON.stringify(onboardingStatus)
-      );
+    if(onboardingStatus){
+      if (onboardingStatus[this.data.email]) {
+        delete onboardingStatus[this.data.email];
+        localStorage.setItem(
+          this.LOCAL_STORAGE_KEY_ONBOARDING,
+          JSON.stringify(onboardingStatus)
+        );
+      }
     }
   }
 }
