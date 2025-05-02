@@ -200,7 +200,7 @@ export class HomeComponent implements OnInit {
   }
 
   // Helper method to get keys for an object;
-  getKeys(obj: any): string[] {
+  getKeys(obj: Record<string, boolean>): string[] {
     return Object.keys(obj);
   }
 
@@ -209,7 +209,7 @@ export class HomeComponent implements OnInit {
     if (!userChecklist) {
       return 0;
     }
-    const keys = this.getKeys(userChecklist);
+    const keys = Object.keys(userChecklist);
     const totalItems = keys.length;
 
     if (totalItems === 0) {

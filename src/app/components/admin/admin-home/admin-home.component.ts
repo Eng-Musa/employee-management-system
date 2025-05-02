@@ -235,9 +235,9 @@ export class AdminHomeComponent implements OnInit {
   }
 
   // Helper method to get keys for an object;
-  getKeys(obj: any): string[] {
-    return Object.keys(obj);
-  }
+  // getKeys(obj: any): string[] {
+  //   return Object.keys(obj);
+  // }
 
   calculateCompletionPercentage(): void {
     let totalTasks = 0;
@@ -259,7 +259,7 @@ export class AdminHomeComponent implements OnInit {
 
     for (const userEmail of Object.keys(this.onboardingStatus)) {
       const userChecklist = this.onboardingStatus[userEmail];
-      const keys = this.getKeys(userChecklist);
+      const keys = Object.keys(userChecklist);
       totalTasks += keys.length;
     
       for (const key of keys) {
