@@ -102,7 +102,7 @@ export class HomeComponent implements OnInit {
   }
 
   loadChecklistData(): void {
-    this.checklistData = this.localStorageService.retrieve(
+    this.checklistData = this.localStorageService.retrieve<ChecklistData>(
       constants.LOCAL_STORAGE_KEY_CHECKLIST
     ) as ChecklistData;
   }

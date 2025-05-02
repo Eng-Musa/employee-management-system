@@ -8,6 +8,7 @@ import { AuthService } from '../../../services/auth.service';
 import { AlertService } from '../../../services/alert.service';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { constants } from '../../../environments/constants';
+import { Employee } from '../../view-profile/view-profile.component';
 
 @Component({
   selector: 'app-admin-home',
@@ -201,7 +202,7 @@ export class AdminHomeComponent implements OnInit {
 
   calculateTotalEmployees(): void {
     try {
-      const employees = this.localStorageService.retrieve<any[]>(
+      const employees = this.localStorageService.retrieve<Employee[]>(
         constants.LOCAL_STORAGE_KEY_EMPLOYEES
       );
       this.totalEmployees = Array.isArray(employees) ? employees.length : 0;
@@ -221,7 +222,7 @@ export class AdminHomeComponent implements OnInit {
       };
 
       this.updateFlag = true;
-    } catch (error) {
+    } catch{
       this.alertService.error(
         'Failed to load employee data from local storage.'
       );
@@ -237,19 +238,32 @@ export class AdminHomeComponent implements OnInit {
     let totalTasks = 0;
     let completedTasks = 0;
 
-    for (const userEmail in this.onboardingStatus) {
-      if (this.onboardingStatus.hasOwnProperty(userEmail)) {
-        const userChecklist = this.onboardingStatus[userEmail];
-        const keys = this.getKeys(userChecklist);
-        totalTasks += keys.length;
+    // for (const userEmail in this.onboardingStatus) {
+    //   if (this.onboardingStatus.hasOwnProperty(userEmail)) {
+    //     const userChecklist = this.onboardingStatus[userEmail];
+    //     const keys = this.getKeys(userChecklist);
+    //     totalTasks += keys.length;
 
-        for (const key of keys) {
-          if (userChecklist[key]) {
-            completedTasks++;
-          }
+    //     for (const key of keys) {
+    //       if (userChecklist[key]) {
+    //         completedTasks++;
+    //       }
+    //     }
+    //   }
+    // }
+
+    for (const userEmail of Object.keys(this.onboardingStatus)) {
+      const userChecklist = this.onboardingStatus[userEmail];
+      const keys = this.getKeys(userChecklist);
+      totalTasks += keys.length;
+    
+      for (const key of keys) {
+        if (userChecklist[key]) {
+          completedTasks++;
         }
       }
     }
+    
 
     const percentage = totalTasks ? (completedTasks / totalTasks) * 100 : 0;
     this.completed = Math.round(percentage);

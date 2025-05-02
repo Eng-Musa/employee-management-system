@@ -23,6 +23,7 @@ import { AlertService } from '../../../services/alert.service';
 import { AuthService } from '../../../services/auth.service';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { ChecklistData } from '../checklists/checklists.component';
+import { Employee } from '../view-employee/view-employee.component';
 
 @Component({
   selector: 'app-add-employee-dialogue',
@@ -47,7 +48,7 @@ export class AddEmployeeDialogueComponent implements OnInit {
   basicInfoForm: FormGroup;
   employmentForm: FormGroup;
 
-  employeesData: any[] = [];
+  employeesData: Employee[] = [];
   checklistData: ChecklistData = {
     checklists: {
       common: [],
@@ -84,9 +85,15 @@ export class AddEmployeeDialogueComponent implements OnInit {
   }
 
   loadEmployeesFromLocalStorage(): void {
-    this.employeesData = this.localStorageService.retrieve<any>(
+    const retrievedData = this.localStorageService.retrieve<Employee[]>(
       constants.LOCAL_STORAGE_KEY_EMPLOYEES
     );
+
+    if (retrievedData) {
+      this.employeesData = retrievedData;
+    } else {
+      this.alertService.error('No employees found!');
+    }
   }
 
   saveToLocalStorage(): void {
@@ -202,9 +209,10 @@ export class AddEmployeeDialogueComponent implements OnInit {
 
   transformChecklist(items: string[]): Record<string, boolean> {
     const checklist: Record<string, boolean> = {};
-    for (let i = 0; i < items.length; i++) {
-      checklist[items[i]] = false;
+    for (const item of items) {
+      checklist[item] = false;
     }
+
     return checklist;
   }
 }

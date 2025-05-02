@@ -10,6 +10,7 @@ import {
 import { constants } from '../../../environments/constants';
 import { AlertService } from '../../../services/alert.service';
 import { LocalStorageService } from '../../../services/local-storage.service';
+import { Employee } from '../view-employee/view-employee.component';
 
 @Component({
   selector: 'app-delete-employee-dialogue',
@@ -18,7 +19,7 @@ import { LocalStorageService } from '../../../services/local-storage.service';
   styleUrl: './delete-employee-dialogue.component.scss',
 })
 export class DeleteEmployeeDialogueComponent implements OnInit {
-  employees: any[] = [];
+  employees: Employee[] = [];
   private readonly LOCAL_STORAGE_KEY_ONBOARDING = 'onboardingStatus';
   constructor(
     public dialogRef: MatDialogRef<DeleteEmployeeDialogueComponent>,
@@ -43,7 +44,7 @@ export class DeleteEmployeeDialogueComponent implements OnInit {
   }
 
   fetchEmployees(): void {
-    const retrievedData = this.localStorageService.retrieve<any[]>(
+    const retrievedData = this.localStorageService.retrieve<Employee[]>(
       constants.LOCAL_STORAGE_KEY_EMPLOYEES
     );
     this.employees = retrievedData || [];
