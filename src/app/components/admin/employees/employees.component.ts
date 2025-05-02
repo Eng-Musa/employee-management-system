@@ -123,14 +123,15 @@ export class EmployeesComponent implements OnInit, AfterViewInit {
     });
   }
 
-  goToEditEmployee(id: number): void {
-    this.router.navigate(['dashboard/edit-employee', id]);
+  goToEditEmployee(email: string): void {
+    this.router.navigate(['dashboard/edit-employee', email]);
   }
 
   goToEmployeeProfile(id: number, name: string): void {
     this.router.navigate(['dashboard/employee-profile', id, name]);
   }
 
+ 
   //Array of employee objects with all the required fields
   // employeesData = [
   //   {
