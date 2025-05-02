@@ -1,10 +1,10 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute } from '@angular/router';
+import { constants } from '../../../environments/constants';
 import { AlertService } from '../../../services/alert.service';
 import { LocalStorageService } from '../../../services/local-storage.service';
-import { constants } from '../../../environments/constants';
-import { CommonModule } from '@angular/common';
-import { MatIconModule } from '@angular/material/icon';
 
 export interface Employee {
   id: number;
@@ -74,12 +74,10 @@ export class ViewEmployeeComponent implements OnInit {
     if (onboardingStatus && employeeEmail) {
       this.employeeOnboardingStatus = onboardingStatus[employeeEmail];
     }
-
-    console.log(this.employeeOnboardingStatus);
   }
 
   calculateCompletionPercentage(): number {
-    const keys = Object.keys(this.employeeOnboardingStatus);
+    const keys = this.getKeys(this.employeeOnboardingStatus);
 
     if (!keys || keys.length === 0) {
       return 0;
@@ -96,7 +94,7 @@ export class ViewEmployeeComponent implements OnInit {
   }
 
   // Helper method to get keys for an object;
-  // getKeys(obj: any): string[] {
-  //   return Object.keys(obj);
-  // }
+  getKeys(obj: Record<string, boolean>): string[] {
+    return Object.keys(obj);
+  }
 }

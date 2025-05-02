@@ -195,13 +195,13 @@ export class AdminHomeComponent implements OnInit {
   }
 
   loadOnboardingStatus(): void {
-    const retrievedData = this.localStorageService.retrieve<Record<string, Record<string, boolean>>>(
-      constants.LOCAL_STORAGE_KEY_ONBOARDING
-    );
-    if(retrievedData){
+    const retrievedData = this.localStorageService.retrieve<
+      Record<string, Record<string, boolean>>
+    >(constants.LOCAL_STORAGE_KEY_ONBOARDING);
+    if (retrievedData) {
       this.onboardingStatus = retrievedData;
-    }else{
-      this.alertService.error("Error fetching onboarding status");
+    } else {
+      this.alertService.error('Error fetching onboarding status');
     }
   }
 
@@ -227,7 +227,7 @@ export class AdminHomeComponent implements OnInit {
       };
 
       this.updateFlag = true;
-    } catch{
+    } catch {
       this.alertService.error(
         'Failed to load employee data from local storage.'
       );
@@ -261,14 +261,13 @@ export class AdminHomeComponent implements OnInit {
       const userChecklist = this.onboardingStatus[userEmail];
       const keys = Object.keys(userChecklist);
       totalTasks += keys.length;
-    
+
       for (const key of keys) {
         if (userChecklist[key]) {
           completedTasks++;
         }
       }
     }
-    
 
     const percentage = totalTasks ? (completedTasks / totalTasks) * 100 : 0;
     this.completed = Math.round(percentage);

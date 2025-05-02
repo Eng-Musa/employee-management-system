@@ -97,10 +97,11 @@ export class ChangePassComponent implements OnInit {
         const password = this.passwordForm.get('password')?.value;
         if (this.loggedInPerson.password === password) {
           this.message = 'Old password cannot be same as new password';
-        } else if (this.loggedInPerson.password !== oldPassword) {
-          this.message = 'Wrong old password';
         } else {
           if (this.authService.getUserType() === 'admin') {
+            if (this.loggedInPerson.password !== oldPassword) {
+              this.message = 'Wrong old password';
+            }
             this.loggedInPerson.password = password;
             this.loggedInPerson.lastPasswordChange = new Date()
               .toLocaleString('en-US', {
@@ -120,6 +121,14 @@ export class ChangePassComponent implements OnInit {
               this.authService.logout();
             }, 500);
           } else {
+            if (this.loggedInEmployee.password !== oldPassword) {
+              this.message = 'Wrong old password';
+              return;
+            }else if(this.loggedInEmployee.password === password){
+              this.message = 'Old password cannot be same as new password';
+              return;
+            }
+
             this.loggedInEmployee.password = password;
             this.loggedInEmployee.lastPasswordChange = new Date()
               .toLocaleString('en-US', {
@@ -202,7 +211,7 @@ export class ChangePassComponent implements OnInit {
           (emp: Employee) => emp.email === this.loggedinEmail
         );
 
-        if(retrievedData){
+        if (retrievedData) {
           this.loggedInEmployee = retrievedData;
         }
 
