@@ -6,7 +6,8 @@ import { ToastrService } from 'ngx-toastr';
   providedIn: 'root',
 })
 export class AlertService {
-  constructor(private toastr: ToastrService, private snackbar: MatSnackBar) {}
+  // private toastr: ToastrService,
+  constructor(private snackbar: MatSnackBar) {}
 
   // showErrorToastr(message: string) {
   //   this.toastr.error(message, 'Error', {
