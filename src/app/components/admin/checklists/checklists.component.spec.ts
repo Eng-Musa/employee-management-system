@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ChecklistsComponent } from './checklists.component';
+import { AlertService } from '../../../services/alert.service';
 
 describe('ChecklistsComponent', () => {
   let component: ChecklistsComponent;
@@ -8,7 +9,10 @@ describe('ChecklistsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ChecklistsComponent]
+      imports: [ChecklistsComponent],
+      providers: [
+        {provide: AlertService, useValue: {retrieve: jest.fn()}}
+      ]
     })
     .compileComponents();
 
