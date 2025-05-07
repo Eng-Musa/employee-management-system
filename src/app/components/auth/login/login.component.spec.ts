@@ -44,11 +44,20 @@ describe('LoginComponent', () => {
     expect(control?.hasError('required')).toBe(true);
   });
 
-  test.only('should make the password control required', () => {
+  test('should make the password control required', () => {
     const control = component.loginForm.get('password');
     expect(control).toBeTruthy();
     control!.setValue('');
     expect(control?.valid).toBe(false)
     expect(control?.hasError('required')).toBe(true);
+  });
+
+  test.only('should mark form as invalid when fields are empty', () => {
+    component.loginForm.get('email')?.setValue('');
+    component.loginForm.get('password')?.setValue('');
+
+    // Trigger validation
+    fixture.detectChanges();
+    expect(component.loginForm.valid).toBe(false);
   });
 });
