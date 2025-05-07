@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { DeleteEmployeeDialogueComponent } from './delete-employee-dialogue.component';
+import { LocalStorageService } from '../../../services/local-storage.service';
 
 describe('DeleteEmployeeDialogueComponent (basic mocks)', () => {
   let component: DeleteEmployeeDialogueComponent;
@@ -17,6 +18,7 @@ describe('DeleteEmployeeDialogueComponent (basic mocks)', () => {
     await TestBed.configureTestingModule({
       imports: [DeleteEmployeeDialogueComponent],
       providers: [
+        {provide: LocalStorageService, useValue: {retrieve: jest.fn()}},
         { provide: MatDialogRef, useValue: matDialogRefStub },
         { provide: MAT_DIALOG_DATA, useValue: dialogDataStub }, // ← this line fixes the “No provider for MatMdcDialogData!” :contentReference[oaicite:0]{index=0}
       ],
