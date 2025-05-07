@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ChangePassComponent } from './change-pass.component';
 
@@ -8,16 +10,16 @@ describe('ChangePassComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ChangePassComponent]
-    })
-    .compileComponents();
+      imports: [ChangePassComponent, MatDialogModule, BrowserAnimationsModule],
+      providers: [{ provide: MatDialogRef, useValue: {} }],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ChangePassComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  test('should create', () => {
     expect(component).toBeTruthy();
   });
 });
