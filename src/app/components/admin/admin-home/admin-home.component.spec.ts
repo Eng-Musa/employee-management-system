@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AdminHomeComponent } from './admin-home.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { LocalStorageService } from '../../../services/local-storage.service';
 
 describe('AdminHomeComponent', () => {
   let component: AdminHomeComponent;
@@ -8,7 +10,11 @@ describe('AdminHomeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AdminHomeComponent]
+      imports: [AdminHomeComponent],
+      providers: [
+        {provide: MatSnackBar, useValue: { open: jest.fn() }},
+        {provide: LocalStorageService, useValue: {retrieve: jest.fn()}}
+      ]
     })
     .compileComponents();
 
