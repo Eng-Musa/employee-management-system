@@ -52,12 +52,20 @@ describe('LoginComponent', () => {
     expect(control?.hasError('required')).toBe(true);
   });
 
-  test.only('should mark form as invalid when fields are empty', () => {
+  test('should mark form as invalid when fields are empty', () => {
     component.loginForm.get('email')?.setValue('');
     component.loginForm.get('password')?.setValue('');
-
     // Trigger validation
     fixture.detectChanges();
     expect(component.loginForm.valid).toBe(false);
+  });
+
+  test('should mark form as valid with proper inputs', () => {
+    component.loginForm.get('email')?.setValue('user@example.com');
+    component.loginForm.get('password')?.setValue('ValidPass123');
+
+    // Trigger validation
+    fixture.detectChanges();
+    expect(component.loginForm.valid).toBe(true);
   });
 });
