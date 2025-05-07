@@ -28,20 +28,27 @@ describe('LoginComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  test('should create login form with name and password controls' , () =>{
+  test('should create login form with name and password controls', () => {
     const form = component.loginForm;
-    expect(form).toBeInstanceOf(FormGroup)
+    expect(form).toBeInstanceOf(FormGroup);
     expect(form).toBeTruthy();
     expect(form.contains('email')).toBeTruthy();
     expect(form.contains('password')).toBeTruthy();
   });
 
-  test.only('should make the email required', () =>{
+  test('should make the email control required', () => {
     const control = component.loginForm.get('email');
     expect(control).toBeTruthy();
     control!.setValue('');
-    expect(control?.valid).toBeFalsy();
-    expect(control?.hasError('required')).toBeTruthy();
-  })
+    expect(control?.valid).toBe(false);
+    expect(control?.hasError('required')).toBe(true);
+  });
 
+  test.only('should make the password control required', () => {
+    const control = component.loginForm.get('password');
+    expect(control).toBeTruthy();
+    control!.setValue('');
+    expect(control?.valid).toBe(false)
+    expect(control?.hasError('required')).toBe(true);
+  });
 });
