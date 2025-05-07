@@ -68,4 +68,17 @@ describe('LoginComponent', () => {
     fixture.detectChanges();
     expect(component.loginForm.valid).toBe(true);
   });
+
+  test.only('should have hide signal initially set to true', () => {
+    expect(component.hide()).toBe(true);
+  });
+
+  test.only('should toggle password visibility on clickEvent call', () => {
+    const before = component.hide();
+    component.clickEvent();
+    expect(component.hide()).toBe(!before);
+
+    component.clickEvent();
+    expect(component.hide()).toBe(before);
+  });
 });
