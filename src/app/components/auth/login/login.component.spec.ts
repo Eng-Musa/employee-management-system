@@ -11,10 +11,12 @@ describe('LoginComponent', () => {
     await TestBed.configureTestingModule({
       imports: [LoginComponent],
       providers: [
-        {provide: LocalStorageService, useValue: {retrieve: jest.fn()}}
-      ]
-    })
-    .compileComponents();
+        {
+          provide: LocalStorageService,
+          useValue: { retrieve: jest.fn(), save: jest.fn() },
+        },
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
