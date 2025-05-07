@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ChecklistsComponent } from './checklists.component';
 import { AlertService } from '../../../services/alert.service';
+import { LocalStorageService } from '../../../services/local-storage.service';
 
 describe('ChecklistsComponent', () => {
   let component: ChecklistsComponent;
@@ -11,7 +12,7 @@ describe('ChecklistsComponent', () => {
     await TestBed.configureTestingModule({
       imports: [ChecklistsComponent],
       providers: [
-        {provide: AlertService, useValue: {retrieve: jest.fn()}}
+        {provide: LocalStorageService, useValue: {retrieve: jest.fn()}}
       ]
     })
     .compileComponents();
