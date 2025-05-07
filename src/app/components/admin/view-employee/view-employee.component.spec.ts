@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { RouterTestingModule } from '@angular/router/testing';
 import { ViewEmployeeComponent } from './view-employee.component';
 
 describe('ViewEmployeeComponent', () => {
@@ -8,7 +8,7 @@ describe('ViewEmployeeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ViewEmployeeComponent]
+      imports: [ViewEmployeeComponent, RouterTestingModule ]
     })
     .compileComponents();
 
@@ -17,7 +17,7 @@ describe('ViewEmployeeComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  test('should create', () => {
     expect(component).toBeTruthy();
   });
 });
