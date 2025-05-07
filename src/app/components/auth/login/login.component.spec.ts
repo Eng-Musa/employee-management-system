@@ -2,26 +2,51 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LoginComponent } from './login.component';
 import { LocalStorageService } from '../../../services/local-storage.service';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { AlertService } from '../../../services/alert.service';
+import { Router } from '@angular/router';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
+  let mockLS: Partial<LocalStorageService>;
+  let mockAlert: Partial<AlertService>;
+  let mockRouter: Partial<Router>;
 
   beforeEach(async () => {
+    jest.useFakeTimers();
+    mockLS = {
+      retrieve: jest.fn(),
+      save: jest.fn(),
+      saveToSessionStorage: jest.fn(),
+    };
+
+    mockAlert = {
+      error: jest.fn(),
+    };
+    mockRouter = {
+      navigate: jest.fn(),
+    };
+
     await TestBed.configureTestingModule({
       imports: [LoginComponent],
       providers: [
-        {
-          provide: LocalStorageService,
-          useValue: { retrieve: jest.fn(), save: jest.fn() },
-        },
+        FormBuilder,
+        { provide: LocalStorageService, useValue: mockLS },
+        { provide: AlertService, useValue: mockAlert },
+        { provide: Router, useValue: mockRouter },
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    jest.runOnlyPendingTimers();
+    jest.useRealTimers();
+    jest.clearAllMocks();
   });
 
   test('should create', () => {
@@ -48,7 +73,7 @@ describe('LoginComponent', () => {
     const control = component.loginForm.get('password');
     expect(control).toBeTruthy();
     control!.setValue('');
-    expect(control?.valid).toBe(false)
+    expect(control?.valid).toBe(false);
     expect(control?.hasError('required')).toBe(true);
   });
 
@@ -69,16 +94,26 @@ describe('LoginComponent', () => {
     expect(component.loginForm.valid).toBe(true);
   });
 
-  test.only('should have hide signal initially set to true', () => {
+  test('should have hide signal initially set to true', () => {
     expect(component.hide()).toBe(true);
   });
 
-  test.only('should toggle password visibility on clickEvent call', () => {
+  test('should toggle password visibility on clickEvent call', () => {
     const before = component.hide();
     component.clickEvent();
     expect(component.hide()).toBe(!before);
 
     component.clickEvent();
     expect(component.hide()).toBe(before);
+  });
+
+  test.only('should display error message if credentials are invalid', () => {
+    (mockLS.retrieve as jest.Mock)
+      .mockReturnValueOnce(null)
+      .mockReturnValueOnce(null);
+
+      component.loginForm.setValue({ email: 'bad@user.com', password: 'wrong' });
+      component.onLogin();
+      
   });
 });
