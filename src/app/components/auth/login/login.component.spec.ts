@@ -300,4 +300,25 @@ describe('LoginComponent', () => {
 
     spy.mockRestore();
   });
+
+  test('should not update last login if no employees in localstorage', () => {
+    (mockLS.retrieve as jest.Mock)
+      .mockReturnValueOnce(null)
+      .mockReturnValueOnce(null);
+    (mockLS.save as jest.Mock).mockClear();
+
+    // 2) spy console.error
+    const spy = jest.spyOn(console, 'error').mockImplementation();
+
+    component.loginForm.setValue({
+      email: 'other@e.com1',
+      password: 'irrelevant',
+    });
+    component.updateLastLogin();
+
+    expect(mockLS.save).not.toHaveBeenCalled();
+    expect(mockLS.saveToSessionStorage).not.toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledWith(expect.stringMatching('No employees data found in localStorage.'));
+    spy.mockRestore();
+  });
 });
