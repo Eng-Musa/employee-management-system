@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { AlertService } from '../../../services/alert.service';
 import { Router } from '@angular/router';
 import { constants } from '../../../environments/constants';
+import { expect } from '@jest/globals';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -208,5 +209,88 @@ describe('LoginComponent', () => {
     component.createAdmin();
 
     expect(mockLS.save).not.toHaveBeenCalled();
+  });
+
+  test.only('should update last login for admin and save to localStorage', () => {
+    const admin = {
+      email: 'u@u.com',
+      password: 'pw',
+      role: 'admin',
+      lastLogin: null,
+    };
+    (mockLS.retrieve as jest.Mock)
+      .mockReturnValueOnce(admin)
+      .mockReturnValueOnce(null);
+
+    component.loginForm.setValue({ email: 'u@u.com', password: 'irrelevant' });
+    (mockLS.save as jest.Mock).mockClear();
+    component.updateLastLogin();
+
+    // 3) assertions
+    expect(mockLS.save).toHaveBeenCalledTimes(1);
+    const [savedKey, savedObj] = (mockLS.save as jest.Mock).mock.calls[0];
+    expect(savedKey).toBe(constants.LOCAL_STORAGE_KEY_ADMIN);
+    expect(savedObj.email).toBe('u@u.com');
+    expect(savedObj.role).toBe('admin');
+    expect(typeof savedObj.lastLogin).toBe('string'); // timestamp
+    expect(mockLS.saveToSessionStorage).toHaveBeenCalledWith(
+      'u@u.com',
+      'admin'
+    );
+  });
+
+  test('should update last login for employee and save to localStorage', () => {
+    // 1) no admin, but employees array
+    (mockLS.retrieve as jest.Mock)
+      .mockReturnValueOnce(null) // ADMIN slot
+      .mockReturnValueOnce([
+        // EMPLOYEES slot
+        { email: 'u@u.com', password: 'pw', role: 'employee', lastLogin: null },
+      ]);
+
+    // 2) call
+    component.updateLastLogin();
+
+    // 3) assertions
+    expect(mockLS.save).toHaveBeenCalledTimes(1);
+    const [empKey, empArray] = (mockLS.save as jest.Mock).mock.calls[0];
+    expect(empKey).toBe(constants.LOCAL_STORAGE_KEY_EMPLOYEES);
+
+    const updated = empArray.find((e: any) => e.email === 'u@u.com');
+    expect(updated).toBeDefined();
+    expect(typeof updated.lastLogin).toBe('string');
+    expect(mockLS.saveToSessionStorage).toHaveBeenCalledWith(
+      'u@u.com',
+      'employee'
+    );
+  });
+
+  test('should not update last login if employee not found', () => {
+    // 1) no admin; employees present but no match
+    (mockLS.retrieve as jest.Mock)
+      .mockReturnValueOnce(null)
+      .mockReturnValueOnce([
+        {
+          email: 'other@e.com',
+          password: 'pw',
+          role: 'employee',
+          lastLogin: null,
+        },
+      ]);
+
+    // 2) spy console.error
+    const spy = jest.spyOn(console, 'error').mockImplementation();
+
+    // 3) call
+    component.updateLastLogin();
+
+    // 4) assertions
+    expect(mockLS.save).not.toHaveBeenCalled();
+    expect(mockLS.saveToSessionStorage).not.toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledWith(
+      expect.stringContaining('Employee not found for email:')
+    );
+
+    spy.mockRestore();
   });
 });
