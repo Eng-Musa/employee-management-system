@@ -153,4 +153,15 @@ describe('LoginComponent', () => {
     expect(component.loading).toBe(false);
   });
 
+  test.only('should not login if form is invalid and should show alert', () => {
+    component.loginForm.setValue({ email: '', password: '' });
+    component.onLogin();
+
+    jest.advanceTimersByTime(1000);
+
+    expect(mockAlert.error).toHaveBeenCalledWith('Invalid form,u fill required fields!');
+    expect(component.loading).toBe(false);
+    expect(mockRouter.navigate).not.toHaveBeenCalled();
+  });
+
 });
