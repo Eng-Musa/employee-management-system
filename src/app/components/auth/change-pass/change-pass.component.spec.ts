@@ -52,12 +52,27 @@ describe('ChangePassComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  test.only('should mark the form as invalid if both fields are empty', ()=>{
+  test('should mark the form as invalid if both fields are empty', ()=>{
     const form = component.passwordForm;
     expect(form).toBeInstanceOf(FormGroup);
 
     expect(form.valid).toBe(false);
     expect(form.get('oldPassword')?.hasError('required')).toBe(true);
     expect(form.get('password')?.hasError('required')).toBe(true);
-  })
+  });
+
+  test.only('should mark the password as invalid if it does not meet complexity rules', () => {
+    const pwd = component.passwordForm.get('password')!;
+
+    pwd.setValue('abc');
+    expect(pwd.invalid).toBe(true);
+    expect(pwd.hasError('pattern')).toBe(true);
+
+   
+    pwd.setValue('Abcdef12');
+    expect(pwd.hasError('pattern')).toBe(true);
+
+    pwd.setValue('A'.repeat(21) + '1!');
+    expect(pwd.hasError('maxlength')).toBe(true);
+  });
 });
