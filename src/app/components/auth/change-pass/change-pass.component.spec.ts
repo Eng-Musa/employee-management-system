@@ -22,8 +22,9 @@ describe('ChangePassComponent', () => {
     mockDialogRef = { close: jest.fn() };
     mockAlert = { error: jest.fn(), success: jest.fn() };
     mockAuth = {
-      getUserType: jest.fn().mockReturnValue('admin'),
+      getUserType: jest.fn(),
       logout: jest.fn(),
+      getLoggedInEmail: jest.fn()
     };
     mockLS = { retrieve: jest.fn(), save: jest.fn() };
 
@@ -90,11 +91,35 @@ describe('ChangePassComponent', () => {
     expect(oldPwd.errors).toBeNull();
   });
 
-  test.only('should mark the full form valid when both controls are valid', () => {
+  test('should mark the full form valid when both controls are valid', () => {
     component.passwordForm.setValue({
       oldPassword: 'OldPass1!',
       password:     'NewPass1!'
     });
     expect(component.passwordForm.valid).toBe(true);
   });
+
+  test('should populate loggedInPerson if admin and data exists', () => {
+    const mockAdmin = {
+      name: 'Admin',
+      email: 'a@x.com',
+      password: 'pw',
+      lastPasswordChange: new Date('2025-05-01T12:00:00Z')
+        .toLocaleString('en-US', { timeZone: 'Africa/Nairobi' })
+        .slice(0, 16)
+        .replace(',', ''),
+      // other props...
+    } as any;
+
+    (mockAuth.getUserType as jest.Mock).mockReturnValue('admin');
+    (mockLS.retrieve as jest.Mock)
+      .mockReturnValueOnce(mockAdmin);
+
+    component.getLoggedInPerson();
+
+    expect(component.loggedInPerson).toEqual(mockAdmin);
+    expect(mockAlert.error).not.toHaveBeenCalled();
+    expect(component.lastPasswordChange).toContain('ago');
+  });
+
 });
