@@ -97,10 +97,12 @@ export class ChangePassComponent implements OnInit {
         const password = this.passwordForm.get('password')?.value;
         if (this.loggedInPerson.password === password) {
           this.message = 'Old password cannot be same as new password';
+          return;
         } else {
           if (this.authService.getUserType() === 'admin') {
             if (this.loggedInPerson.password !== oldPassword) {
               this.message = 'Wrong old password';
+              return;
             }
             this.loggedInPerson.password = password;
             this.loggedInPerson.lastPasswordChange = new Date()

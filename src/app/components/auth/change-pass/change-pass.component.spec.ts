@@ -190,7 +190,7 @@ describe('ChangePassComponent', () => {
     expect(component.loading).toBe(false);
   });
 
-  test.only('should show error if old password is same as new password', () => {
+  test('should show error if old password is same as new password', () => {
 
     mockAuth.getUserType! = jest.fn().mockReturnValue('admin');
     component.loggedInPerson.password = 'SamePass1!';
@@ -211,4 +211,25 @@ describe('ChangePassComponent', () => {
     expect(component.loading).toBe(false);
   });
 
+  test.only('should show error if old password does not match current one', () => {
+    mockAuth.getUserType! = jest.fn().mockReturnValue('admin');
+    component.loggedInPerson.password = 'Current1!';
+
+    component.passwordForm.setValue({
+      oldPassword: 'WrongOld1!',
+      password:    'NewPass1!',
+    });
+
+
+    component.onSubmit();
+    jest.advanceTimersByTime(1000);
+    fixture.detectChanges();
+
+    expect(component.message).toBe('Wrong old password');
+    expect(component.isSuccess).toBe(false);
+    expect(mockLS.save).not.toHaveBeenCalled();
+    expect(mockAuth.logout).not.toHaveBeenCalled();
+    expect(component.loading).toBe(false);
+  });
+  
 });
