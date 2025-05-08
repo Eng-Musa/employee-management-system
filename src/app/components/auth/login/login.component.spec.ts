@@ -128,6 +128,8 @@ describe('LoginComponent', () => {
     const admin = { email: 'a@a.com', password: 'pass', role: 'admin' };
     (mockLS.retrieve as jest.Mock)
       .mockReturnValueOnce(admin)
+      .mockReturnValueOnce([])
+      .mockReturnValueOnce(admin)
       .mockReturnValueOnce([]);
 
     component.loginForm.setValue({ email: 'a@a.com', password: 'pass' });
@@ -141,6 +143,10 @@ describe('LoginComponent', () => {
 
   test('should login as employee and navigate to /dashboard/home', () => {
     (mockLS.retrieve as jest.Mock)
+      .mockReturnValueOnce(null)
+      .mockReturnValueOnce([
+        { email: 'e@e.com', password: 'empPass', role: 'employee' },
+      ])
       .mockReturnValueOnce(null)
       .mockReturnValueOnce([
         { email: 'e@e.com', password: 'empPass', role: 'employee' },
@@ -171,6 +177,8 @@ describe('LoginComponent', () => {
   test('should set loading to true during login and false after', () => {
     const admin = { email: 'x@x.com', password: 'pwd', role: 'admin' };
     (mockLS.retrieve as jest.Mock)
+      .mockReturnValueOnce(admin)
+      .mockReturnValueOnce([])
       .mockReturnValueOnce(admin)
       .mockReturnValueOnce([]);
 
