@@ -131,7 +131,7 @@ describe('ChangePassComponent', () => {
     );
   });
 
-  test.only('should populate loggedInEmployee if non-admin and match found', () => {
+  test('should populate loggedInEmployee if non-admin and match found', () => {
     const mockEmp = {
       id: 1,
       name: 'Emp',
@@ -153,7 +153,7 @@ describe('ChangePassComponent', () => {
     expect(component.lastPasswordChange).toContain('ago');
   });
 
-  test("should set lastPasswordChange to 'Never' if employee's lastPasswordChange === 'Never'", () => {
+  test.only("should set lastPasswordChange to 'Never' if employee's lastPasswordChange === 'Never'", () => {
     const mockEmp = {
       id: 2,
       name: 'Emp2',
@@ -165,7 +165,6 @@ describe('ChangePassComponent', () => {
     (mockAuth.getUserType as jest.Mock).mockReturnValue('employee');
     (mockAuth.getLoggedInEmail as jest.Mock).mockReturnValue('e2@x.com');
     (mockLS.retrieve as jest.Mock)
-      .mockReturnValueOnce(null)
       .mockReturnValueOnce([mockEmp]);
 
     component.getLoggedInPerson();
