@@ -107,7 +107,7 @@ describe('LoginComponent', () => {
     expect(component.hide()).toBe(before);
   });
 
-  test.only('should display error message if credentials are invalid', () => {
+  test('should display error message if credentials are invalid', () => {
     (mockLS.retrieve as jest.Mock)
       .mockReturnValueOnce(null)
       .mockReturnValueOnce(null);
@@ -120,5 +120,20 @@ describe('LoginComponent', () => {
       expect(component.message).toBe('Invalid credentials provided.');
       expect(mockRouter.navigate).not.toHaveBeenCalled();
       expect(component.loading).toBe(false);
+  });
+
+  test.only('should login as admin and navigate to /dashboard/admin-home', () => {
+    const admin = { email: 'a@a.com', password: 'pass', role: 'admin' };
+    (mockLS.retrieve as jest.Mock)
+      .mockReturnValueOnce(admin) 
+      .mockReturnValueOnce([]);    
+
+    component.loginForm.setValue({ email: 'a@a.com', password: 'pass' });
+    component.onLogin();
+
+    jest.advanceTimersByTime(1000);
+
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/dashboard/admin-home']);
+    expect(component.loading).toBe(false);
   });
 });
