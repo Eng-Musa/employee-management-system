@@ -211,7 +211,7 @@ describe('LoginComponent', () => {
     expect(mockLS.save).not.toHaveBeenCalled();
   });
 
-  test.only('should update last login for admin and save to localStorage', () => {
+  test('should update last login for admin and save to localStorage', () => {
     const admin = {
       email: 'u@u.com',
       password: 'pw',
@@ -238,7 +238,7 @@ describe('LoginComponent', () => {
     );
   });
 
-  test.only('should update last login for employee and save to localStorage', () => {
+  test('should update last login for employee and save to localStorage', () => {
     (mockLS.retrieve as jest.Mock)
       .mockReturnValueOnce(null)
       .mockReturnValueOnce([
@@ -262,8 +262,7 @@ describe('LoginComponent', () => {
     );
   });
 
-  test('should not update last login if employee not found', () => {
-    // 1) no admin; employees present but no match
+  test.only('should not update last login if employee not found', () => {
     (mockLS.retrieve as jest.Mock)
       .mockReturnValueOnce(null)
       .mockReturnValueOnce([
@@ -274,14 +273,14 @@ describe('LoginComponent', () => {
           lastLogin: null,
         },
       ]);
+      (mockLS.save as jest.Mock).mockClear();
 
     // 2) spy console.error
     const spy = jest.spyOn(console, 'error').mockImplementation();
 
-    // 3) call
+    component.loginForm.setValue({ email: 'other@e.com1', password: 'irrelevant' });
     component.updateLastLogin();
 
-    // 4) assertions
     expect(mockLS.save).not.toHaveBeenCalled();
     expect(mockLS.saveToSessionStorage).not.toHaveBeenCalled();
     expect(spy).toHaveBeenCalledWith(
