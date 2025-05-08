@@ -24,7 +24,7 @@ describe('ChangePassComponent', () => {
     mockAuth = {
       getUserType: jest.fn(),
       logout: jest.fn(),
-      getLoggedInEmail: jest.fn()
+      getLoggedInEmail: jest.fn(),
     };
     mockLS = { retrieve: jest.fn(), save: jest.fn() };
 
@@ -53,7 +53,7 @@ describe('ChangePassComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  test('should mark the form as invalid if both fields are empty', ()=>{
+  test('should mark the form as invalid if both fields are empty', () => {
     const form = component.passwordForm;
     expect(form).toBeInstanceOf(FormGroup);
 
@@ -69,7 +69,6 @@ describe('ChangePassComponent', () => {
     expect(pwd.invalid).toBe(true);
     expect(pwd.hasError('pattern')).toBe(true);
 
-   
     pwd.setValue('Abcdef12');
     expect(pwd.hasError('pattern')).toBe(true);
 
@@ -94,7 +93,7 @@ describe('ChangePassComponent', () => {
   test('should mark the full form valid when both controls are valid', () => {
     component.passwordForm.setValue({
       oldPassword: 'OldPass1!',
-      password:     'NewPass1!'
+      password: 'NewPass1!',
     });
     expect(component.passwordForm.valid).toBe(true);
   });
@@ -112,8 +111,7 @@ describe('ChangePassComponent', () => {
     } as any;
 
     (mockAuth.getUserType as jest.Mock).mockReturnValue('admin');
-    (mockLS.retrieve as jest.Mock)
-      .mockReturnValueOnce(mockAdmin);
+    (mockLS.retrieve as jest.Mock).mockReturnValueOnce(mockAdmin);
 
     component.getLoggedInPerson();
 
@@ -122,4 +120,57 @@ describe('ChangePassComponent', () => {
     expect(component.lastPasswordChange).toContain('ago');
   });
 
+  test('should call alertService.error if no admin in localStorage', () => {
+    (mockAuth.getUserType as jest.Mock).mockReturnValue('admin');
+    (mockLS.retrieve as jest.Mock).mockReturnValueOnce(null);
+
+    component.getLoggedInPerson();
+
+    expect(mockAlert.error).toHaveBeenCalledWith(
+      'No admin user found in local storage.'
+    );
+  });
+
+  test.only('should populate loggedInEmployee if non-admin and match found', () => {
+    const mockEmp = {
+      id: 1,
+      name: 'Emp',
+      email: 'e@x.com',
+      password: 'pw',
+      lastPasswordChange: new Date('2025-04-30T08:00:00Z')
+        .toLocaleString('en-US', { timeZone: 'Africa/Nairobi' })
+        .slice(0, 16)
+        .replace(',', ''),
+    } as any;
+
+    (mockAuth.getUserType as jest.Mock).mockReturnValue('employee');
+    (mockAuth.getLoggedInEmail as jest.Mock).mockReturnValue('e@x.com');
+    (mockLS.retrieve as jest.Mock).mockReturnValueOnce([mockEmp]);
+
+    component.getLoggedInPerson();
+
+    expect(component.loggedInEmployee).toEqual(mockEmp);
+    expect(component.lastPasswordChange).toContain('ago');
+  });
+
+  test("should set lastPasswordChange to 'Never' if employee's lastPasswordChange === 'Never'", () => {
+    const mockEmp = {
+      id: 2,
+      name: 'Emp2',
+      email: 'e2@x.com',
+      password: 'pw2',
+      lastPasswordChange: 'Never',
+    } as any;
+
+    (mockAuth.getUserType as jest.Mock).mockReturnValue('employee');
+    (mockAuth.getLoggedInEmail as jest.Mock).mockReturnValue('e2@x.com');
+    (mockLS.retrieve as jest.Mock)
+      .mockReturnValueOnce(null)
+      .mockReturnValueOnce([mockEmp]);
+
+    component.getLoggedInPerson();
+
+    expect(component.loggedInEmployee).toEqual(mockEmp);
+    expect(component.lastPasswordChange).toBe('Never');
+  });
 });
