@@ -153,7 +153,7 @@ describe('ChangePassComponent', () => {
     expect(component.lastPasswordChange).toContain('ago');
   });
 
-  test.only("should set lastPasswordChange to 'Never' if employee's lastPasswordChange === 'Never'", () => {
+  test("should set lastPasswordChange to 'Never' if employee's lastPasswordChange === 'Never'", () => {
     const mockEmp = {
       id: 2,
       name: 'Emp2',
@@ -172,4 +172,22 @@ describe('ChangePassComponent', () => {
     expect(component.loggedInEmployee).toEqual(mockEmp);
     expect(component.lastPasswordChange).toBe('Never');
   });
+
+  test.only('should not proceed if form is invalid', () => {
+    mockAuth.getUserType! = jest.fn().mockReturnValue('admin');
+    component.onSubmit();
+
+    expect(component.loading).toBe(true);
+
+    jest.advanceTimersByTime(1000);
+    fixture.detectChanges();
+
+    expect(mockLS.save).not.toHaveBeenCalled();
+    expect(mockAuth.logout).not.toHaveBeenCalled();
+    expect(mockDialogRef.close).not.toHaveBeenCalled();
+    expect(component.message).toBe('');
+    expect(component.isSuccess).toBe(false);
+    expect(component.loading).toBe(false);
+  });
+
 });
