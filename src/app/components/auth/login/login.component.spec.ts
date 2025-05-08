@@ -5,6 +5,7 @@ import { LocalStorageService } from '../../../services/local-storage.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AlertService } from '../../../services/alert.service';
 import { Router } from '@angular/router';
+import { constants } from '../../../environments/constants';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -139,10 +140,10 @@ describe('LoginComponent', () => {
 
   test('should login as employee and navigate to /dashboard/home', () => {
     (mockLS.retrieve as jest.Mock)
-      .mockReturnValueOnce(null)   
+      .mockReturnValueOnce(null)
       .mockReturnValueOnce([
-        { email: 'e@e.com', password: 'empPass', role: 'employee' }
-      ]);                          
+        { email: 'e@e.com', password: 'empPass', role: 'employee' },
+      ]);
 
     component.loginForm.setValue({ email: 'e@e.com', password: 'empPass' });
     component.onLogin();
@@ -159,12 +160,14 @@ describe('LoginComponent', () => {
 
     jest.advanceTimersByTime(1000);
 
-    expect(mockAlert.error).toHaveBeenCalledWith('Invalid form, fill required fields!');
+    expect(mockAlert.error).toHaveBeenCalledWith(
+      'Invalid form, fill required fields!'
+    );
     expect(component.loading).toBe(false);
     expect(mockRouter.navigate).not.toHaveBeenCalled();
   });
 
-  test.only('should set loading to true during login and false after', () => {
+  test('should set loading to true during login and false after', () => {
     const admin = { email: 'x@x.com', password: 'pwd', role: 'admin' };
     (mockLS.retrieve as jest.Mock)
       .mockReturnValueOnce(admin)
@@ -181,4 +184,29 @@ describe('LoginComponent', () => {
     expect(component.loading).toBe(false);
   });
 
+  test('should create default admin if not present in localStorage', () => {
+    (mockLS.retrieve as jest.Mock).mockReturnValueOnce(null);
+    (mockLS.save as jest.Mock).mockClear();
+
+    component.createAdmin();
+
+    expect(mockLS.save).toHaveBeenCalledTimes(1);
+
+    const [key, adminUser] = (mockLS.save as jest.Mock).mock.calls[0];
+    expect(key).toBe(constants.LOCAL_STORAGE_KEY_ADMIN);
+    expect(adminUser.email).toBe('admin@gmail.com');
+    expect(adminUser.role).toBe('admin');
+    expect(adminUser.lastLogin).toBeNull();
+    expect(adminUser.password).toBe('Admin@1234');
+  });
+
+  test.only('should not overwrite existing admin in localStorage', () => {
+    const existing = { email: 'x@y.com', password: 'pw', role: 'admin' };
+    (mockLS.retrieve as jest.Mock).mockReturnValueOnce(existing);
+    (mockLS.save as jest.Mock).mockClear();
+
+    component.createAdmin();
+
+    expect(mockLS.save).not.toHaveBeenCalled();
+  });
 });
