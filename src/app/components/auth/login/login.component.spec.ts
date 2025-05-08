@@ -112,21 +112,21 @@ describe('LoginComponent', () => {
       .mockReturnValueOnce(null)
       .mockReturnValueOnce(null);
 
-      component.loginForm.setValue({ email: 'bad@user.com', password: 'wrong' });
-      component.onLogin();
-      
-      jest.advanceTimersByTime(1000);
+    component.loginForm.setValue({ email: 'bad@user.com', password: 'wrong' });
+    component.onLogin();
 
-      expect(component.message).toBe('Invalid credentials provided.');
-      expect(mockRouter.navigate).not.toHaveBeenCalled();
-      expect(component.loading).toBe(false);
+    jest.advanceTimersByTime(1000);
+
+    expect(component.message).toBe('Invalid credentials provided.');
+    expect(mockRouter.navigate).not.toHaveBeenCalled();
+    expect(component.loading).toBe(false);
   });
 
-  test.only('should login as admin and navigate to /dashboard/admin-home', () => {
+  test('should login as admin and navigate to /dashboard/admin-home', () => {
     const admin = { email: 'a@a.com', password: 'pass', role: 'admin' };
     (mockLS.retrieve as jest.Mock)
-      .mockReturnValueOnce(admin) 
-      .mockReturnValueOnce([]);    
+      .mockReturnValueOnce(admin)
+      .mockReturnValueOnce([]);
 
     component.loginForm.setValue({ email: 'a@a.com', password: 'pass' });
     component.onLogin();
@@ -136,4 +136,21 @@ describe('LoginComponent', () => {
     expect(mockRouter.navigate).toHaveBeenCalledWith(['/dashboard/admin-home']);
     expect(component.loading).toBe(false);
   });
+
+  test('should login as employee and navigate to /dashboard/home', () => {
+    (mockLS.retrieve as jest.Mock)
+      .mockReturnValueOnce(null)   
+      .mockReturnValueOnce([
+        { email: 'e@e.com', password: 'empPass', role: 'employee' }
+      ]);                          
+
+    component.loginForm.setValue({ email: 'e@e.com', password: 'empPass' });
+    component.onLogin();
+
+    jest.advanceTimersByTime(1000);
+
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/dashboard/home']);
+    expect(component.loading).toBe(false);
+  });
+
 });
