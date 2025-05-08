@@ -6,7 +6,7 @@ import { ChangePassComponent } from './change-pass.component';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { AlertService } from '../../../services/alert.service';
 import { AuthService } from '../../../services/auth.service';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 describe('ChangePassComponent', () => {
   let component: ChangePassComponent;
@@ -43,7 +43,21 @@ describe('ChangePassComponent', () => {
     fixture.detectChanges();
   });
 
+  afterEach(() => {
+    jest.runOnlyPendingTimers();
+    jest.useRealTimers();
+    jest.clearAllMocks();
+  });
   test('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  test.only('should mark the form as invalid if both fields are empty', ()=>{
+    const form = component.passwordForm;
+    expect(form).toBeInstanceOf(FormGroup);
+
+    expect(form.valid).toBe(false);
+    expect(form.get('oldPassword')?.hasError('required')).toBe(true);
+    expect(form.get('password')?.hasError('required')).toBe(true);
+  })
 });
