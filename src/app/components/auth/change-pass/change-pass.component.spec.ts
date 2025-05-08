@@ -76,10 +76,17 @@ describe('ChangePassComponent', () => {
     expect(pwd.hasError('maxlength')).toBe(true);
   });
 
-  test.only('should mark the password as valid if it meets all rules', () => {
+  test('should mark the password as valid if it meets all rules', () => {
     const pwd = component.passwordForm.get('password')!;
     pwd.setValue('Abcdef1!');
     expect(pwd.valid).toBe(true);
     expect(pwd.errors).toBeNull();
+  });
+
+  test.only('should mark oldPassword as valid when non-empty', () => {
+    const oldPwd = component.passwordForm.get('oldPassword')!;
+    oldPwd.setValue('OldPass1!');
+    expect(oldPwd.valid).toBe(true);
+    expect(oldPwd.errors).toBeNull();
   });
 });
