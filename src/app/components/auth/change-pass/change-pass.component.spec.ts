@@ -61,7 +61,7 @@ describe('ChangePassComponent', () => {
     expect(form.get('password')?.hasError('required')).toBe(true);
   });
 
-  test.only('should mark the password as invalid if it does not meet complexity rules', () => {
+  test('should mark the password as invalid if it does not meet complexity rules', () => {
     const pwd = component.passwordForm.get('password')!;
 
     pwd.setValue('abc');
@@ -74,5 +74,12 @@ describe('ChangePassComponent', () => {
 
     pwd.setValue('A'.repeat(21) + '1!');
     expect(pwd.hasError('maxlength')).toBe(true);
+  });
+
+  test.only('should mark the password as valid if it meets all rules', () => {
+    const pwd = component.passwordForm.get('password')!;
+    pwd.setValue('Abcdef1!');
+    expect(pwd.valid).toBe(true);
+    expect(pwd.errors).toBeNull();
   });
 });
