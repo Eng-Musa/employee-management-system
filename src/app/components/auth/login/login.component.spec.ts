@@ -115,5 +115,10 @@ describe('LoginComponent', () => {
       component.loginForm.setValue({ email: 'bad@user.com', password: 'wrong' });
       component.onLogin();
       
+      jest.advanceTimersByTime(1000);
+
+      expect(component.message).toBe('Invalid credentials provided.');
+      expect(mockRouter.navigate).not.toHaveBeenCalled();
+      expect(component.loading).toBe(false);
   });
 });
