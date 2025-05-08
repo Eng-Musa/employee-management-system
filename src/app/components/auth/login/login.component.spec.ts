@@ -201,7 +201,7 @@ describe('LoginComponent', () => {
     expect(adminUser.password).toBe('Admin@1234');
   });
 
-  test.only('should not overwrite existing admin in localStorage', () => {
+  test('should not overwrite existing admin in localStorage', () => {
     const existing = { email: 'x@y.com', password: 'pw', role: 'admin' };
     (mockLS.retrieve as jest.Mock).mockReturnValueOnce(existing);
     (mockLS.save as jest.Mock).mockClear();
@@ -226,32 +226,29 @@ describe('LoginComponent', () => {
     (mockLS.save as jest.Mock).mockClear();
     component.updateLastLogin();
 
-    // 3) assertions
     expect(mockLS.save).toHaveBeenCalledTimes(1);
     const [savedKey, savedObj] = (mockLS.save as jest.Mock).mock.calls[0];
     expect(savedKey).toBe(constants.LOCAL_STORAGE_KEY_ADMIN);
     expect(savedObj.email).toBe('u@u.com');
     expect(savedObj.role).toBe('admin');
-    expect(typeof savedObj.lastLogin).toBe('string'); // timestamp
+    expect(typeof savedObj.lastLogin).toBe('string');
     expect(mockLS.saveToSessionStorage).toHaveBeenCalledWith(
       'u@u.com',
       'admin'
     );
   });
 
-  test('should update last login for employee and save to localStorage', () => {
-    // 1) no admin, but employees array
+  test.only('should update last login for employee and save to localStorage', () => {
     (mockLS.retrieve as jest.Mock)
-      .mockReturnValueOnce(null) // ADMIN slot
+      .mockReturnValueOnce(null)
       .mockReturnValueOnce([
-        // EMPLOYEES slot
         { email: 'u@u.com', password: 'pw', role: 'employee', lastLogin: null },
       ]);
+    (mockLS.save as jest.Mock).mockClear();
 
-    // 2) call
+    component.loginForm.setValue({ email: 'u@u.com', password: 'irrelevant' });
     component.updateLastLogin();
 
-    // 3) assertions
     expect(mockLS.save).toHaveBeenCalledTimes(1);
     const [empKey, empArray] = (mockLS.save as jest.Mock).mock.calls[0];
     expect(empKey).toBe(constants.LOCAL_STORAGE_KEY_EMPLOYEES);
