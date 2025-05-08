@@ -173,7 +173,7 @@ describe('ChangePassComponent', () => {
     expect(component.lastPasswordChange).toBe('Never');
   });
 
-  test.only('should not proceed if form is invalid', () => {
+  test('should not proceed if form is invalid', () => {
     mockAuth.getUserType! = jest.fn().mockReturnValue('admin');
     component.onSubmit();
 
@@ -187,6 +187,27 @@ describe('ChangePassComponent', () => {
     expect(mockDialogRef.close).not.toHaveBeenCalled();
     expect(component.message).toBe('');
     expect(component.isSuccess).toBe(false);
+    expect(component.loading).toBe(false);
+  });
+
+  test.only('should show error if old password is same as new password', () => {
+
+    mockAuth.getUserType! = jest.fn().mockReturnValue('admin');
+    component.loggedInPerson.password = 'SamePass1!';
+
+    component.passwordForm.setValue({
+      oldPassword: 'SamePass1!',
+      password:    'SamePass1!',
+    });
+
+    component.onSubmit();
+    jest.advanceTimersByTime(1000);
+    fixture.detectChanges();
+
+    expect(component.message).toBe('Old password cannot be same as new password');
+    expect(component.isSuccess).toBe(false);
+    expect(mockLS.save).not.toHaveBeenCalled();
+    expect(mockAuth.logout).not.toHaveBeenCalled();
     expect(component.loading).toBe(false);
   });
 
