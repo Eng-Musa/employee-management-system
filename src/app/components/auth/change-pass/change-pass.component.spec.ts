@@ -83,10 +83,18 @@ describe('ChangePassComponent', () => {
     expect(pwd.errors).toBeNull();
   });
 
-  test.only('should mark oldPassword as valid when non-empty', () => {
+  test('should mark oldPassword as valid when non-empty', () => {
     const oldPwd = component.passwordForm.get('oldPassword')!;
     oldPwd.setValue('OldPass1!');
     expect(oldPwd.valid).toBe(true);
     expect(oldPwd.errors).toBeNull();
+  });
+
+  test.only('should mark the full form valid when both controls are valid', () => {
+    component.passwordForm.setValue({
+      oldPassword: 'OldPass1!',
+      password:     'NewPass1!'
+    });
+    expect(component.passwordForm.valid).toBe(true);
   });
 });
