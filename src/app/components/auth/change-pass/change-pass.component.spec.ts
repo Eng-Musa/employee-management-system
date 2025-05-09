@@ -164,8 +164,7 @@ describe('ChangePassComponent', () => {
 
     (mockAuth.getUserType as jest.Mock).mockReturnValue('employee');
     (mockAuth.getLoggedInEmail as jest.Mock).mockReturnValue('e2@x.com');
-    (mockLS.retrieve as jest.Mock)
-      .mockReturnValueOnce([mockEmp]);
+    (mockLS.retrieve as jest.Mock).mockReturnValueOnce([mockEmp]);
 
     component.getLoggedInPerson();
 
@@ -191,35 +190,35 @@ describe('ChangePassComponent', () => {
   });
 
   test('should show error if old password is same as new password', () => {
-
     mockAuth.getUserType! = jest.fn().mockReturnValue('admin');
     component.loggedInPerson.password = 'SamePass1!';
 
     component.passwordForm.setValue({
       oldPassword: 'SamePass1!',
-      password:    'SamePass1!',
+      password: 'SamePass1!',
     });
 
     component.onSubmit();
     jest.advanceTimersByTime(1000);
     fixture.detectChanges();
 
-    expect(component.message).toBe('Old password cannot be same as new password');
+    expect(component.message).toBe(
+      'Old password cannot be same as new password'
+    );
     expect(component.isSuccess).toBe(false);
     expect(mockLS.save).not.toHaveBeenCalled();
     expect(mockAuth.logout).not.toHaveBeenCalled();
     expect(component.loading).toBe(false);
   });
 
-  test.only('should show error if old password does not match current one', () => {
+  test('should show error if old password does not match current one', () => {
     mockAuth.getUserType! = jest.fn().mockReturnValue('admin');
     component.loggedInPerson.password = 'Current1!';
 
     component.passwordForm.setValue({
       oldPassword: 'WrongOld1!',
-      password:    'NewPass1!',
+      password: 'NewPass1!',
     });
-
 
     component.onSubmit();
     jest.advanceTimersByTime(1000);
@@ -231,5 +230,35 @@ describe('ChangePassComponent', () => {
     expect(mockAuth.logout).not.toHaveBeenCalled();
     expect(component.loading).toBe(false);
   });
-  
+
+  test.only('should update password for admin if conditions are met', () => {
+    (mockAuth.getUserType as jest.Mock).mockReturnValue('admin');
+    component.loggedInPerson = {
+      name: '',
+      email: 'admin@x.com',
+      password: 'OldPass1!',
+      createdDate: '',
+      role: 'admin',
+      phoneNumber: '',
+      lastLogin: '',
+      lastPasswordChange: '',
+    };
+
+    component.passwordForm.setValue({
+      oldPassword: 'OldPass1!',
+      password: 'NewPass2@',
+    });
+    (mockLS.retrieve as jest.Mock).mockReturnValueOnce(
+      component.loggedInPerson
+    );
+
+    component.onSubmit();
+    expect(component.loading).toBe(true);
+
+    jest.advanceTimersByTime(1000);
+    fixture.detectChanges();
+
+    expect(component.loggedInPerson.password).toBe('NewPass2@');
+    expect(component.isSuccess).toBe(true);
+  });
 });
