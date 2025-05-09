@@ -407,7 +407,7 @@ describe('ChangePassComponent', () => {
     expect(updated!.password).toBe('New2@Pass');
   });
 
-  test.only('should store updated employees list in local storage', () => {
+  test('should store updated employees list in local storage', () => {
     (mockAuth.getUserType as jest.Mock).mockReturnValue('employee');
     (mockAuth.getLoggedInEmail as jest.Mock).mockReturnValue('e3@x.com');
     const emp = {
@@ -458,5 +458,40 @@ describe('ChangePassComponent', () => {
     );
   });
 
+  test.only('should call authService.logout after successful employee update', () => {
+    (mockAuth.getUserType as jest.Mock).mockReturnValue('employee');
+    (mockAuth.getLoggedInEmail as jest.Mock).mockReturnValue('e4@x.com');
+    const emp = {
+      id: 4,
+      name: 'E4',
+      email: 'e4@x.com',
+      phoneNumber: '',
+      department: '',
+      role: 'employee',
+      startDate: '',
+      status: '',
+      createdDate: '',
+      lastLogin: '',
+      lastPasswordChange: '',
+      password: 'Old4!',
+    };
+    component.employees = [emp];
+    component.loggedInEmployee = { ...emp };
+
+    component.passwordForm.setValue({
+      oldPassword: 'Old4!',
+      password:    'Newp@1234'
+    });
+    (mockLS.retrieve as jest.Mock).mockReturnValueOnce([emp]);
+
+    component.onSubmit();
+    jest.advanceTimersByTime(1000);
+    // Employee logout delay is 1000ms after the first
+    jest.advanceTimersByTime(1000);
+    fixture.detectChanges();
+
+    expect(mockDialogRef.close).toHaveBeenCalled();
+    expect(mockAuth.logout).toHaveBeenCalled();
+  });
 
 });
