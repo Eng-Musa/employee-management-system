@@ -495,7 +495,7 @@ describe('ChangePassComponent', () => {
     expect(mockAuth.logout).toHaveBeenCalled();
   });
 
-  test.only('should return correct relative time for minutes, hours, days, weeks, months, years', () => {
+  test('should return correct relative time for minutes, hours, days, weeks, months, years', () => {
     const now = new Date();
 
     const testCases = [
@@ -542,6 +542,11 @@ describe('ChangePassComponent', () => {
       const result = component.getTimeDifference(dateString);
       expect(result.toLowerCase()).toContain(testCase.expected);
     }
-    
+  });
+
+  test('should close dialog when onCancel is called', () => {
+    component.onCancel();
+
+    expect(mockDialogRef.close).toHaveBeenCalled();
   });
 });
