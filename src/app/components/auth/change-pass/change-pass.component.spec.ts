@@ -428,7 +428,6 @@ describe('ChangePassComponent', () => {
     component.employees = [emp];
     component.loggedInEmployee = { ...emp };
 
-
     component.passwordForm.setValue({
       oldPassword: 'Old3!',
       password: 'Newp@1234',
@@ -442,7 +441,8 @@ describe('ChangePassComponent', () => {
     expect(mockLS.save).toHaveBeenCalledWith(
       constants.LOCAL_STORAGE_KEY_EMPLOYEES,
       expect.arrayContaining([
-        expect.objectContaining({  id: 3,
+        expect.objectContaining({
+          id: 3,
           name: 'E3',
           email: 'e3@x.com',
           phoneNumber: '',
@@ -453,12 +453,13 @@ describe('ChangePassComponent', () => {
           createdDate: '',
           lastLogin: '',
           lastPasswordChange: '',
-          password: 'Old3!',}),
+          password: 'Old3!',
+        }),
       ])
     );
   });
 
-  test.only('should call authService.logout after successful employee update', () => {
+  test('should call authService.logout after successful employee update', () => {
     (mockAuth.getUserType as jest.Mock).mockReturnValue('employee');
     (mockAuth.getLoggedInEmail as jest.Mock).mockReturnValue('e4@x.com');
     const emp = {
@@ -480,7 +481,7 @@ describe('ChangePassComponent', () => {
 
     component.passwordForm.setValue({
       oldPassword: 'Old4!',
-      password:    'Newp@1234'
+      password: 'Newp@1234',
     });
     (mockLS.retrieve as jest.Mock).mockReturnValueOnce([emp]);
 
@@ -494,4 +495,53 @@ describe('ChangePassComponent', () => {
     expect(mockAuth.logout).toHaveBeenCalled();
   });
 
+  test.only('should return correct relative time for minutes, hours, days, weeks, months, years', () => {
+    const now = new Date();
+
+    const testCases = [
+      {
+        label: 'minutes',
+        date: new Date(now.getTime() - 5 * 60 * 1000),
+        expected: 'minutes ago',
+      },
+      {
+        label: 'hours',
+        date: new Date(now.getTime() - 2 * 60 * 60 * 1000),
+        expected: 'hours ago',
+      },
+      {
+        label: 'days',
+        date: new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000),
+        expected: 'days ago',
+      },
+      {
+        label: 'weeks',
+        date: new Date(now.getTime() - 2 * 7 * 24 * 60 * 60 * 1000),
+        expected: 'weeks ago',
+      },
+      {
+        label: 'months',
+        date: new Date(now.getTime() - 3 * 30 * 24 * 60 * 60 * 1000),
+        expected: 'months ago',
+      },
+      {
+        label: 'years',
+        date: new Date(now.getTime() - 2 * 365 * 24 * 60 * 60 * 1000),
+        expected: 'years ago',
+      },
+    ];
+
+    // testCases.forEach(({ date, expected }) => {
+    //   const result = component.getTimeDifference(date.toISOString());
+    //   expect(result.toLowerCase()).toContain(expected);
+    // });
+
+    for (let i = 0; i < testCases.length; i++) {
+      const testCase = testCases[i];
+      const dateString = testCase.date.toISOString();
+      const result = component.getTimeDifference(dateString);
+      expect(result.toLowerCase()).toContain(testCase.expected);
+    }
+    
+  });
 });
