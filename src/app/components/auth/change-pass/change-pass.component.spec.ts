@@ -264,7 +264,7 @@ describe('ChangePassComponent', () => {
     expect(component.isSuccess).toBe(true);
   });
 
-  test.only('should store updated admin in local storage', () => {
+  test('should store updated admin in local storage', () => {
     (mockAuth.getUserType as jest.Mock).mockReturnValue('admin');
     component.loggedInPerson = {
       name: '', email: 'admin@x.com', password: 'OldPass1!',
@@ -287,4 +287,31 @@ describe('ChangePassComponent', () => {
       expect.objectContaining({ email: 'admin@x.com', password: 'NewPass2@' })
     );
   });
+
+  test('should call authService.logout after successful admin update', () => {
+    (mockAuth.getUserType as jest.Mock).mockReturnValue('admin');
+    component.loggedInPerson = {
+      name: '', email: 'admin@x.com', password: 'OldPass1!',
+      createdDate: '', role: 'admin',
+      phoneNumber: '', lastLogin: '', lastPasswordChange: ''
+    };
+
+    component.passwordForm.setValue({
+      oldPassword: 'OldPass1!',
+      password:    'NewPass2@'
+    });
+    (mockLS.retrieve as jest.Mock).mockReturnValueOnce(component.loggedInPerson);
+
+    component.onSubmit();
+    jest.advanceTimersByTime(1000);
+
+    // after success message: another 500ms to close + logout
+    expect(component.message).toBe('Password change successfull. Logging out...');
+    jest.advanceTimersByTime(500);
+
+    expect(mockDialogRef.close).toHaveBeenCalled();
+    expect(mockAuth.logout).toHaveBeenCalled();
+  });
+
+
 });
