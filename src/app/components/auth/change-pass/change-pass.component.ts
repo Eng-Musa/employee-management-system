@@ -126,7 +126,7 @@ export class ChangePassComponent implements OnInit {
             if (this.loggedInEmployee.password !== oldPassword) {
               this.message = 'Wrong old password';
               return;
-            }else if(this.loggedInEmployee.password === password){
+            } else if (this.loggedInEmployee.password === password) {
               this.message = 'Old password cannot be same as new password';
               return;
             }
@@ -197,8 +197,6 @@ export class ChangePassComponent implements OnInit {
         this.lastPasswordChange = this.getTimeDifference(
           this.loggedInPerson.lastPasswordChange
         );
-      } else {
-        this.alertService.error('No user found in localStorage.');
       }
     } else {
       this.loggedinEmail = this.authService.getLoggedInEmail();
