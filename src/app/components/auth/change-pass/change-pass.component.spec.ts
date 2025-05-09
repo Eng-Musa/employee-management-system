@@ -7,6 +7,8 @@ import { LocalStorageService } from '../../../services/local-storage.service';
 import { AlertService } from '../../../services/alert.service';
 import { AuthService } from '../../../services/auth.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { constants } from '../../../environments/constants';
+import { expect } from '@jest/globals';
 
 describe('ChangePassComponent', () => {
   let component: ChangePassComponent;
@@ -231,7 +233,7 @@ describe('ChangePassComponent', () => {
     expect(component.loading).toBe(false);
   });
 
-  test.only('should update password for admin if conditions are met', () => {
+  test('should update password for admin if conditions are met', () => {
     (mockAuth.getUserType as jest.Mock).mockReturnValue('admin');
     component.loggedInPerson = {
       name: '',
@@ -260,5 +262,29 @@ describe('ChangePassComponent', () => {
 
     expect(component.loggedInPerson.password).toBe('NewPass2@');
     expect(component.isSuccess).toBe(true);
+  });
+
+  test.only('should store updated admin in local storage', () => {
+    (mockAuth.getUserType as jest.Mock).mockReturnValue('admin');
+    component.loggedInPerson = {
+      name: '', email: 'admin@x.com', password: 'OldPass1!',
+      createdDate: '', role: 'admin',
+      phoneNumber: '', lastLogin: '', lastPasswordChange: ''
+    };
+
+    component.passwordForm.setValue({
+      oldPassword: 'OldPass1!',
+      password:    'NewPass2@'
+    });
+    (mockLS.retrieve as jest.Mock).mockReturnValueOnce(component.loggedInPerson);
+
+    component.onSubmit();
+    jest.advanceTimersByTime(1000);
+    fixture.detectChanges();
+
+    expect(mockLS.save).toHaveBeenCalledWith(
+      constants.LOCAL_STORAGE_KEY_ADMIN,
+      expect.objectContaining({ email: 'admin@x.com', password: 'NewPass2@' })
+    );
   });
 });
