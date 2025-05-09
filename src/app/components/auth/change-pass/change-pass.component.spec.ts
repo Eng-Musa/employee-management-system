@@ -9,6 +9,7 @@ import { AuthService } from '../../../services/auth.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { constants } from '../../../environments/constants';
 import { expect } from '@jest/globals';
+import { Employee } from '../../view-profile/view-profile.component';
 
 describe('ChangePassComponent', () => {
   let component: ChangePassComponent;
@@ -267,16 +268,23 @@ describe('ChangePassComponent', () => {
   test('should store updated admin in local storage', () => {
     (mockAuth.getUserType as jest.Mock).mockReturnValue('admin');
     component.loggedInPerson = {
-      name: '', email: 'admin@x.com', password: 'OldPass1!',
-      createdDate: '', role: 'admin',
-      phoneNumber: '', lastLogin: '', lastPasswordChange: ''
+      name: '',
+      email: 'admin@x.com',
+      password: 'OldPass1!',
+      createdDate: '',
+      role: 'admin',
+      phoneNumber: '',
+      lastLogin: '',
+      lastPasswordChange: '',
     };
 
     component.passwordForm.setValue({
       oldPassword: 'OldPass1!',
-      password:    'NewPass2@'
+      password: 'NewPass2@',
     });
-    (mockLS.retrieve as jest.Mock).mockReturnValueOnce(component.loggedInPerson);
+    (mockLS.retrieve as jest.Mock).mockReturnValueOnce(
+      component.loggedInPerson
+    );
 
     component.onSubmit();
     jest.advanceTimersByTime(1000);
@@ -291,22 +299,31 @@ describe('ChangePassComponent', () => {
   test('should call authService.logout after successful admin update', () => {
     (mockAuth.getUserType as jest.Mock).mockReturnValue('admin');
     component.loggedInPerson = {
-      name: '', email: 'admin@x.com', password: 'OldPass1!',
-      createdDate: '', role: 'admin',
-      phoneNumber: '', lastLogin: '', lastPasswordChange: ''
+      name: '',
+      email: 'admin@x.com',
+      password: 'OldPass1!',
+      createdDate: '',
+      role: 'admin',
+      phoneNumber: '',
+      lastLogin: '',
+      lastPasswordChange: '',
     };
 
     component.passwordForm.setValue({
       oldPassword: 'OldPass1!',
-      password:    'NewPass2@'
+      password: 'NewPass2@',
     });
-    (mockLS.retrieve as jest.Mock).mockReturnValueOnce(component.loggedInPerson);
+    (mockLS.retrieve as jest.Mock).mockReturnValueOnce(
+      component.loggedInPerson
+    );
 
     component.onSubmit();
     jest.advanceTimersByTime(1000);
 
     // after success message: another 500ms to close + logout
-    expect(component.message).toBe('Password change successfull. Logging out...');
+    expect(component.message).toBe(
+      'Password change successfull. Logging out...'
+    );
     jest.advanceTimersByTime(500);
 
     expect(mockDialogRef.close).toHaveBeenCalled();
@@ -335,7 +352,7 @@ describe('ChangePassComponent', () => {
 
     component.passwordForm.setValue({
       oldPassword: 'OldEmp1!',
-      password:    'NewEmp2@'
+      password: 'NewEmp2@',
     });
     (mockLS.retrieve as jest.Mock).mockReturnValueOnce([existingEmp]);
 
@@ -350,8 +367,9 @@ describe('ChangePassComponent', () => {
   });
 
   test('should update the employee in the employee list correctly', () => {
+    //setup
     (mockAuth.getUserType as jest.Mock).mockReturnValue('employee');
-  
+
     const emp = {
       id: 2,
       name: 'E2',
@@ -364,30 +382,81 @@ describe('ChangePassComponent', () => {
       createdDate: '',
       lastLogin: '',
       lastPasswordChange: '',
-      password: 'Old2!'
+      password: 'Old2!',
     };
-  
+
     component.employees = [emp];
     component.loggedInEmployee = { ...emp };
-    component.loggedinEmail = 'e2@x.com';         
-  
+    component.loggedinEmail = 'e2@x.com';
+
     component.passwordForm.setValue({
       oldPassword: 'Old2!',
-      password:    'New2@Pass'
+      password: 'New2@Pass',
     });
-  
+
     (mockLS.retrieve as jest.Mock).mockReturnValueOnce([emp]);
-  
+
     // 2) Act
     component.onSubmit();
     jest.advanceTimersByTime(1000);
     fixture.detectChanges();
-  
+
     // 3) Assert
-    const updated = component.employees.find(e => e.email === 'e2@x.com');
+    const updated = component.employees.find((e) => e.email === 'e2@x.com');
     expect(updated).toBeDefined();
-    expect(updated!.password).toBe('New2@Pass');    
+    expect(updated!.password).toBe('New2@Pass');
   });
-  
+
+  test.only('should store updated employees list in local storage', () => {
+    (mockAuth.getUserType as jest.Mock).mockReturnValue('employee');
+    (mockAuth.getLoggedInEmail as jest.Mock).mockReturnValue('e3@x.com');
+    const emp = {
+      id: 3,
+      name: 'E3',
+      email: 'e3@x.com',
+      phoneNumber: '',
+      department: '',
+      role: 'employee',
+      startDate: '',
+      status: '',
+      createdDate: '',
+      lastLogin: '',
+      lastPasswordChange: '',
+      password: 'Old3!',
+    } as Employee;
+
+    component.employees = [emp];
+    component.loggedInEmployee = { ...emp };
+
+
+    component.passwordForm.setValue({
+      oldPassword: 'Old3!',
+      password: 'Newp@1234',
+    });
+    (mockLS.retrieve as jest.Mock).mockReturnValueOnce([emp]);
+
+    component.onSubmit();
+    jest.advanceTimersByTime(1000);
+    fixture.detectChanges();
+
+    expect(mockLS.save).toHaveBeenCalledWith(
+      constants.LOCAL_STORAGE_KEY_EMPLOYEES,
+      expect.arrayContaining([
+        expect.objectContaining({  id: 3,
+          name: 'E3',
+          email: 'e3@x.com',
+          phoneNumber: '',
+          department: '',
+          role: 'employee',
+          startDate: '',
+          status: '',
+          createdDate: '',
+          lastLogin: '',
+          lastPasswordChange: '',
+          password: 'Old3!',}),
+      ])
+    );
+  });
+
 
 });
