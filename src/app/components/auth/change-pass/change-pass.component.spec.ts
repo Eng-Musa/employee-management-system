@@ -313,5 +313,40 @@ describe('ChangePassComponent', () => {
     expect(mockAuth.logout).toHaveBeenCalled();
   });
 
+  test('should update password for employee if conditions are met', () => {
+    (mockAuth.getUserType as jest.Mock).mockReturnValue('employee');
+    (mockAuth.getLoggedInEmail as jest.Mock).mockReturnValue('user@x.com');
+    const existingEmp = {
+      id: 1,
+      name: 'User',
+      email: 'user@x.com',
+      phoneNumber: '',
+      department: '',
+      role: 'employee',
+      startDate: '',
+      status: '',
+      createdDate: '',
+      lastLogin: '',
+      lastPasswordChange: '',
+      password: 'OldEmp1!',
+    };
+    component.employees = [existingEmp];
+    component.loggedInEmployee = { ...existingEmp };
+
+    component.passwordForm.setValue({
+      oldPassword: 'OldEmp1!',
+      password:    'NewEmp2@'
+    });
+    (mockLS.retrieve as jest.Mock).mockReturnValueOnce([existingEmp]);
+
+    component.onSubmit();
+    expect(component.loading).toBe(true);
+
+    jest.advanceTimersByTime(1000);
+    fixture.detectChanges();
+
+    expect(component.loggedInEmployee.password).toBe('NewEmp2@');
+    expect(component.isSuccess).toBe(true);
+  });
 
 });
