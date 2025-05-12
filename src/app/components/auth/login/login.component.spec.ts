@@ -318,7 +318,9 @@ describe('LoginComponent', () => {
 
     expect(mockLS.save).not.toHaveBeenCalled();
     expect(mockLS.saveToSessionStorage).not.toHaveBeenCalled();
-    expect(spy).toHaveBeenCalledWith(expect.stringMatching('No employees data found in localStorage.'));
+    expect(spy).toHaveBeenCalledWith(
+      expect.stringMatching('No employees data found in localStorage.')
+    );
     spy.mockRestore();
   });
 });

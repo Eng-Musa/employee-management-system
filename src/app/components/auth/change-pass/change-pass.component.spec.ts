@@ -133,7 +133,6 @@ describe('ChangePassComponent', () => {
       'No admin user found in local storage.'
     );
   });
-  
 
   test('should populate loggedInEmployee if non-admin and match found', () => {
     const mockEmp = {
@@ -550,6 +549,4 @@ describe('ChangePassComponent', () => {
 
     expect(mockDialogRef.close).toHaveBeenCalled();
   });
-
-
 });
