@@ -39,19 +39,37 @@ describe('AuthService', () => {
 
     test('should return false if token is not expired', () => {
       const twoMinutesAgo = new Date(Date.now() - 2 * 60 * 1000).toISOString();
-      sessionStorage.setItem('userSession', JSON.stringify({ loginTime: twoMinutesAgo }));
+      sessionStorage.setItem(
+        'userSession',
+        JSON.stringify({ loginTime: twoMinutesAgo })
+      );
       expect(service.isTokenExpired()).toBe(false);
     });
 
     test('should return true and remove session if token is expired', () => {
-      const sixMinutesAgo = new Date(Date.now() - 6 * 60 * 1000).toISOString();
-      sessionStorage.setItem('userSession', JSON.stringify({ loginTime: sixMinutesAgo }));
+      const currentTimeStr = new Date()
+        .toLocaleString('en-US', { timeZone: 'Africa/Nairobi' })
+        .slice(0, 16)
+        .replace(',', '');
+      const currentTime = new Date(currentTimeStr);
+
+      const sixMinutesAgoIso = new Date(
+        currentTime.getTime() - 6 * 60 * 1000
+      ).toISOString();
+
+      sessionStorage.setItem(
+        'userSession',
+        JSON.stringify({ loginTime: sixMinutesAgoIso })
+      );
+
       expect(service.isTokenExpired()).toBe(true);
       expect(sessionStorage.getItem('userSession')).toBeNull();
     });
 
     test('should return true, remove session, and log an error if session data is invalid', () => {
-      const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+      const consoleErrorSpy = jest
+        .spyOn(console, 'error')
+        .mockImplementation(() => {});
       sessionStorage.setItem('userSession', 'invalid JSON');
 
       expect(service.isTokenExpired()).toBe(true);
@@ -66,7 +84,10 @@ describe('AuthService', () => {
 
   describe('logout', () => {
     test('should remove session data and navigate to "login"', () => {
-      sessionStorage.setItem('userSession', JSON.stringify({ loginTime: new Date().toISOString() }));
+      sessionStorage.setItem(
+        'userSession',
+        JSON.stringify({ loginTime: new Date().toISOString() })
+      );
       service.logout();
       expect(sessionStorage.getItem('userSession')).toBeNull();
       expect(routerSpy.navigate).toHaveBeenCalledWith(['login']);
@@ -81,7 +102,10 @@ describe('AuthService', () => {
     });
 
     test('should return the user role when valid session data exists', () => {
-      const sessionData = { loginTime: new Date().toISOString(), role: 'Admin' };
+      const sessionData = {
+        loginTime: new Date().toISOString(),
+        role: 'Admin',
+      };
       sessionStorage.setItem('userSession', JSON.stringify(sessionData));
       expect(service.getUserType()).toBe('Admin');
     });
