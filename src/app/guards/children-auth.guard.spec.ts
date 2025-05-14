@@ -62,6 +62,7 @@ describe('childrenAuthGuard', () => {
   });
 
   test('navigate to login and returns false when token is expired', ()=>{
+    authService.isAuthenticated.mockReturnValue(true);
     authService.isTokenExpired.mockReturnValue(true);
 
     const result = executeGuard(
