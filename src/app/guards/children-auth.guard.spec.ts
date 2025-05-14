@@ -60,4 +60,17 @@ describe('childrenAuthGuard', () => {
     expect(router.navigate).toHaveBeenCalledWith(['login']);
     expect(alertServiceMock.information).toHaveBeenCalledWith('Kindly login');
   });
+
+  test('navigate to login and returns false when token is expired', ()=>{
+    authService.isTokenExpired.mockReturnValue(true);
+
+    const result = executeGuard(
+      dummyActivatedRouteSnapshot,
+      dummyRouterStateSnapshot
+    );
+
+    expect(result).toBe(false);
+    expect(router.navigate).toHaveBeenCalledWith(['login']);
+    expect(alertServiceMock.information).toHaveBeenCalledWith('Session expired, kindly login');
+  });
 });
