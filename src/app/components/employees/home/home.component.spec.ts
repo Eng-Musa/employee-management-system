@@ -48,7 +48,7 @@ describe('HomeComponent', () => {
           default:
             return null;
         }
-      }) as unknown as <T>(key: string) => T | null,
+      }) as <T>(key: string) => T | null,
       save: jest.fn(),
     };
     dialogMock = {
@@ -195,7 +195,6 @@ describe('HomeComponent', () => {
 
   test('storeOnboardingStatus should store new record when none exists for user', () => {
     component.loggedInUserEmail = 'test@example.com';
-    // Set checklistData so that the new checklist is computed for a Developer.
     component.checklistData = {
       checklists: {
         common: ['item1'],
