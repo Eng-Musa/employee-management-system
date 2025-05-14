@@ -46,4 +46,18 @@ describe('childrenAuthGuard', () => {
     expect(result).toBe(true);
     expect(router.navigate).not.toHaveBeenCalled();
   });
+
+  test('navigates to login and returns false when not authenticated', ()=>{
+    authService.isAuthenticated.mockReturnValue(false);
+    
+
+    const result = executeGuard(
+      dummyActivatedRouteSnapshot,
+      dummyRouterStateSnapshot
+    );
+
+    expect(result).toBe(false);
+    expect(router.navigate).toHaveBeenCalledWith(['login']);
+    expect(alertServiceMock.information).toHaveBeenCalledWith('Kindly login');
+  });
 });
