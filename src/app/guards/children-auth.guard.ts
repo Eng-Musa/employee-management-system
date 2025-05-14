@@ -8,7 +8,7 @@ export const childrenAuthGuard: CanActivateChildFn = () => {
   const router = inject(Router);
   const alertService = inject(AlertService);
 
-  if (!authService.isAthenticated()) {
+  if (!authService.isAuthenticated()) {
     router.navigate(['login']);
     alertService.information('Kindly login');
     return false;
