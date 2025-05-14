@@ -11,7 +11,7 @@ export class AuthService {
     private router: Router
   ) {}
 
-  isAthenticated(): boolean {
+  isAuthenticated(): boolean {
     return (
       isPlatformBrowser(this.platformId) &&
       !!sessionStorage.getItem('userSession')
