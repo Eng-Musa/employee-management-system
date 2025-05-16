@@ -9,7 +9,9 @@ import { EmployeesComponent } from './employees.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { LocalStorageService } from '../../../services/local-storage.service';
-
+import { of } from 'rxjs';
+import { AddEmployeeDialogueComponent } from '../add-employee-dialogue/add-employee-dialogue.component';
+import { expect } from '@jest/globals';
 describe('EmployeesComponent', () => {
   let component: EmployeesComponent;
   let fixture: ComponentFixture<EmployeesComponent>;
@@ -85,5 +87,25 @@ describe('EmployeesComponent', () => {
     expect(component.loading).toBeFalsy();
     expect(component.employee).toEqual(dummyEmployees);
     expect(component.dataSource.data).toEqual(dummyEmployees);
+  }));
+
+  test('should open add employee dialog and refresh employees when closed with a valid result', fakeAsync(() => {
+    // Simulate a dialog reference with afterClosed returning an observable of true.
+    const fakeDialogRef = { afterClosed: () => of(true) };
+    (dialogMock.open as jest.Mock).mockReturnValue(fakeDialogRef)
+    const fetchSpy = jest.spyOn(component, 'fetchEmployees');
+
+    component.openAddEmployeeDialog();
+    tick();
+    expect(dialogMock.open).toHaveBeenCalledWith(
+      AddEmployeeDialogueComponent,
+      expect.objectContaining({
+        width: 'auto',
+        maxWidth: '90vw',
+        height: 'auto',
+        maxHeight: '90vh'
+      })
+    );
+    expect(fetchSpy).toHaveBeenCalled();
   }));
 });
