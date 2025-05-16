@@ -12,6 +12,7 @@ import { LocalStorageService } from '../../../services/local-storage.service';
 import { of } from 'rxjs';
 import { AddEmployeeDialogueComponent } from '../add-employee-dialogue/add-employee-dialogue.component';
 import { expect } from '@jest/globals';
+import { DeleteEmployeeDialogueComponent } from '../delete-employee-dialogue/delete-employee-dialogue.component';
 describe('EmployeesComponent', () => {
   let component: EmployeesComponent;
   let fixture: ComponentFixture<EmployeesComponent>;
@@ -108,4 +109,27 @@ describe('EmployeesComponent', () => {
     );
     expect(fetchSpy).toHaveBeenCalled();
   }));
+
+   test('should open delete employee dialog and refresh employees when closed with a valid result', fakeAsync(() => {
+    const fakeDialogRef = { afterClosed: () => of(true) };
+    (dialogMock.open as jest.Mock).mockReturnValue(fakeDialogRef);
+    const fetchSpy = jest.spyOn(component, 'fetchEmployees');
+    const id = 1;
+    const name = 'Test User';
+    const email = 'test@example.com';
+
+    component.openDeleteEmployeeDialog(id, name, email);
+    tick();
+    expect(dialogMock.open).toHaveBeenCalledWith(
+      DeleteEmployeeDialogueComponent,
+      expect.objectContaining({
+        width: '40vw',
+        maxHeight: '90vh',
+        height: 'auto',
+        data: { id, name, email }
+      })
+    );
+    expect(fetchSpy).toHaveBeenCalled();
+  }));
+  
 });
