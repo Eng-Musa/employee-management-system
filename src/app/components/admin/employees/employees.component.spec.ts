@@ -41,4 +41,12 @@ describe('EmployeesComponent', () => {
     component.ngOnInit();
     expect(fetchSpy).toHaveBeenCalled();
   });
+
+  test('should apply the filter correctly', () => {
+    const testQuery = 'Sample Filter';
+    const inputElem = document.createElement('input');
+    inputElem.value = testQuery;
+    component.applyFilter(inputElem);
+    expect(component.dataSource.filter).toEqual(testQuery.trim().toLowerCase());
+  });
 });
