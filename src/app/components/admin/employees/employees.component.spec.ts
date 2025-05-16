@@ -145,4 +145,14 @@ describe('EmployeesComponent', () => {
     expect(routerMock.navigate).toHaveBeenCalledWith(['dashboard/employee-profile', id, name]);
   });
   
+   test('should assign sort and paginator to dataSource after view initialization', () => {
+    const dummySort = {} as any;
+    const dummyPaginator = {} as any;
+    component.sort = dummySort;
+    component.paginator = dummyPaginator;
+
+    component.ngAfterViewInit();
+    expect(component.dataSource.sort).toBe(dummySort);
+    expect(component.dataSource.paginator).toBe(dummyPaginator);
+  });
 });
