@@ -1,4 +1,9 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
 
 import { EmployeesComponent } from './employees.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -19,13 +24,12 @@ describe('EmployeesComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [EmployeesComponent],
-       providers: [
+      providers: [
         { provide: MatDialog, useValue: dialogMock },
         { provide: Router, useValue: routerMock },
-        { provide: LocalStorageService, useValue: localStorageServiceMock }
-      ]
-    })
-    .compileComponents();
+        { provide: LocalStorageService, useValue: localStorageServiceMock },
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(EmployeesComponent);
     component = fixture.componentInstance;
@@ -49,4 +53,37 @@ describe('EmployeesComponent', () => {
     component.applyFilter(inputElem);
     expect(component.dataSource.filter).toEqual(testQuery.trim().toLowerCase());
   });
+
+  test('should fetch employees and update the datasource after timeout', fakeAsync(() => {
+    const dummyEmployees = [
+      {
+        id: 1,
+        name: 'Test User',
+        email: 'test@example.com',
+        phoneNumber: '1234567890',
+        department: 'Engineering',
+        role: 'Developer',
+        startDate: '2023-01-01',
+        endDate: null,
+        status: 'Active',
+        address: '123 Main St',
+        password: 'password123',
+        createdDate: '2023-01-01T00:00:00Z',
+        lastLogin: '2023-06-01T12:00:00Z',
+        lastPasswordChange: '2023-05-01T12:00:00Z',
+      },
+    ];
+    (localStorageServiceMock.retrieve as jest.Mock).mockReturnValue(
+      dummyEmployees
+    );
+
+    component.fetchEmployees();
+    expect(component.loading).toBeTruthy();
+
+    tick(1000);
+
+    expect(component.loading).toBeFalsy();
+    expect(component.employee).toEqual(dummyEmployees);
+    expect(component.dataSource.data).toEqual(dummyEmployees);
+  }));
 });
