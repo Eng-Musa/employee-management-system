@@ -131,5 +131,11 @@ describe('EmployeesComponent', () => {
     );
     expect(fetchSpy).toHaveBeenCalled();
   }));
+
+  test('should navigate to the edit employee route when goToEditEmployee is called', () => {
+    const email = 'test@example.com';
+    component.goToEditEmployee(email);
+    expect(routerMock.navigate).toHaveBeenCalledWith(['dashboard/edit-employee', email]);
+  });
   
 });
