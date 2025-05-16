@@ -137,5 +137,12 @@ describe('EmployeesComponent', () => {
     component.goToEditEmployee(email);
     expect(routerMock.navigate).toHaveBeenCalledWith(['dashboard/edit-employee', email]);
   });
+
+   test('should navigate to the employee profile route when goToEmployeeProfile is called', () => {
+    const id = 1;
+    const name = 'Test User';
+    component.goToEmployeeProfile(id, name);
+    expect(routerMock.navigate).toHaveBeenCalledWith(['dashboard/employee-profile', id, name]);
+  });
   
 });
